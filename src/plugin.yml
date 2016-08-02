@@ -1,0 +1,9 @@
+name: ExoticGarden
+version: 1.6.1
+author: mrCookieSlime
+website: http://dev.bukkit.org/profiles/mrCookieSlime/bukkit-plugins/
+
+main: me.mrCookieSlime.ExoticGarden.ExoticGarden
+
+depend: [Slimefun]
+softdepend: [CS-CoreLib]
