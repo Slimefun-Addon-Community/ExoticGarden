@@ -1,6 +1,9 @@
 package me.mrCookieSlime.ExoticGarden;
 
 import java.util.Random;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -20,7 +23,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.event.world.StructureGrowEvent;
@@ -221,6 +226,32 @@ public class PlantsListener implements Listener {
 			e.getClickedBlock().getWorld().playEffect(e.getClickedBlock().getLocation(), Effect.STEP_SOUND, Material.LEAVES);
 			e.getClickedBlock().getWorld().dropItemNaturally(e.getClickedBlock().getLocation(), item);
 		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	void onBlockExplode(BlockExplodeEvent e)
+	{
+		e.blockList().removeAll(explosionHandler(e.blockList()));
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	void onEntityExplode(EntityExplodeEvent e)
+	{
+		e.blockList().removeAll(explosionHandler(e.blockList()));
+	}
+
+	Set<Block> explosionHandler(List<Block> blockList)
+	{
+		Set<Block> blocksToRemove = new HashSet<Block>();
+		for (Block block : blockList)
+		{
+			ItemStack item = ExoticGarden.harvestPlant(block);
+			if (item != null) {
+				blocksToRemove.add(block);
+				block.getWorld().dropItemNaturally(block.getLocation(), item);
+			}
+		}
+		return blocksToRemove;
 	}
 
 }
