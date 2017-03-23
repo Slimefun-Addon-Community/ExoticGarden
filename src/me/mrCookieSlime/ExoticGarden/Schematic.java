@@ -112,51 +112,51 @@ public class Schematic
 	public static void pasteSchematic(Location loc, Tree tree)
     {
     	Schematic schematic = null;
-    	try {
-    		schematic = tree.getSchematic();
-    	} catch (IOException e) {
-    	}
+		try {
+			schematic = tree.getSchematic();
+		} catch (IOException e) {
+		}
     	BlockFace[] bf = {BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
-    	short[] blocks = schematic.getBlocks();
-    	byte[] blockData = schematic.getData();
+        short[] blocks = schematic.getBlocks();
+        byte[] blockData = schematic.getData();
+ 
+        short length = schematic.getLenght();
+        short width = schematic.getWidth();
+        short height = schematic.getHeight();
+ 
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                for (int z = 0; z < length; ++z) {
+                    int index = y * width * length + z * width + x;
+                    Block block = new Location(loc.getWorld(), x + loc.getX() - length / 2, y + loc.getY(), z + loc.getZ() - width / 2).getBlock();
+                    if (block.getType().equals(null) || block.getType().equals(Material.AIR) || block.getType().isTransparent()) {
+                    	if (Material.getMaterial(blocks[index]) != null) {
+                    		if (!(block.getState() instanceof InventoryHolder)) {
+                    			if (blocks[index] != 0) block.setTypeIdAndData(blocks[index], blockData[index], false);
+                    			if (Material.getMaterial(blocks[index]) == Material.LEAVES  || Material.getMaterial(blocks[index]) == Material.LEAVES_2) {
+                    				if (CSCoreLib.randomizer().nextInt(100) < 25) BlockStorage.store(block, tree.getItem());
+                    				block.setData((byte) 0);
+                    			}
+                    			else if (Material.getMaterial(blocks[index]) == Material.SKULL && block.getState() instanceof Skull) {
+                    				Skull s = (Skull) block.getState();
+                    				s.setSkullType(SkullType.PLAYER);
+                    				s.setRotation(bf[new Random().nextInt(bf.length)]);
+                    				s.setRawData((byte) 1);
+                    				s.update();
 
-    	short length = schematic.getLenght();
-    	short width = schematic.getWidth();
-    	short height = schematic.getHeight();
-
-    	for (int x = 0; x < width; ++x) {
-    		for (int y = 0; y < height; ++y) {
-    			for (int z = 0; z < length; ++z) {
-    				int index = y * width * length + z * width + x;
-    				Block block = new Location(loc.getWorld(), x + loc.getX() - length / 2, y + loc.getY(), z + loc.getZ() - width / 2).getBlock();
-    				if (block.getType().equals(null) || block.getType().equals(Material.AIR) || block.getType().isTransparent()) {
-    					if (Material.getMaterial(blocks[index]) != null) {
-    						if (!(block.getState() instanceof InventoryHolder)) {
-    							if (blocks[index] != 0) block.setTypeIdAndData(blocks[index], blockData[index], false);
-    							if (Material.getMaterial(blocks[index]) == Material.LEAVES  || Material.getMaterial(blocks[index]) == Material.LEAVES_2) {
-    								if (CSCoreLib.randomizer().nextInt(100) < 25) BlockStorage.store(block, tree.getItem());
-    								block.setData((byte) 0);
-    							}
-    							else if (Material.getMaterial(blocks[index]) == Material.SKULL && block.getState() instanceof Skull) {
-    								Skull s = (Skull) block.getState();
-    								s.setSkullType(SkullType.PLAYER);
-    								s.setRotation(bf[new Random().nextInt(bf.length)]);
-    								s.setRawData((byte) 1);
-    								s.update();
-
-    								try {
-    									CustomSkull.setSkull(s.getBlock(), tree.getTexture());
-    								} catch (Exception e) {
-    									e.printStackTrace();
-    								}
-    								BlockStorage.store(s.getBlock(), tree.getFruit());
-    							}
-    						}
-    					}
-    				}
-    			}
-    		}
-    	}
+                    				try {
+                    					CustomSkull.setSkull(s.getBlock(), tree.getTexture());
+                    				} catch (Exception e) {
+                    					e.printStackTrace();
+                    				}
+                    				BlockStorage.store(s.getBlock(), tree.getFruit());
+                    			}
+                    		}
+                    	}
+                    }
+                }
+            }
+        }
     }
  
     @SuppressWarnings("resource")
