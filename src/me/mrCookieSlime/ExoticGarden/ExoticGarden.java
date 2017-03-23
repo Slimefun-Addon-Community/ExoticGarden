@@ -714,9 +714,7 @@ public class ExoticGarden extends JavaPlugin {
 		new ItemStack[] {null, null, null, null, new CustomItem(Material.LONG_GRASS, 1), null, null, null, null})
 		.register();
 		
-		new EGPlant(category_main, new CustomItem(getSkull(Material.NETHER_STALK, data.getTexture()), color + name), name.toUpperCase(), new RecipeType(new CustomItem(Material.LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
-		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase() + "_BUSH"), null, null, null, null})
-		.register();
+		new EGBlock(this.category_main, (ItemStack)new CustomItem(this.getSkull(Material.NETHER_STALK, data.getTexture()), String.valueOf(color) + name), name.toUpperCase(), new RecipeType((ItemStack)new CustomItem(Material.LEAVES, "&7Obtained by harvesting the specific Bush", 0)), new ItemStack[] { null, null, null, null, getItem(String.valueOf(name.toUpperCase()) + "_BUSH"), null, null, null, null }).register();
 		
 		new Juice(category_drinks, new CustomPotion(color + name + " Juice", potion, new String[] {"", "§7§oRestores §b§o" + "3.0" + " §7§oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 6, 0)), name.toUpperCase() + "_JUICE", RecipeType.JUICER,
 		new ItemStack[] {getItem(name.toUpperCase()), null, null, null, null, null, null, null, null})
@@ -770,9 +768,7 @@ public class ExoticGarden extends JavaPlugin {
 		new ItemStack[] {null, null, null, null, new CustomItem(Material.LONG_GRASS, 1), null, null, null, null})
 		.register();
 		
-		new EGPlant(category_main, new CustomItem(getSkull(material, data.getTexture()), color + name), name.toUpperCase().replace(" ", "_"), new RecipeType(new CustomItem(Material.LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
-		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase().replace(" ", "_") + "_BUSH"), null, null, null, null})
-		.register();
+		new EGBlock(this.category_main, (ItemStack)new CustomItem(this.getSkull(material, data.getTexture()), String.valueOf(color) + name), name.toUpperCase().replace(" ", "_"), new RecipeType((ItemStack)new CustomItem(Material.LEAVES, "&7Obtained by harvesting the specific Bush", 0)), new ItemStack[] { null, null, null, null, getItem(String.valueOf(name.toUpperCase().replace(" ", "_")) + "_BUSH"), null, null, null, null }).register();
 	}
 
 	public void registerMagicalPlant(String name, ItemStack item, String skull, ItemStack[] recipe) {
