@@ -1,0 +1,10 @@
+Re-formatted to align with the fork.
+
+Added EGBlock from v1.5
+edited ExoticGarden.registerBerry to include EGBlock which fixes drops
+
+edited ExoticGarden.registerPlant to include EGBlock which fixes drops
+
+edited PlantsListener.onDecay to reduce sapling drops from trees
+
+edited Schematic.pasteSchematic to include a filter which chooses which blocks are replaced when pasting. This helps to prevent damage to buildings. (not completely tested but does work for most blocks, maybe all?)
