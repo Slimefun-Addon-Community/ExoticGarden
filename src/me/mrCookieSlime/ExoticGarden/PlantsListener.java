@@ -211,7 +211,7 @@ public class PlantsListener implements Listener {
 	@EventHandler
 	public void onDecay(LeavesDecayEvent e) {
 		ItemStack item = BlockStorage.retrieve(e.getBlock());
-		if (item != null) {
+		if (item != null && CSCoreLib.randomizer().nextInt(100) < 20) {
 			e.setCancelled(true);
 			e.getBlock().setType(Material.AIR);
 			e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
