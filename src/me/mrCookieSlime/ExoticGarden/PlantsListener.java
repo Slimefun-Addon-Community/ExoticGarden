@@ -196,6 +196,7 @@ public class PlantsListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onHarvest(BlockBreakEvent e) {
+		if (e.getBlock().getType().equals(Material.LEAVES) || e.getBlock().getType().equals(Material.LEAVES_2)) dropFruitFromTree(e.getBlock());
 		if (e.getBlock().getType() == Material.LONG_GRASS) {
 			if (CSCoreLib.randomizer().nextInt(100) < 6) e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.items.get(ExoticGarden.items.keySet().toArray(new String[ExoticGarden.items.keySet().size()])[CSCoreLib.randomizer().nextInt(ExoticGarden.items.keySet().size())]));
 		}
@@ -208,10 +209,11 @@ public class PlantsListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onDecay(LeavesDecayEvent e) {
+		dropFruitFromTree(e.getBlock());
 		ItemStack item = BlockStorage.retrieve(e.getBlock());
-		if (item != null && CSCoreLib.randomizer().nextInt(100) < 20) {
+		if (item != null) {
 			e.setCancelled(true);
 			e.getBlock().setType(Material.AIR);
 			e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
@@ -253,5 +255,26 @@ public class PlantsListener implements Listener {
 		}
 		return blocksToRemove;
 	}
-
+    
+	public void dropFruitFromTree(Block block) {
+		for (int x = -1; x < 2; x++) {
+			for (int y = -1; y < 2; y++) {
+				for (int z = -1; z < 2; z++) { //inspect a cube at the reference
+					Block drop = block.getRelative(x, y, z);
+					SlimefunItem check = BlockStorage.check(drop);
+					if (check != null) {
+						for (Tree tree: ExoticGarden.trees) {
+							if (check.getName().equalsIgnoreCase(tree.fruit)) {
+								BlockStorage.clearBlockInfo(drop);
+								ItemStack fruits = check.getItem();
+								drop.getWorld().playEffect(drop.getLocation(), Effect.STEP_SOUND, Material.LEAVES);
+								drop.getWorld().dropItemNaturally(drop.getLocation(), fruits);
+								drop.setType(Material.AIR);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
