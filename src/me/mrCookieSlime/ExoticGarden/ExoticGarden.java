@@ -717,7 +717,7 @@ public class ExoticGarden extends JavaPlugin {
 		new EGPlant(category_main, new CustomItem(getSkull(Material.NETHER_STALK, data.getTexture()), color + name), name.toUpperCase(), new RecipeType(new CustomItem(Material.LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
 		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase() + "_BUSH"), null, null, null, null})
 		.register();
-		
+
 		new Juice(category_drinks, new CustomPotion(color + name + " Juice", potion, new String[] {"", "§7§oRestores §b§o" + "3.0" + " §7§oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 6, 0)), name.toUpperCase() + "_JUICE", RecipeType.JUICER,
 		new ItemStack[] {getItem(name.toUpperCase()), null, null, null, null, null, null, null, null})
 		.register();
@@ -769,7 +769,7 @@ public class ExoticGarden extends JavaPlugin {
 		new SlimefunItem(category_main, new CustomItem(Material.SAPLING, color + name + " Plant", 0), name.toUpperCase().replace(" ", "_") + "_BUSH", new RecipeType(new CustomItem(Material.LONG_GRASS, "&7Breaking Grass", 1)),
 		new ItemStack[] {null, null, null, null, new CustomItem(Material.LONG_GRASS, 1), null, null, null, null})
 		.register();
-		
+
 		new EGPlant(category_main, new CustomItem(getSkull(material, data.getTexture()), color + name), name.toUpperCase().replace(" ", "_"), new RecipeType(new CustomItem(Material.LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
 		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase().replace(" ", "_") + "_BUSH"), null, null, null, null})
 		.register();

@@ -129,27 +129,29 @@ public class Schematic
                 for (int z = 0; z < length; ++z) {
                     int index = y * width * length + z * width + x;
                     Block block = new Location(loc.getWorld(), x + loc.getX() - length / 2, y + loc.getY(), z + loc.getZ() - width / 2).getBlock();
-                    if (Material.getMaterial(blocks[index]) != null) {
-                    	if (!(block.getState() instanceof InventoryHolder)) {
-                    		if (blocks[index] != 0) block.setTypeIdAndData(blocks[index], blockData[index], false);
-                        	if (Material.getMaterial(blocks[index]) == Material.LEAVES  || Material.getMaterial(blocks[index]) == Material.LEAVES_2) {
-                        		if (CSCoreLib.randomizer().nextInt(100) < 25) BlockStorage.store(block, tree.getItem());
-                        		block.setData((byte) 0);
-                        	}
-                        	else if (Material.getMaterial(blocks[index]) == Material.SKULL && block.getState() instanceof Skull) {
-                        		Skull s = (Skull) block.getState();
-            					s.setSkullType(SkullType.PLAYER);
-            					s.setRotation(bf[new Random().nextInt(bf.length)]);
-            					s.setRawData((byte) 1);
-            					s.update();
-            					
-            					try {
-    								CustomSkull.setSkull(s.getBlock(), tree.getTexture());
-    							} catch (Exception e) {
-    								e.printStackTrace();
-    							}
-            					BlockStorage.store(s.getBlock(), tree.getFruit());
-                        	}
+                    if (block.getType().equals(null) || block.getType().equals(Material.AIR) || block.getType().isTransparent()) {
+                    	if (Material.getMaterial(blocks[index]) != null) {
+                    		if (!(block.getState() instanceof InventoryHolder)) {
+                    			if (blocks[index] != 0) block.setTypeIdAndData(blocks[index], blockData[index], false);
+                    			if (Material.getMaterial(blocks[index]) == Material.LEAVES  || Material.getMaterial(blocks[index]) == Material.LEAVES_2) {
+                    				if (CSCoreLib.randomizer().nextInt(100) < 25) BlockStorage.store(block, tree.getItem());
+                    				block.setData((byte) 0);
+                    			}
+                    			else if (Material.getMaterial(blocks[index]) == Material.SKULL && block.getState() instanceof Skull) {
+                    				Skull s = (Skull) block.getState();
+                    				s.setSkullType(SkullType.PLAYER);
+                    				s.setRotation(bf[new Random().nextInt(bf.length)]);
+                    				s.setRawData((byte) 1);
+                    				s.update();
+
+                    				try {
+                    					CustomSkull.setSkull(s.getBlock(), tree.getTexture());
+                    				} catch (Exception e) {
+                    					e.printStackTrace();
+                    				}
+                    				BlockStorage.store(s.getBlock(), tree.getFruit());
+                    			}
+                    		}
                     	}
                     }
                 }
