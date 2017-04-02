@@ -1,7 +1,8 @@
 name: ExoticGarden
-version: 1.6.1
-author: mrCookieSlime
-website: http://dev.bukkit.org/profiles/mrCookieSlime/bukkit-plugins/
+version: 1.6.2
+authors: [mrCookieSlime, Goldentoenail]
+description: A Slimefun Addon that adds new Plants and dishes to the game
+website: http://TheBusyBiscuit.github.io/
 
 main: me.mrCookieSlime.ExoticGarden.ExoticGarden
 

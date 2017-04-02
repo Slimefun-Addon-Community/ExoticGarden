@@ -11,28 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
-import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.events.ItemUseEvent;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomPotion;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Player.PlayerInventory;
-import me.mrCookieSlime.CSCoreLibPlugin.general.String.StringUtils;
-import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
-import me.mrCookieSlime.CSCoreLibSetup.CSCoreLibLoader;
-import me.mrCookieSlime.Slimefun.Lists.Categories;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.HandledBlock;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.Juice;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.BlockBreakHandler;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.ItemInteractionHandler;
-import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -44,6 +22,28 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
+import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
+import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
+import me.mrCookieSlime.CSCoreLibPlugin.events.ItemUseEvent;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomPotion;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Player.PlayerInventory;
+import me.mrCookieSlime.CSCoreLibPlugin.general.String.StringUtils;
+import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
+import me.mrCookieSlime.ExoticGarden.CSCoreLibSetup.CSCoreLibLoader;
+import me.mrCookieSlime.Slimefun.Lists.Categories;
+import me.mrCookieSlime.Slimefun.Lists.RecipeType;
+import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
+import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.HandledBlock;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.Juice;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.BlockBreakHandler;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.ItemInteractionHandler;
+import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 public class ExoticGarden extends JavaPlugin {
 	

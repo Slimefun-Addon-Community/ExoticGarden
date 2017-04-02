@@ -1,4 +1,4 @@
-package me.mrCookieSlime.CSCoreLibSetup;
+package me.mrCookieSlime.ExoticGarden.CSCoreLibSetup;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -33,27 +34,26 @@ public class CSCoreLibLoader {
 	public boolean load() {
 		if (plugin.getServer().getPluginManager().isPluginEnabled("CS-CoreLib")) return true;
 		else {
+			System.err.println(" ");
+			System.err.println("#################### - INFO - ####################");
+			System.err.println(" ");
+			System.err.println(plugin.getName() + " could not be loaded.");
+			System.err.println("It appears that you have not installed CS-CoreLib");
+			System.err.println("Your Server will now try to download and install");
+			System.err.println("CS-CoreLib for you.");
+			System.err.println("You will be asked to restart your Server when it's finished.");
+			System.err.println("If this somehow fails, please download and install CS-CoreLib manually:");
+			System.err.println("https://dev.bukkit.org/projects/cs-corelib");
+			System.err.println(" ");
+			System.err.println("#################### - INFO - ####################");
+			System.err.println(" ");
 			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				
 				@Override
 				public void run() {
-					System.err.println(" ");
-					System.err.println("#################### - FATAL ERROR - ####################");
-					System.err.println(" ");
-					System.err.println(plugin.getName() + " could not be properly installed!");
-					System.err.println("It appears that you have not installed CS-CoreLib");
-					System.err.println("And because of that, CS-CoreLib is now going to be");
-					System.err.println("downloaded and installed.");
-					System.err.println("But for the time being " + plugin.getName() + " will remain disabled");
-					System.err.println("After the installation process has finished,");
-					System.out.println("you will be asked to restart your Server.");
-					System.err.println("- mrCookieSlime");
-					System.err.println(" ");
-					System.err.println("#################### - FATAL ERROR - ####################");
-					System.err.println(" ");
 					if (connect()) install();
 				}
-			}, 0L);
+			}, 10L);
 			return false;
 		}
 	}
@@ -67,21 +67,47 @@ public class CSCoreLibLoader {
 
             final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             final JSONArray array = (JSONArray) JSONValue.parse(reader.readLine());
-            download = new URL((String) ((JSONObject) array.get(array.size() - 1)).get("downloadUrl"));
+            download = traceURL(((String) ((JSONObject) array.get(array.size() - 1)).get("downloadUrl")).replace("https:", "http:"));
             file = new File("plugins/" + (String) ((JSONObject) array.get(array.size() - 1)).get("name") + ".jar");
             
             return true;
         } catch (IOException e) {
         	System.err.println(" ");
-        	System.err.println("#################### - FATAL ERROR - ####################");
+        	System.err.println("#################### - WARNING - ####################");
 			System.err.println(" ");
-			System.err.println("Could not connect to BukkitDev, is it down?");
+			System.err.println("Could not connect to BukkitDev.");
+			System.err.println("Please download & install CS-CoreLib manually:");
+			System.err.println("https://dev.bukkit.org/projects/cs-corelib");
 			System.err.println(" ");
-			System.err.println("#################### - FATAL ERROR - ####################");
+			System.err.println("#################### - WARNING - ####################");
 			System.err.println(" ");
             return false;
         }
     }
+	
+	private URL traceURL(String location) throws IOException {
+	    	HttpURLConnection connection = null;
+	    	
+	        while (true) {
+	            URL url = new URL(location);
+	            connection = (HttpURLConnection) url.openConnection();
+
+	            connection.setInstanceFollowRedirects(false);
+	            connection.setConnectTimeout(5000);
+	            connection.addRequestProperty("User-Agent", "Auto Updater (by mrCookieSlime)");
+
+	            switch (connection.getResponseCode()) {
+	                case HttpURLConnection.HTTP_MOVED_PERM:
+	                case HttpURLConnection.HTTP_MOVED_TEMP:
+	                    String loc = connection.getHeaderField("Location");
+	                    location = new URL(new URL(location), loc).toExternalForm();
+	                    continue;
+	            }
+	            break;
+	        }
+	        
+	        return new URL(connection.getURL().toString().replaceAll(" ", "%20"));
+	}
 	
 	private void install() {
 		BufferedInputStream input = null;
@@ -97,23 +123,25 @@ public class CSCoreLibLoader {
             }
         } catch (Exception ex) {
         	System.err.println(" ");
-        	System.err.println("#################### - FATAL ERROR - ####################");
+        	System.err.println("#################### - WARNING - ####################");
 			System.err.println(" ");
-			System.err.println("Could not download CS-CoreLib");
+			System.err.println("Failed to download CS-CoreLib");
+			System.err.println("Please download & install CS-CoreLib manually:");
+			System.err.println("https://dev.bukkit.org/projects/cs-corelib");
 			System.err.println(" ");
-			System.err.println("#################### - FATAL ERROR - ####################");
+			System.err.println("#################### - WARNING - ####################");
 			System.err.println(" ");
         } finally {
             try {
                 if (input != null) input.close();
                 if (output != null) output.close();
                 System.err.println(" ");
-                System.err.println("#################### - WARNING - ####################");
+                System.err.println("#################### - INFO - ####################");
                 System.err.println(" ");
                 System.err.println("Please restart your Server to finish the Installation");
                 System.err.println("of " + plugin.getName() + " and CS-CoreLib");
                 System.err.println(" ");
-                System.err.println("#################### - WARNING - ####################");
+                System.err.println("#################### - INFO - ####################");
                 System.err.println(" ");
             } catch (IOException e) {
             	e.printStackTrace();
