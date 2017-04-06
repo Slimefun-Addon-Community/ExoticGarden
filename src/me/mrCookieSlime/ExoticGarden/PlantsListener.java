@@ -196,6 +196,7 @@ public class PlantsListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onHarvest(BlockBreakEvent e) {
+		if(e.getBlock().getType().equals(Material.SKULL)) dropFruitFromTree(e.getBlock());
 		if (e.getBlock().getType().equals(Material.LEAVES) || e.getBlock().getType().equals(Material.LEAVES_2)) dropFruitFromTree(e.getBlock());
 		if (e.getBlock().getType() == Material.LONG_GRASS) {
 			if (CSCoreLib.randomizer().nextInt(100) < 6) e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.items.get(ExoticGarden.items.keySet().toArray(new String[ExoticGarden.items.keySet().size()])[CSCoreLib.randomizer().nextInt(ExoticGarden.items.keySet().size())]));
