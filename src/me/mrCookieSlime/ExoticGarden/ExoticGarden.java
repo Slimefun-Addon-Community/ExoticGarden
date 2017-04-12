@@ -167,6 +167,19 @@ public class ExoticGarden extends JavaPlugin {
 					}
 					return false;
 				}
+			}, new ItemInteractionHandler() {
+				
+				@Override
+				public boolean onRightClick(ItemUseEvent arg0, Player arg1, ItemStack arg2) {
+					if (SlimefunManager.isItemSimiliar(arg2, crook.getItem(), true)) {
+						if (arg0.getClickedBlock().getType() == Material.GRASS || (arg0.getClickedBlock().getType() == Material.DIRT && arg0.getClickedBlock().getData() != (byte) 2)) {
+							arg0.setCancelled(true);
+							return true;
+						}
+					}
+					return false;
+				}
+					
 			});
 			
 			new SlimefunItem(category_main, grass_seeds, "GRASS_SEEDS", new RecipeType(new CustomItem(Material.LONG_GRASS, "&7Breaking Grass", 1)),
@@ -634,7 +647,7 @@ public class ExoticGarden extends JavaPlugin {
 		new ItemStack[] {getItem("CHOCOLATE_BAR"), new ItemStack(Material.SUGAR), SlimefunItems.WHEAT_FLOUR, SlimefunItems.BUTTER, getItem("PEAR"), new ItemStack(Material.EGG), null, null, null},
 		19)
 		.register();
-		
+			
 		new CustomFood(category_food, new CustomItem(getSkull(Material.PUMPKIN_PIE, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxOGM2YjBhMjlmYzFmZTc5MWM4OTc3NGQ4MjhmZjYzZDJhOWZhNmM4MzM3M2VmM2FhNDdiZjNlYjc5In19fQ=="), "&cApple Pear Cake", "", "§7§oRestores §b§o" + "9.0" + " §7§oHunger"), "APPLE_PEAR_CAKE",
 		new ItemStack[] {getItem("APPLE"), new ItemStack(Material.SUGAR), SlimefunItems.WHEAT_FLOUR, SlimefunItems.BUTTER, getItem("PEAR"), new ItemStack(Material.EGG), null, null, null},
 		18)
@@ -648,6 +661,7 @@ public class ExoticGarden extends JavaPlugin {
 		items = null;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void registerTree(String name, MaterialData material, String texture, String fruitName, String color, int potion, String juice, boolean pie, Material... soil) {
 		String id = name.toUpperCase().replace(" ", "_");
 		Tree tree = new Tree(id, fruitName, texture, soil);
@@ -704,6 +718,7 @@ public class ExoticGarden extends JavaPlugin {
 	    }
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void registerBerry(String name, String color, int potion, PlantType type, PlantData data) {
 		Berry berry = new Berry(name.toUpperCase(), type, data);
 		berries.add(berry);
