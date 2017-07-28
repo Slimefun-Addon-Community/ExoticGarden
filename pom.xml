@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.mrCookieSlime</groupId>
+    <artifactId>ExoticGarden</artifactId>
+    <version>1.6.3</version>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    <repositories>
+        <repository>
+            <id>paper-repo</id>
+            <url>https://repo.destroystokyo.com/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>spigot-repo</id> 
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url> 
+        </repository>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+        <repository>
+            <id>robomwm-repo</id>
+            <url>https://dl.bintray.com/robomwm/maven</url>
+        </repository>
+    </repositories>
+    <build>
+    <!--Maintain existing structure (as much as possible)-->
+        <sourceDirectory>${project.basedir}/src</sourceDirectory>
+        <!--doesn't exist but here if you ever do make such a directory-->
+        <testSourceDirectory>${project.basedir}/tests/java</testSourceDirectory>
+        <testResources>
+          <testResource>
+            <directory>${project.basedir}/tests/resources</directory>
+          </testResource>
+        </testResources>
+        <finalName>${project.name}</finalName>
+        <resources>
+            <resource>
+            <!-- Use plugin.yml in the src directory-->
+            <!-- This can also automatically update plugin.yml version from pom, if you use ${project.version} as version number-->
+                <directory>${basedir}/src</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>plugin.yml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+    <dependencies>
+        <!--Bukkit API-->
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.12-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+	        <groupId>com.github.TheBusyBiscuit</groupId>
+	        <artifactId>CS-CoreLib</artifactId>
+	        <version>240a2bb8aa</version>
+	    </dependency>
+        <dependency>
+            <groupId>me.mrCookieSlime</groupId>
+            <artifactId>Slimefun</artifactId>
+            <version>4.1.10</version>
+        </dependency>
+    </dependencies>
+</project>
