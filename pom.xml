@@ -52,12 +52,6 @@
             </resource>
         </resources>
     </build>
-    <distributionManagement>
-        <repository>
-            <id>bintray-robomwm-maven</id>
-            <url>http://api.bintray.com/maven/robomwm/maven/ExoticGarden/;publish=1</url>
-        </repository>
-    </distributionManagement>
     <dependencies>
         <!--Bukkit API-->
         <dependency>
