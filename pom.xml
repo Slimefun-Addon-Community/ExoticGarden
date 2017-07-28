@@ -24,10 +24,6 @@
 		    <id>jitpack.io</id>
 		    <url>https://jitpack.io</url>
 		</repository>
-        <repository>
-            <id>robomwm-repo</id>
-            <url>https://dl.bintray.com/robomwm/maven</url>
-        </repository>
     </repositories>
     <build>
     <!--Maintain existing structure (as much as possible)-->
@@ -66,9 +62,9 @@
 	        <version>240a2bb8aa</version>
 	    </dependency>
         <dependency>
-            <groupId>me.mrCookieSlime</groupId>
-            <artifactId>Slimefun</artifactId>
-            <version>4.1.10</version>
-        </dependency>
+	        <groupId>com.github.TheBusyBiscuit</groupId>
+	        <artifactId>Slimefun4</artifactId>
+	        <version>7d02942180</version>
+	    </dependency>
     </dependencies>
 </project>
