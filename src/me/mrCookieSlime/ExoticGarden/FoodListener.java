@@ -29,6 +29,42 @@ public class FoodListener implements Listener {
 	public void onUse(final ItemUseEvent e) {
 		if (e.getPlayer().getFoodLevel() >= 20) return;
 		
+		if (e.getClickedBlock() != null) {
+			if (!e.getPlayer().isSneaking()) {
+				switch (e.getClickedBlock().getType()) {
+					case DISPENSER:
+					case NOTE_BLOCK:
+					case CHEST:
+					case WORKBENCH:
+					case FURNACE:
+					case BURNING_FURNACE:
+					case TRAP_DOOR:
+					case FENCE_GATE:
+					case ENCHANTMENT_TABLE:
+					case BREWING_STAND:
+					case ANVIL:
+					case TRAPPED_CHEST:
+					case HOPPER:
+					case DROPPER:
+					case IRON_TRAPDOOR:
+					case SPRUCE_FENCE_GATE:
+					case BIRCH_FENCE_GATE:
+					case JUNGLE_FENCE_GATE:
+					case DARK_OAK_FENCE_GATE:
+					case ACACIA_FENCE_GATE:
+					case SPRUCE_DOOR:
+					case BIRCH_DOOR:
+					case JUNGLE_DOOR:
+					case ACACIA_DOOR:
+					case DARK_OAK_DOOR:
+					case WOOD_DOOR:
+					case IRON_DOOR:
+					case BED: {return;}
+					default: {}
+				}
+			}
+		}
+		
 		EquipmentSlot hand = e.getParentEvent().getHand();
 		
 		switch (hand) {
