@@ -11,13 +11,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Dispenser;
+import org.bukkit.block.Furnace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.FurnaceInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,17 +40,23 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.Player.PlayerInventory;
 import me.mrCookieSlime.CSCoreLibPlugin.general.String.StringUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
 import me.mrCookieSlime.ExoticGarden.CSCoreLibSetup.CSCoreLibLoader;
+import me.mrCookieSlime.Slimefun.SlimefunStartup;
 import me.mrCookieSlime.Slimefun.Lists.Categories;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.Objects.MultiBlock;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.HandledBlock;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.Juice;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunMachine;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.BlockBreakHandler;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.ItemInteractionHandler;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.MultiBlockInteractionHandler;
+import me.mrCookieSlime.Slimefun.Setup.Messages;
 import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.Slimefun;
 
 public class ExoticGarden extends JavaPlugin {
 	
@@ -55,6 +67,8 @@ public class ExoticGarden extends JavaPlugin {
 	Config cfg;
 	
 	private static boolean skullitems;
+	
+	public static ItemStack KITCHEN = new CustomItem(Material.CAULDRON_ITEM, "&eKitchen", 0, new String[] {"", "&a&oYou can make a bunch of different yummies here"});
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -98,17 +112,159 @@ public class ExoticGarden extends JavaPlugin {
 			registerPlant("Corn", "&6", Material.GOLDEN_CARROT, PlantType.DOUBLE_PLANT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWJkMzgwMmU1ZmFjMDNhZmFiNzQyYjBmM2NjYTQxYmNkNDcyM2JlZTkxMWQyM2JlMjljZmZkNWI5NjVmMSJ9fX0="));
 			registerPlant("Pineapple", "&6", Material.GOLDEN_CARROT, PlantType.DOUBLE_PLANT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDdlZGRkODJlNTc1ZGZkNWI3NTc5ZDg5ZGNkMjM1MGM5OTFmMDQ4M2E3NjQ3Y2ZmZDNkMmM1ODdmMjEifX19"));
 			
-			registerTree("Apple Oak", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2JiMzExZjNiYTFjMDdjM2QxMTQ3Y2QyMTBkODFmZTExZmQ4YWU5ZTNkYjIxMmEwZmE3NDg5NDZjMzYzMyJ9fX0=", "APPLE", "&c", null, "", true, Material.DIRT, Material.GRASS);
+			registerTree("Apple Oak", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2JiMzExZjNiYTFjMDdjM2QxMTQ3Y2QyMTBkODFmZTExZmQ4YWU5ZTNkYjIxMmEwZmE3NDg5NDZjMzYzMyJ9fX0=", "APPLE", "&c", Color.FUCHSIA, "Apple Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Coconut", new MaterialData(Material.INK_SACK, (byte) 3), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQyN2RlZDU3Yjk0Y2Y3MTViMDQ4ZWY1MTdhYjNmODViZWY1YTdiZTY5ZjE0YjE1NzNlMTRlN2U0MmUyZTgifX19", "COCONUT", "&6", Color.MAROON, "Coconut Milk", false, Material.SAND);
 			registerTree("Cherry", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUyMDc2NmI4N2QyNDYzYzM0MTczZmZjZDU3OGIwZTY3ZDE2M2QzN2EyZDdjMmU3NzkxNWNkOTExNDRkNDBkMSJ9fX0=", "CHERRY", "&c", Color.FUCHSIA, "Cherry Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Pomegranate", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2JiMzExZjNiYTFjMDdjM2QxMTQ3Y2QyMTBkODFmZTExZmQ4YWU5ZTNkYjIxMmEwZmE3NDg5NDZjMzYzMyJ9fX0=", "POMEGRANATE", "&4", Color.RED, "Pomegranate Juice", true, Material.DIRT, Material.GRASS);
-			registerTree("Lemon", new MaterialData(Material.POTATO_ITEM), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTU3ZmQ1NmNhMTU5Nzg3NzkzMjRkZjUxOTM1NGI2NjM5YThkOWJjMTE5MmM3YzNkZTkyNWEzMjliYWVmNmMifX19", "LEMON", "&e", Color.ORANGE, "Lemon Juice", true, Material.DIRT, Material.GRASS);
+			registerTree("Lemon", new MaterialData(Material.POTATO_ITEM), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTU3ZmQ1NmNhMTU5Nzg3NzkzMjRkZjUxOTM1NGI2NjM5YThkOWJjMTE5MmM3YzNkZTkyNWEzMjliYWVmNmMifX19", "LEMON", "&e", Color.YELLOW, "Lemon Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Plum", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlkNjY0MzE5ZmYzODFiNGVlNjlhNjk3NzE1Yjc2NDJiMzJkNTRkNzI2Yzg3ZjY0NDBiZjAxN2E0YmNkNyJ9fX0=", "PLUM", "&5", Color.RED, "Plum Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Lime", new MaterialData(Material.SLIME_BALL), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWE1MTUzNDc5ZDlmMTQ2YTVlZTNjOWUyMThmNWU3ZTg0YzRmYTM3NWU0Zjg2ZDMxNzcyYmE3MWY2NDY4In19fQ==", "LIME", "&a", Color.LIME, "Lime Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Orange", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjViMWRiNTQ3ZDFiNzk1NmQ0NTExYWNjYjE1MzNlMjE3NTZkN2NiYzM4ZWI2NDM1NWEyNjI2NDEyMjEyIn19fQ==", "ORANGE", "&6", Color.ORANGE, "Orange Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Peach", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDNiYTQxZmU4Mjc1Nzg3MWU4Y2JlYzlkZWQ5YWNiZmQxOTkzMGQ5MzM0MWNmODEzOWQxZGZiZmFhM2VjMmE1In19fQ==", "PEACH", "&5", Color.RED, "Peach Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Pear", new MaterialData(Material.SLIME_BALL), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmRlMjhkZjg0NDk2MWE4ZWNhOGVmYjc5ZWJiNGFlMTBiODM0YzY0YTY2ODE1ZThiNjQ1YWVmZjc1ODg5NjY0YiJ9fX0=", "PEAR", "&a", Color.LIME, "Pear Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Dragon Fruit", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQ3ZDczYTkxYjUyMzkzZjJjMjdlNDUzZmI4OWFiM2Q3ODQwNTRkNDE0ZTM5MGQ1OGFiZDIyNTEyZWRkMmIifX19\\", "DRAGON_FRUIT", "&d", Color.FUCHSIA, "Dragon Fruit Juice", true, Material.DIRT, Material.GRASS);
+			
+			//---------------------------------------------------------------------------------------------------------
+			new SlimefunMachine(Categories.MACHINES_1, KITCHEN, "KITCHEN",
+					new ItemStack[] {new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new ItemStack(Material.getMaterial(5)), new ItemStack(Material.WOOD_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.WORKBENCH)},
+					new ItemStack[0], Material.IRON_TRAPDOOR)
+					.register(true, new MultiBlockInteractionHandler() {
+
+						@Override
+						public boolean onInteract(Player p, MultiBlock mb, Block b) {
+
+							SlimefunMachine machine = (SlimefunMachine) SlimefunItem.getByID("KITCHEN");
+
+							if (mb.isMultiBlock(machine)) {
+								if (Slimefun.hasUnlocked(p, machine.getItem(), true)) {
+									Block raw_disp = b.getRelative(BlockFace.DOWN);
+									Dispenser disp = (Dispenser) raw_disp.getState();
+									final FurnaceInventory resinv;									
+									Furnace resf; 
+									
+									if (raw_disp.getRelative(BlockFace.EAST).getState().getBlock().getType().name() == "FURNACE") {
+										resf = (Furnace) raw_disp.getRelative(BlockFace.EAST).getState();
+										resinv = resf.getInventory();
+									} else if (raw_disp.getRelative(BlockFace.WEST).getState().getBlock().getType().name() == "FURNACE") {
+										resf = (Furnace) raw_disp.getRelative(BlockFace.WEST).getState();
+										resinv = resf.getInventory();
+									} else if (raw_disp.getRelative(BlockFace.NORTH).getState().getBlock().getType().name() == "FURNACE") {
+										resf = (Furnace) raw_disp.getRelative(BlockFace.NORTH).getState();
+										resinv = resf.getInventory();
+									} else  {
+										resf = (Furnace) raw_disp.getRelative(BlockFace.SOUTH).getState();
+										resinv = resf.getInventory();
+									}
+									
+									final Inventory inv = disp.getInventory();
+									List<ItemStack[]> inputs = RecipeType.getRecipeInputList(machine);
+
+									for (int i = 0; i < inputs.size(); i++) {
+										boolean craft = true;
+										for (int j = 0; j < inv.getContents().length; j++) {
+											if (!SlimefunManager.isItemSimiliar(inv.getContents()[j], inputs.get(i)[j], true)) {
+												craft = false;
+												break;
+											}
+										}
+										if (craft) {
+											final ItemStack adding = RecipeType.getRecipeOutputList(machine, inputs.get(i));
+											if (Slimefun.hasUnlocked(p, adding, true)) {
+												Inventory inv2 = Bukkit.createInventory(null, 9, "test");
+												for (int j = 0; j < inv.getContents().length; j++) {
+													inv2.setItem(j, inv.getContents()[j] != null ? (inv.getContents()[j].getAmount() > 1 ? new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1): null): null);
+												}
+												
+												boolean fits_size = true;
+												boolean is_same_m = true;
+												
+												if (resinv.getResult() != null) {
+													fits_size = resinv.getResult().getAmount() + adding.getAmount() <= 64;
+													is_same_m = resinv.getResult().getType().equals(adding.getType());
+												}
+												
+												if (is_same_m && fits_size) {
+													for (int j = 0; j < 9; j++) {
+														if (inv.getContents()[j] != null) {
+															if (inv.getContents()[j].getType() != Material.AIR) {
+																if (inv.getContents()[j].getType().toString().endsWith("_BUCKET")) inv.setItem(j, new ItemStack(Material.BUCKET));
+																else if (inv.getContents()[j].getAmount() > 1) inv.setItem(j, new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1));
+																else inv.setItem(j, null);
+															}
+														}
+													}
+													//SOUND
+													Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+													
+														@Override
+														public void run() {
+															p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
+															Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+
+																@Override
+																public void run() {
+																	p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
+																	Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+
+																		@Override
+																		public void run() {
+																			p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
+																			Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+
+																				@Override
+																				public void run() {
+																					p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
+																					Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+
+																						@Override
+																						public void run() {
+																							p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
+																							Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+
+																								@Override
+																								public void run() {
+																									p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
+																									Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+
+																										@Override
+																										public void run() {
+																											p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F);
+																										}
+																									}, 30L);
+																								}
+																							}, 5L);
+																						}
+																					}, 5L);
+																				}
+																			}, 5L);
+																		}
+																	}, 5L);
+																}
+															}, 5L);
+														}
+													}, 5L);
+													//END OF THE SOUND
+													
+													if(resinv.getResult() != null) {
+														ItemStack s = new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount());
+														resinv.setResult(s);
+													} else {
+														resinv.setResult(adding);
+													}
+												}
+												else Messages.local.sendTranslation(p, "machines.full-inventory", true);
+											}
+											return true;
+										}
+									}
+									Messages.local.sendTranslation(p, "machines.pattern-not-found", true);
+								}
+								return true;
+							}
+							else return false;
+						}
+					});
+			//--------------------------------------------------
 			
 			registerDishes();
 			
@@ -214,39 +370,39 @@ public class ExoticGarden extends JavaPlugin {
 
 	@SuppressWarnings("deprecation")
 	private void registerDishes() {
-		new Juice(category_drinks, new CustomPotion("&aLime Smoothie", 8203, new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 10, 0)), "LIME_SMOOTHIE", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Juice(category_drinks, new CustomPotion("&aLime Smoothie", Color.LIME, new PotionEffect(PotionEffectType.SATURATION, 10, 0), "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"), "LIME_SMOOTHIE", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {getItem("LIME_JUICE"), getItem("ICE_CUBE"), null, null, null, null, null, null, null})
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&4Tomato Juice", 8193, new String[] {"", "&7&oRestores &b&o" + "3.0" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 6, 0)), "TOMATO_JUICE", RecipeType.JUICER,
+		new Juice(category_drinks, new CustomPotion("&4Tomato Juice", Color.FUCHSIA, new PotionEffect(PotionEffectType.SATURATION, 6, 0), "", "&7&oRestores &b&o" + "3.0" + " &7&oHunger"), "TOMATO_JUICE", RecipeType.JUICER,
 		new ItemStack[] {getItem("TOMATO"), null, null, null, null, null, null, null, null})
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&cWine", 8201, new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 10, 0)), "WINE", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Juice(category_drinks, new CustomPotion("&cWine", Color.RED, new PotionEffect(PotionEffectType.SATURATION, 10, 0), "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"), "WINE", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {getItem("GRAPE"), new ItemStack(Material.SUGAR), null, null, null, null, null, null, null})
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&eLemon Iced Tea", 8227, new String[] {"", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 13, 0)), "LEMON_ICED_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Juice(category_drinks, new CustomPotion("&eLemon Iced Tea", Color.YELLOW, new PotionEffect(PotionEffectType.SATURATION, 13, 0), "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"), "LEMON_ICED_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {getItem("LEMON"), getItem("ICE_CUBE"), getItem("TEA_LEAF"), null, null, null, null, null, null})
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&dRaspberry Iced Tea", 8193, new String[] {"", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 13, 0)), "RASPBERRY_ICED_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Juice(category_drinks, new CustomPotion("&dRaspberry Iced Tea", Color.FUCHSIA, new PotionEffect(PotionEffectType.SATURATION, 13, 0), "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"), "RASPBERRY_ICED_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {getItem("RASPBERRY"), getItem("ICE_CUBE"), getItem("TEA_LEAF"), null, null, null, null, null, null})
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&dPeach Iced Tea", 8193, new String[] {"", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 13, 0)), "PEACH_ICED_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Juice(category_drinks, new CustomPotion("&dPeach Iced Tea", Color.FUCHSIA, new PotionEffect(PotionEffectType.SATURATION, 13, 0), "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"), "PEACH_ICED_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {getItem("PEACH"), getItem("ICE_CUBE"), getItem("TEA_LEAF"), null, null, null, null, null, null})
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&4Strawberry Iced Tea", 8193, new String[] {"", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 13, 0)), "STRAWBERRY_ICED_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Juice(category_drinks, new CustomPotion("&4Strawberry Iced Tea", Color.FUCHSIA, new PotionEffect(PotionEffectType.SATURATION, 13, 0), "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"), "STRAWBERRY_ICED_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {getItem("STRAWBERRY"), getItem("ICE_CUBE"), getItem("TEA_LEAF"), null, null, null, null, null, null})
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&cCherry Iced Tea", 8193, new String[] {"", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 13, 0)), "CHERRY_ICED_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Juice(category_drinks, new CustomPotion("&cCherry Iced Tea", Color.FUCHSIA, new PotionEffect(PotionEffectType.SATURATION, 13, 0), "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"), "CHERRY_ICED_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {getItem("CHERRY"), getItem("ICE_CUBE"), getItem("TEA_LEAF"), null, null, null, null, null, null})
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&6Thai Tea", 8201, new String[] {"", "&7&oRestores &b&o" + "7.0" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 14, 0)), "THAI_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Juice(category_drinks, new CustomPotion("&6Thai Tea", Color.RED, new PotionEffect(PotionEffectType.SATURATION, 14, 0), "", "&7&oRestores &b&o" + "7.0" + " &7&oHunger"), "THAI_TEA", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {getItem("TEA_LEAF"), new ItemStack(Material.SUGAR), SlimefunItems.HEAVY_CREAM, getItem("COCONUT_MILK"), null, null, null, null, null})
 		.register();
 		
@@ -555,7 +711,7 @@ public class ExoticGarden extends JavaPlugin {
 		5)
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&eLemonade", 8227, new String[] {"", "&7&oRestores &b&o" + "4.0" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 8, 0)), "LEMONADE", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Juice(category_drinks, new CustomPotion("&eLemonade", Color.YELLOW, new PotionEffect(PotionEffectType.SATURATION, 8, 0), "", "&7&oRestores &b&o" + "4.0" + " &7&oHunger"), "LEMONADE", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {getItem("LEMON_JUICE"), new ItemStack(Material.SUGAR), null, null, null, null, null, null, null})
 		.register();
 		
@@ -603,11 +759,11 @@ public class ExoticGarden extends JavaPlugin {
 		16)
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&6Pineapple Juice", 8195, new String[] {"", "&7&oRestores &b&o" + "3.0" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 6, 0)), "PINEAPPLE_JUICE", RecipeType.JUICER,
+		new Juice(category_drinks, new CustomPotion("&6Pineapple Juice", Color.ORANGE, new PotionEffect(PotionEffectType.SATURATION, 6, 0), "", "&7&oRestores &b&o" + "3.0" + " &7&oHunger"), "PINEAPPLE_JUICE", RecipeType.JUICER,
 		new ItemStack[] {getItem("PINEAPPLE"), null, null, null, null, null, null, null, null})
 		.register();
 		
-		new Juice(category_drinks, new CustomPotion("&6Pineapple Smoothie", 8195, new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}, new PotionEffect(PotionEffectType.SATURATION, 10, 0)), "PINEAPPLE_SMOOTHIE", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Juice(category_drinks, new CustomPotion("&6Pineapple Smoothie", Color.ORANGE, new PotionEffect(PotionEffectType.SATURATION, 10, 0), "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"), "PINEAPPLE_SMOOTHIE", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {getItem("PINEAPPLE_JUICE"), getItem("ICE_CUBE"), null, null, null, null, null, null, null})
 		.register();
 		
