@@ -49,14 +49,14 @@ public class PlantsListener implements Listener {
 			e.setCancelled(true);
 			if (!e.getLocation().getChunk().isLoaded()) e.getLocation().getWorld().loadChunk(e.getLocation().getChunk());
 			for (Tree tree: ExoticGarden.trees) {
-				if (item.getName().equalsIgnoreCase(tree.getSapling())) {
+				if (item.getID().equalsIgnoreCase(tree.getSapling())) {
 					BlockStorage.retrieve(e.getLocation().getBlock());
 					Schematic.pasteSchematic(e.getLocation(), tree);
 					break;
 				}
 			}
 			for (Berry berry: ExoticGarden.berries) {
-				if (item.getName().equalsIgnoreCase(berry.toBush())) {
+				if (item.getID().equalsIgnoreCase(berry.toBush())) {
 					BlockStorage.store(e.getLocation().getBlock(), berry.getItem());
 					switch(berry.getType()) {
 					case BUSH: {
