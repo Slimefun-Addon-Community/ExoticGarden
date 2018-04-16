@@ -36,7 +36,7 @@ public class Berry {
 	public ItemStack getItem() {
 		switch(type) {
 			case ORE_PLANT: return item;
-			default: return SlimefunItem.getByName(name).getItem();
+			default: return SlimefunItem.getByID(name).getItem();
 		}
 	}
 	
