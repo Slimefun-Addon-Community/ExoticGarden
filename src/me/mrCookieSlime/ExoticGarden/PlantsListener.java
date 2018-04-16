@@ -265,7 +265,7 @@ public class PlantsListener implements Listener {
 					SlimefunItem check = BlockStorage.check(drop);
 					if (check != null) {
 						for (Tree tree: ExoticGarden.trees) {
-							if (check.getName().equalsIgnoreCase(tree.fruit)) {
+							if (check.getID().equalsIgnoreCase(tree.fruit)) {
 								BlockStorage.clearBlockInfo(drop);
 								ItemStack fruits = check.getItem();
 								drop.getWorld().playEffect(drop.getLocation(), Effect.STEP_SOUND, Material.LEAVES);
