@@ -28,7 +28,7 @@ public class Tree {
 	}
 	
 	public ItemStack getItem() {
-		return SlimefunItem.getByName(sapling).getItem();
+		return SlimefunItem.getByID(sapling).getItem();
 	}
 	
 	public String getTexture() {
@@ -36,7 +36,7 @@ public class Tree {
 	}
 
 	public ItemStack getFruit() {
-		return SlimefunItem.getByName(fruit).getItem();
+		return SlimefunItem.getByID(fruit).getItem();
 	}
 
 	public String getSapling() {
