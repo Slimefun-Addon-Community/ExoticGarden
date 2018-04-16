@@ -12,31 +12,36 @@ import org.bukkit.inventory.ItemStack;
 public class Berry {
 	
 	ItemStack item;
-	String name;
+	String id;
 	PlantData data;
 	PlantType type;
 	
 	public Berry(String name, PlantType type, PlantData data) {
-		this.name = name;
+		this.id = name;
 		this.data = data;
 		this.type = type;
 	}
 	
 	public Berry(ItemStack item, String name, PlantType type, PlantData data) {
 		this.item = item;
-		this.name = name;
+		this.id = name;
 		this.data = data;
 		this.type = type;
 	}
 	
+	@Deprecated
 	public String getName() {
-		return this.name;
+		return this.id;
+	}
+	
+	public String getID() {
+		return this.id;
 	}
 	
 	public ItemStack getItem() {
 		switch(type) {
 			case ORE_PLANT: return item;
-			default: return SlimefunItem.getByID(name).getItem();
+			default: return SlimefunItem.getByID(id).getItem();
 		}
 	}
 	
@@ -50,8 +55,8 @@ public class Berry {
 	
 	public String toBush() {
 		switch(type) {
-			case ORE_PLANT: return this.name.replace("_ESSENCE", "_PLANT");
-			default: return this.name + "_BUSH";
+			case ORE_PLANT: return this.id.replace("_ESSENCE", "_PLANT");
+			default: return this.id + "_BUSH";
 		}
 	}
 
