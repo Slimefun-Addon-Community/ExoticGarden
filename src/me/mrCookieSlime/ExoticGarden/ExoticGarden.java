@@ -796,7 +796,7 @@ public class ExoticGarden extends JavaPlugin {
 		SlimefunItem item = BlockStorage.check(block);
 		if (item != null && item instanceof HandledBlock) {
 			for (Berry berry: ExoticGarden.berries) {
-				if (item.getID().equalsIgnoreCase(berry.getName())) return berry;
+				if (item.getID().equalsIgnoreCase(berry.getID())) return berry;
 			}
 		}
 		return null;
@@ -808,7 +808,7 @@ public class ExoticGarden extends JavaPlugin {
 		SlimefunItem item = BlockStorage.check(block);
 		if (item != null) {
 			for (Berry berry: berries) {
-				if (item.getID().equalsIgnoreCase(berry.getName())) {
+				if (item.getID().equalsIgnoreCase(berry.getID())) {
 					switch (berry.getType()) {
 					case ORE_PLANT:
 					case DOUBLE_PLANT: {
