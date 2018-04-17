@@ -16,15 +16,15 @@ public class Berry {
 	PlantData data;
 	PlantType type;
 	
-	public Berry(String name, PlantType type, PlantData data) {
-		this.id = name;
+	public Berry(String id, PlantType type, PlantData data) {
+		this.id = id;
 		this.data = data;
 		this.type = type;
 	}
 	
-	public Berry(ItemStack item, String name, PlantType type, PlantData data) {
+	public Berry(ItemStack item, String id, PlantType type, PlantData data) {
 		this.item = item;
-		this.id = name;
+		this.id = id;
 		this.data = data;
 		this.type = type;
 	}
