@@ -218,7 +218,8 @@ public class PlantsListener implements Listener {
 		if(e.getBlock().getType().equals(Material.SKULL)) dropFruitFromTree(e.getBlock());
 		if (e.getBlock().getType().equals(Material.LEAVES) || e.getBlock().getType().equals(Material.LEAVES_2)) dropFruitFromTree(e.getBlock());
 		if (e.getBlock().getType() == Material.LONG_GRASS) {
-			if (CSCoreLib.randomizer().nextInt(100) < 6) e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.items.get(ExoticGarden.items.keySet().toArray(new String[ExoticGarden.items.keySet().size()])[CSCoreLib.randomizer().nextInt(ExoticGarden.items.keySet().size())]));
+			if (ExoticGarden.items.keySet().size() > 0)
+				if (CSCoreLib.randomizer().nextInt(100) < 6) e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.items.get(ExoticGarden.items.keySet().toArray(new String[ExoticGarden.items.keySet().size()])[CSCoreLib.randomizer().nextInt(ExoticGarden.items.keySet().size())]));
 		}
 		else {
 			ItemStack item = ExoticGarden.harvestPlant(e.getBlock());
