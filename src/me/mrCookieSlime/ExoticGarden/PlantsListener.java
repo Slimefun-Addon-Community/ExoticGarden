@@ -89,12 +89,12 @@ public class PlantsListener implements Listener {
 							e.getLocation().getBlock().setData((byte) 0x4);
 							e.getLocation().getBlock().getRelative(BlockFace.UP).setType(Material.SKULL);
 							Skull s = (Skull) e.getLocation().getBlock().getRelative(BlockFace.UP).getState();
-	    					s.setSkullType(SkullType.PLAYER);
-	    					s.setRotation(bf[new Random().nextInt(bf.length)]);
-	    					s.setRawData((byte) 1);
-	    					s.update();
-	    					
-	    					try {
+							s.setSkullType(SkullType.PLAYER);
+							s.setRotation(bf[new Random().nextInt(bf.length)]);
+							s.setRawData((byte) 1);
+							s.update();
+							
+							try {
 								CustomSkull.setSkull(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getData().getTexture());
 							} catch (Exception e1) {
 								e1.printStackTrace();
@@ -104,12 +104,12 @@ public class PlantsListener implements Listener {
 						default: {
 							e.getLocation().getBlock().setType(Material.SKULL);
 							Skull s = (Skull) e.getLocation().getBlock().getState();
-	    					s.setSkullType(SkullType.PLAYER);
-	    					s.setRotation(bf[new Random().nextInt(bf.length)]);
-	    					s.setRawData((byte) 1);
-	    					s.update();
-	    					
-	    					try {
+							s.setSkullType(SkullType.PLAYER);
+							s.setRotation(bf[new Random().nextInt(bf.length)]);
+							s.setRawData((byte) 1);
+							s.update();
+							
+							try {
 								CustomSkull.setSkull(e.getLocation().getBlock(), berry.getData().getTexture());
 							} catch (Exception e1) {
 								e1.printStackTrace();
@@ -129,10 +129,10 @@ public class PlantsListener implements Listener {
 	@EventHandler
 	public void onGenerate(ChunkPopulateEvent e) {
 		if (!cfg.getStringList("world-blacklist").contains(e.getWorld().getName())) {
-		    if (CSCoreLib.randomizer().nextInt(100) < cfg.getInt("chances.TREE")) {
-		    	Berry berry = ExoticGarden.berries.get(CSCoreLib.randomizer().nextInt(ExoticGarden.berries.size()));
-		    	if (berry.getType().equals(PlantType.ORE_PLANT)) return;
-		    	int x, z, y;
+			if (CSCoreLib.randomizer().nextInt(100) < cfg.getInt("chances.TREE")) {
+				Berry berry = ExoticGarden.berries.get(CSCoreLib.randomizer().nextInt(ExoticGarden.berries.size()));
+				if (berry.getType().equals(PlantType.ORE_PLANT)) return;
+				int x, z, y;
 				x = e.getChunk().getX() * 16 + CSCoreLib.randomizer().nextInt(16);
 				z = e.getChunk().getZ() * 16 + CSCoreLib.randomizer().nextInt(16);
 				for (y = e.getWorld().getMaxHeight(); y > 30; y--) {
@@ -148,12 +148,12 @@ public class PlantsListener implements Listener {
 						case FRUIT: {
 							current.setType(Material.SKULL);
 							Skull s = (Skull) current.getState();
-	    					s.setSkullType(SkullType.PLAYER);
-	    					s.setRotation(bf[new Random().nextInt(bf.length)]);
-	    					s.setRawData((byte) 1);
-	    					s.update();
-	    					
-	    					try {
+							s.setSkullType(SkullType.PLAYER);
+							s.setRotation(bf[new Random().nextInt(bf.length)]);
+							s.setRawData((byte) 1);
+							s.update();
+							
+							try {
 								CustomSkull.setSkull(current, berry.getData().getTexture());
 							} catch (Exception e1) {
 								e1.printStackTrace();
@@ -167,12 +167,12 @@ public class PlantsListener implements Listener {
 							current.setData((byte) 0x4);
 							current.getRelative(BlockFace.UP).setType(Material.SKULL);
 							Skull s = (Skull) current.getRelative(BlockFace.UP).getState();
-	    					s.setSkullType(SkullType.PLAYER);
-	    					s.setRotation(bf[new Random().nextInt(bf.length)]);
-	    					s.setRawData((byte) 1);
-	    					s.update();
-	    					
-	    					try {
+							s.setSkullType(SkullType.PLAYER);
+							s.setRotation(bf[new Random().nextInt(bf.length)]);
+							s.setRawData((byte) 1);
+							s.update();
+							
+							try {
 								CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getData().getTexture());
 							} catch (Exception e1) {
 								e1.printStackTrace();
@@ -185,8 +185,8 @@ public class PlantsListener implements Listener {
 						break;
 					}
 				}
-		    }
-		    else if (CSCoreLib.randomizer().nextInt(100) < cfg.getInt("chances.BUSH")) {
+			}
+			else if (CSCoreLib.randomizer().nextInt(100) < cfg.getInt("chances.BUSH")) {
 				Tree tree = ExoticGarden.trees.get(CSCoreLib.randomizer().nextInt(ExoticGarden.trees.size()));
 				int x, z, y;
 				x = e.getChunk().getX() * 16 + CSCoreLib.randomizer().nextInt(16);
@@ -275,7 +275,7 @@ public class PlantsListener implements Listener {
 		}
 		return blocksToRemove;
 	}
-    
+	
 	public void dropFruitFromTree(Block block) {
 		for (int x = -1; x < 2; x++) {
 			for (int y = -1; y < 2; y++) {
