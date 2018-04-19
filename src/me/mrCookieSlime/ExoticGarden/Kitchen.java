@@ -32,80 +32,84 @@ public class Kitchen {
 	
 	public static ItemStack KITCHEN = new CustomItem(Material.CAULDRON_ITEM, "&eKitchen", 0, new String[] {"", "&a&oYou can make a bunch of different yummies here"});
 	
-	@SuppressWarnings("deprecation")
 	public static void registerKitchen() {
-		//---------------------------------------------------------------------------------------------------------
+		
 		new SlimefunMachine(Categories.MACHINES_1, KITCHEN, "EG_KITCHEN",
-				new ItemStack[] {new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new ItemStack(Material.getMaterial(5)), new ItemStack(Material.WOOD_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.WORKBENCH)},
-				new ItemStack[0], Material.IRON_TRAPDOOR)
-				.register(true, new MultiBlockInteractionHandler() {
+		new ItemStack[] {new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new ItemStack(Material.WOOD), new ItemStack(Material.WOOD_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.WORKBENCH)},
+		new ItemStack[0], Material.IRON_TRAPDOOR)
+		.register(true, new MultiBlockInteractionHandler() {
 
-					@Override
-					public boolean onInteract(Player p, MultiBlock mb, Block b) {
+			@Override
+			public boolean onInteract(Player p, MultiBlock mb, Block b) {
 
-						SlimefunMachine machine = (SlimefunMachine) SlimefunItem.getByID("EG_KITCHEN");
+				SlimefunMachine machine = (SlimefunMachine) SlimefunItem.getByID("EG_KITCHEN");
 
-						if (mb.isMultiBlock(machine)) {
-							if (Slimefun.hasUnlocked(p, machine.getItem(), true)) {
-								Block raw_disp = b.getRelative(BlockFace.DOWN);
-								Dispenser disp = (Dispenser) raw_disp.getState();
-								final FurnaceInventory resinv;									
-								Furnace resf; 
-								
-								if (raw_disp.getRelative(BlockFace.EAST).getState().getBlock().getType().name() == "FURNACE") {
-									resf = (Furnace) raw_disp.getRelative(BlockFace.EAST).getState();
-									resinv = resf.getInventory();
-								} else if (raw_disp.getRelative(BlockFace.WEST).getState().getBlock().getType().name() == "FURNACE") {
-									resf = (Furnace) raw_disp.getRelative(BlockFace.WEST).getState();
-									resinv = resf.getInventory();
-								} else if (raw_disp.getRelative(BlockFace.NORTH).getState().getBlock().getType().name() == "FURNACE") {
-									resf = (Furnace) raw_disp.getRelative(BlockFace.NORTH).getState();
-									resinv = resf.getInventory();
-								} else  {
-									resf = (Furnace) raw_disp.getRelative(BlockFace.SOUTH).getState();
-									resinv = resf.getInventory();
+				if (mb.isMultiBlock(machine)) {
+					if (Slimefun.hasUnlocked(p, machine.getItem(), true)) {
+						Block raw_disp = b.getRelative(BlockFace.DOWN);
+						Dispenser disp = (Dispenser) raw_disp.getState();
+						final FurnaceInventory resinv;
+						Furnace resf; 
+
+						if (raw_disp.getRelative(BlockFace.EAST).getState().getBlock().getType().name() == "FURNACE") {
+							resf = (Furnace) raw_disp.getRelative(BlockFace.EAST).getState();
+							resinv = resf.getInventory();
+						} else if (raw_disp.getRelative(BlockFace.WEST).getState().getBlock().getType().name() == "FURNACE") {
+							resf = (Furnace) raw_disp.getRelative(BlockFace.WEST).getState();
+							resinv = resf.getInventory();
+						} else if (raw_disp.getRelative(BlockFace.NORTH).getState().getBlock().getType().name() == "FURNACE") {
+							resf = (Furnace) raw_disp.getRelative(BlockFace.NORTH).getState();
+							resinv = resf.getInventory();
+						} else  {
+							resf = (Furnace) raw_disp.getRelative(BlockFace.SOUTH).getState();
+							resinv = resf.getInventory();
+						}
+
+						final Inventory inv = disp.getInventory();
+						List<ItemStack[]> inputs = RecipeType.getRecipeInputList(machine);
+
+						for (int i = 0; i < inputs.size(); i++) {
+							boolean craft = true;
+							for (int j = 0; j < inv.getContents().length; j++) {
+								if (!SlimefunManager.isItemSimiliar(inv.getContents()[j], inputs.get(i)[j], true)) {
+									craft = false;
+									break;
 								}
-								
-								final Inventory inv = disp.getInventory();
-								List<ItemStack[]> inputs = RecipeType.getRecipeInputList(machine);
-
-								for (int i = 0; i < inputs.size(); i++) {
-									boolean craft = true;
+							}
+							if (craft) {
+								final ItemStack adding = RecipeType.getRecipeOutputList(machine, inputs.get(i));
+								if (Slimefun.hasUnlocked(p, adding, true)) {
+									Inventory inv2 = Bukkit.createInventory(null, 9, "test");
 									for (int j = 0; j < inv.getContents().length; j++) {
-										if (!SlimefunManager.isItemSimiliar(inv.getContents()[j], inputs.get(i)[j], true)) {
-											craft = false;
-											break;
-										}
+										inv2.setItem(j, inv.getContents()[j] != null ? (inv.getContents()[j].getAmount() > 1 ? new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1): null): null);
 									}
-									if (craft) {
-										final ItemStack adding = RecipeType.getRecipeOutputList(machine, inputs.get(i));
-										if (Slimefun.hasUnlocked(p, adding, true)) {
-											Inventory inv2 = Bukkit.createInventory(null, 9, "test");
-											for (int j = 0; j < inv.getContents().length; j++) {
-												inv2.setItem(j, inv.getContents()[j] != null ? (inv.getContents()[j].getAmount() > 1 ? new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1): null): null);
-											}
-											
-											boolean fits_size = true;
-											boolean is_same_m = true;
-											
-											if (resinv.getResult() != null) {
-												fits_size = resinv.getResult().getAmount() + adding.getAmount() <= 64;
-												is_same_m = resinv.getResult().getType().equals(adding.getType());
-											}
-											
-											if (is_same_m && fits_size) {
-												for (int j = 0; j < 9; j++) {
-													if (inv.getContents()[j] != null) {
-														if (inv.getContents()[j].getType() != Material.AIR) {
-															if (inv.getContents()[j].getType().toString().endsWith("_BUCKET")) inv.setItem(j, new ItemStack(Material.BUCKET));
-															else if (inv.getContents()[j].getAmount() > 1) inv.setItem(j, new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1));
-															else inv.setItem(j, null);
-														}
-													}
+									
+									boolean fits_size = true;
+									boolean is_same_m = true;
+									
+									if (resinv.getResult() != null) {
+										fits_size = resinv.getResult().getAmount() + adding.getAmount() <= 64;
+										is_same_m = resinv.getResult().getType().equals(adding.getType());
+									}
+									
+									if (is_same_m && fits_size) {
+										for (int j = 0; j < 9; j++) {
+											if (inv.getContents()[j] != null) {
+												if (inv.getContents()[j].getType() != Material.AIR) {
+													if (inv.getContents()[j].getType().toString().endsWith("_BUCKET")) inv.setItem(j, new ItemStack(Material.BUCKET));
+													else if (inv.getContents()[j].getAmount() > 1) inv.setItem(j, new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1));
+													else inv.setItem(j, null);
 												}
-												//SOUND
+											}
+										}
+										//SOUND
+										Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+										
+											@Override
+											public void run() {
+												p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
 												Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
-												
+
 													@Override
 													public void run() {
 														p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
@@ -133,16 +137,9 @@ public class Kitchen {
 
 																							@Override
 																							public void run() {
-																								p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-																								Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
-
-																									@Override
-																									public void run() {
-																										p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F);
-																									}
-																								}, 30L);
+																								p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F);
 																							}
-																						}, 5L);
+																						}, 30L);
 																					}
 																				}, 5L);
 																			}
@@ -153,27 +150,30 @@ public class Kitchen {
 														}, 5L);
 													}
 												}, 5L);
-												//END OF THE SOUND
-												
-												if(resinv.getResult() != null) {
-													ItemStack s = new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount());
-													resinv.setResult(s);
-												} else {
-													resinv.setResult(adding);
-												}
 											}
-											else Messages.local.sendTranslation(p, "machines.full-inventory", true);
+										}, 5L);
+										//END OF THE SOUND
+										
+										if (resinv.getResult() != null) {
+											ItemStack s = new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount());
+											resinv.setResult(s);
+										} else {
+											resinv.setResult(adding);
 										}
-										return true;
 									}
+									else Messages.local.sendTranslation(p, "machines.full-inventory", true);
 								}
-								Messages.local.sendTranslation(p, "machines.pattern-not-found", true);
+								return true;
 							}
-							return true;
 						}
-						else return false;
+						Messages.local.sendTranslation(p, "machines.pattern-not-found", true);
 					}
-				});
-		//--------------------------------------------------
+							return true;
+				}
+				else return false;
+			}
+		});
+		
 	}
+
 }
