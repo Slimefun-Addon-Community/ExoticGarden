@@ -57,48 +57,67 @@ public class PlantsListener implements Listener {
 			}
 			for (Berry berry: ExoticGarden.berries) {
 				if (item.getID().equalsIgnoreCase(berry.toBush())) {
-					BlockStorage.store(e.getLocation().getBlock(), berry.getItem());
 					switch(berry.getType()) {
-					case BUSH: {
-						e.getLocation().getBlock().setType(Material.LEAVES);
-						e.getLocation().getBlock().setData(berry.getData().toByte());
-						break;
-					}
-					case ORE_PLANT:
-					case DOUBLE_PLANT: {
-						BlockStorage.store(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getItem());
-						e.getLocation().getBlock().setType(Material.LEAVES);
-						e.getLocation().getBlock().setData((byte) 0x4);
-						e.getLocation().getBlock().getRelative(BlockFace.UP).setType(Material.SKULL);
-						Skull s = (Skull) e.getLocation().getBlock().getRelative(BlockFace.UP).getState();
-    					s.setSkullType(SkullType.PLAYER);
-    					s.setRotation(bf[new Random().nextInt(bf.length)]);
-    					s.setRawData((byte) 1);
-    					s.update();
-    					
-    					try {
-							CustomSkull.setSkull(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getData().getTexture());
-						} catch (Exception e1) {
-							e1.printStackTrace();
+						case BUSH: {
+							e.getLocation().getBlock().setType(Material.LEAVES);
+							e.getLocation().getBlock().setData(berry.getData().toByte());
+							break;
 						}
-						break;
-					}
-					default: {
-						e.getLocation().getBlock().setType(Material.SKULL);
-						Skull s = (Skull) e.getLocation().getBlock().getState();
-    					s.setSkullType(SkullType.PLAYER);
-    					s.setRotation(bf[new Random().nextInt(bf.length)]);
-    					s.setRawData((byte) 1);
-    					s.update();
-    					
-    					try {
-							CustomSkull.setSkull(e.getLocation().getBlock(), berry.getData().getTexture());
-						} catch (Exception e1) {
-							e1.printStackTrace();
+						case ORE_PLANT:
+						case DOUBLE_PLANT: {
+							item = BlockStorage.check(e.getLocation().getBlock().getRelative(BlockFace.UP));
+							if (item != null) return;
+							switch(e.getLocation().getBlock().getRelative(BlockFace.UP).getType()) {
+								case AIR:
+								case SAPLING:
+								case LEAVES:
+								case LEAVES_2:
+								case YELLOW_FLOWER:
+								case RED_ROSE:
+								case LONG_GRASS:
+								case DOUBLE_PLANT:
+								case BROWN_MUSHROOM:
+								case RED_MUSHROOM:
+								case SNOW:
+									break;
+								default:
+									return;
+							}
+							
+							BlockStorage.store(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getItem());
+							e.getLocation().getBlock().setType(Material.LEAVES);
+							e.getLocation().getBlock().setData((byte) 0x4);
+							e.getLocation().getBlock().getRelative(BlockFace.UP).setType(Material.SKULL);
+							Skull s = (Skull) e.getLocation().getBlock().getRelative(BlockFace.UP).getState();
+	    					s.setSkullType(SkullType.PLAYER);
+	    					s.setRotation(bf[new Random().nextInt(bf.length)]);
+	    					s.setRawData((byte) 1);
+	    					s.update();
+	    					
+	    					try {
+								CustomSkull.setSkull(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getData().getTexture());
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+							break;
 						}
-						break;
+						default: {
+							e.getLocation().getBlock().setType(Material.SKULL);
+							Skull s = (Skull) e.getLocation().getBlock().getState();
+	    					s.setSkullType(SkullType.PLAYER);
+	    					s.setRotation(bf[new Random().nextInt(bf.length)]);
+	    					s.setRawData((byte) 1);
+	    					s.update();
+	    					
+	    					try {
+								CustomSkull.setSkull(e.getLocation().getBlock(), berry.getData().getTexture());
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+							break;
+						}
 					}
-					}
+					BlockStorage.store(e.getLocation().getBlock(), berry.getItem());
 					e.getWorld().playEffect(e.getLocation(), Effect.STEP_SOUND, Material.LEAVES);
 					break;
 				}
