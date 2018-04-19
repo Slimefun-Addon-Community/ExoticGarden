@@ -72,12 +72,6 @@ public class PlantsListener implements Listener {
 								case SAPLING:
 								case LEAVES:
 								case LEAVES_2:
-								case YELLOW_FLOWER:
-								case RED_ROSE:
-								case LONG_GRASS:
-								case DOUBLE_PLANT:
-								case BROWN_MUSHROOM:
-								case RED_MUSHROOM:
 								case SNOW:
 									break;
 								default:
