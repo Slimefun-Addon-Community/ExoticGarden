@@ -119,8 +119,14 @@ public class FoodListener implements Listener {
 	
 	@EventHandler
 	public void onEquip(InventoryClickEvent e) {
-		if (e.getSlotType() != SlotType.ARMOR) return;
-		SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
-		if (item != null && (item instanceof EGPlant) && e.getCursor().getType() == Material.SKULL_ITEM) e.setCancelled(true);
+		if (!e.isShiftClick()) {
+			if (e.getSlotType() != SlotType.ARMOR) return;
+			SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
+			if (item != null && (item instanceof EGPlant) && e.getCursor().getType() == Material.SKULL_ITEM) e.setCancelled(true);
+		} else {
+			if (e.getAction().toString().startsWith("DROP") || e.getWhoClicked().getEquipment().getHelmet() != null || e.getSlotType() == SlotType.CRAFTING) return;
+			SlimefunItem item = SlimefunItem.getByItem(e.getCurrentItem());
+			if (item != null && (item instanceof EGPlant) && e.getCurrentItem().getType() == Material.SKULL_ITEM) e.setCancelled(true);
+		}
 	}
 }
