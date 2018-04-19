@@ -85,14 +85,18 @@ public class Kitchen {
 									}
 									
 									boolean fits_size = true;
-									boolean is_same_m = true;
+									boolean is_same_r = true;
 									
 									if (resinv.getResult() != null) {
 										fits_size = resinv.getResult().getAmount() + adding.getAmount() <= 64;
-										is_same_m = resinv.getResult().getType().equals(adding.getType());
+										ItemStack currentResult = new ItemStack(resinv.getResult());
+										currentResult.setAmount(1);
+										ItemStack newResult = new ItemStack(adding);
+										newResult.setAmount(1);
+										is_same_r = currentResult.equals(newResult);
 									}
 									
-									if (is_same_m && fits_size) {
+									if (is_same_r && fits_size) {
 										for (int j = 0; j < 9; j++) {
 											if (inv.getContents()[j] != null) {
 												if (inv.getContents()[j].getType() != Material.AIR) {
