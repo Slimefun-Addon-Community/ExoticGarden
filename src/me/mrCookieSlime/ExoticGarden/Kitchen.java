@@ -35,7 +35,7 @@ public class Kitchen {
 	@SuppressWarnings("deprecation")
 	public static void registerKitchen() {
 		//---------------------------------------------------------------------------------------------------------
-		new SlimefunMachine(Categories.MACHINES_1, KITCHEN, "KITCHEN",
+		new SlimefunMachine(Categories.MACHINES_1, KITCHEN, "EG_KITCHEN",
 				new ItemStack[] {new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new ItemStack(Material.getMaterial(5)), new ItemStack(Material.WOOD_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.WORKBENCH)},
 				new ItemStack[0], Material.IRON_TRAPDOOR)
 				.register(true, new MultiBlockInteractionHandler() {
@@ -43,7 +43,7 @@ public class Kitchen {
 					@Override
 					public boolean onInteract(Player p, MultiBlock mb, Block b) {
 
-						SlimefunMachine machine = (SlimefunMachine) SlimefunItem.getByID("KITCHEN");
+						SlimefunMachine machine = (SlimefunMachine) SlimefunItem.getByID("EG_KITCHEN");
 
 						if (mb.isMultiBlock(machine)) {
 							if (Slimefun.hasUnlocked(p, machine.getItem(), true)) {
