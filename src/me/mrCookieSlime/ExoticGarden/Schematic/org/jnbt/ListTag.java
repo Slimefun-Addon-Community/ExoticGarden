@@ -1,4 +1,4 @@
-package org.jnbt;
+package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
 
 /*
  * JNBT License
@@ -33,30 +33,48 @@ package org.jnbt;
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+import java.util.Collections;
+import java.util.List;
+
 /**
- * The <code>TAG_Double</code> tag.
+ * The <code>TAG_List</code> tag.
  * @author Graham Edgecombe
  *
  */
-public final class DoubleTag extends Tag {
+public final class ListTag extends Tag {
+
+	/**
+	 * The type.
+	 */
+	private final Class<? extends Tag> type;
 	
 	/**
 	 * The value.
 	 */
-	private final double value;
-
+	private final List<Tag> value;
+	
 	/**
 	 * Creates the tag.
 	 * @param name The name.
+	 * @param type The type of item in the list.
 	 * @param value The value.
 	 */
-	public DoubleTag(String name, double value) {
+	public ListTag(String name, Class<? extends Tag> type, List<Tag> value) {
 		super(name);
-		this.value = value;
+		this.type = type;
+		this.value = Collections.unmodifiableList(value);
+	}
+	
+	/**
+	 * Gets the type of item in this list.
+	 * @return The type of item in this list.
+	 */
+	public Class<? extends Tag> getType() {
+		return type;
 	}
 	
 	@Override
-	public Double getValue() {
+	public List<Tag> getValue() {
 		return value;
 	}
 	
@@ -67,7 +85,13 @@ public final class DoubleTag extends Tag {
 		if(name != null && !name.equals("")) {
 			append = "(\"" + this.getName() + "\")";
 		}
-		return "TAG_Double" + append + ": " + value;
+		StringBuilder bldr = new StringBuilder();
+		bldr.append("TAG_List" + append + ": " + value.size() + " entries of type " + NBTUtils.getTypeName(type) + "\r\n{\r\n");
+		for(Tag t : value) {
+			bldr.append("   " + t.toString().replaceAll("\r\n", "\r\n   ") + "\r\n");
+		}
+		bldr.append("}");
+		return bldr.toString();
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.jnbt;
+package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
 
 /*
  * JNBT License
@@ -34,29 +34,29 @@ package org.jnbt;
  */
 
 /**
- * The <code>TAG_Short</code> tag.
+ * The <code>TAG_Long</code> tag.
  * @author Graham Edgecombe
  *
  */
-public final class ShortTag extends Tag {
+public final class LongTag extends Tag {
 
 	/**
 	 * The value.
 	 */
-	private final short value;
+	private final long value;
 	
 	/**
 	 * Creates the tag.
 	 * @param name The name.
 	 * @param value The value.
 	 */
-	public ShortTag(String name, short value) {
+	public LongTag(String name, long value) {
 		super(name);
 		this.value = value;
 	}
 	
 	@Override
-	public Short getValue() {
+	public Long getValue() {
 		return value;
 	}
 	
@@ -67,7 +67,7 @@ public final class ShortTag extends Tag {
 		if(name != null && !name.equals("")) {
 			append = "(\"" + this.getName() + "\")";
 		}
-		return "TAG_Short" + append + ": " + value;
+		return "TAG_Long" + append + ": " + value;
 	}
 
 }

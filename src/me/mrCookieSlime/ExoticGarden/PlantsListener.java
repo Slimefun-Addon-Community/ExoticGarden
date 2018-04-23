@@ -8,6 +8,7 @@ import java.util.Set;
 import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
+import me.mrCookieSlime.ExoticGarden.Schematic.Schematic;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
@@ -209,17 +210,18 @@ public class PlantsListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onHarvest(BlockBreakEvent e) {
-		if(e.getBlock().getType().equals(Material.SKULL)) dropFruitFromTree(e.getBlock());
-		if (e.getBlock().getType().equals(Material.LEAVES) || e.getBlock().getType().equals(Material.LEAVES_2)) dropFruitFromTree(e.getBlock());
-		if (e.getBlock().getType() == Material.LONG_GRASS) {
-			if (ExoticGarden.items.keySet().size() > 0)
-				if (CSCoreLib.randomizer().nextInt(100) < 6) e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.items.get(ExoticGarden.items.keySet().toArray(new String[ExoticGarden.items.keySet().size()])[CSCoreLib.randomizer().nextInt(ExoticGarden.items.keySet().size())]));
-		}
-		else {
-			ItemStack item = ExoticGarden.harvestPlant(e.getBlock());
-			if (item != null) {
-				e.setCancelled(true);
-				e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
+		if (CSCoreLib.getLib().getProtectionManager().canBuild(e.getPlayer().getUniqueId(), e.getBlock())) {
+			if (e.getBlock().getType().equals(Material.SKULL)) dropFruitFromTree(e.getBlock());
+			if (e.getBlock().getType().equals(Material.LEAVES) || e.getBlock().getType().equals(Material.LEAVES_2)) dropFruitFromTree(e.getBlock());
+			if (e.getBlock().getType() == Material.LONG_GRASS) {
+				if (ExoticGarden.items.keySet().size() > 0)
+					if (CSCoreLib.randomizer().nextInt(100) < 6) e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.items.get(ExoticGarden.items.keySet().toArray(new String[ExoticGarden.items.keySet().size()])[CSCoreLib.randomizer().nextInt(ExoticGarden.items.keySet().size())]));
+			} else {
+				ItemStack item = ExoticGarden.harvestPlant(e.getBlock());
+				if (item != null) {
+					e.setCancelled(true);
+					e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
+				}
 			}
 		}
 	}
@@ -238,30 +240,28 @@ public class PlantsListener implements Listener {
 	@EventHandler
 	public void onInteract(PlayerInteractEvent e) {
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		ItemStack item = ExoticGarden.harvestPlant(e.getClickedBlock());
-		if (item != null ) {
-			e.getClickedBlock().getWorld().playEffect(e.getClickedBlock().getLocation(), Effect.STEP_SOUND, Material.LEAVES);
-			e.getClickedBlock().getWorld().dropItemNaturally(e.getClickedBlock().getLocation(), item);
+		if (CSCoreLib.getLib().getProtectionManager().canBuild(e.getPlayer().getUniqueId(), e.getClickedBlock())) {
+			ItemStack item = ExoticGarden.harvestPlant(e.getClickedBlock());
+			if (item != null ) {
+				e.getClickedBlock().getWorld().playEffect(e.getClickedBlock().getLocation(), Effect.STEP_SOUND, Material.LEAVES);
+				e.getClickedBlock().getWorld().dropItemNaturally(e.getClickedBlock().getLocation(), item);
+			}
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	void onBlockExplode(BlockExplodeEvent e)
-	{
+	void onBlockExplode(BlockExplodeEvent e) {
 		e.blockList().removeAll(explosionHandler(e.blockList()));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	void onEntityExplode(EntityExplodeEvent e)
-	{
+	void onEntityExplode(EntityExplodeEvent e) {
 		e.blockList().removeAll(explosionHandler(e.blockList()));
 	}
 
-	Set<Block> explosionHandler(List<Block> blockList)
-	{
+	Set<Block> explosionHandler(List<Block> blockList) {
 		Set<Block> blocksToRemove = new HashSet<Block>();
-		for (Block block : blockList)
-		{
+		for (Block block : blockList) {
 			ItemStack item = ExoticGarden.harvestPlant(block);
 			if (item != null) {
 				blocksToRemove.add(block);

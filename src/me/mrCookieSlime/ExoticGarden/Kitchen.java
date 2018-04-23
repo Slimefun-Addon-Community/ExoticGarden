@@ -15,10 +15,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
-import me.mrCookieSlime.Slimefun.SlimefunStartup;
 import me.mrCookieSlime.Slimefun.Lists.Categories;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.MultiBlock;
+import me.mrCookieSlime.Slimefun.Objects.Research;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunMachine;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.handlers.MultiBlockInteractionHandler;
@@ -28,21 +28,19 @@ import me.mrCookieSlime.Slimefun.api.Slimefun;
 
 public class Kitchen {
 	
-	public static final RecipeType EG_KITCHEN = new RecipeType(new CustomItem(Material.CAULDRON_ITEM, "&eKitchen", 0, new String[] {"", "&a&oThis item should be made", "&a&oin the kitchen"}), "EG_KITCHEN");
+	public static final RecipeType KITCHEN = new RecipeType(new CustomItem(Material.CAULDRON_ITEM, "&eKitchen", 0, new String[] {"", "&a&oThis item should be made", "&a&oin the kitchen"}), "KITCHEN");
 	
-	public static ItemStack KITCHEN = new CustomItem(Material.CAULDRON_ITEM, "&eKitchen", 0, new String[] {"", "&a&oYou can make a bunch of different yummies here"});
-	
-	public static void registerKitchen() {
+	public static void registerKitchen(ExoticGarden plugin) {
 		
-		new SlimefunMachine(Categories.MACHINES_1, KITCHEN, "EG_KITCHEN",
-		new ItemStack[] {new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new ItemStack(Material.WOOD), new ItemStack(Material.WOOD_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.WORKBENCH)},
+		new SlimefunMachine(Categories.MACHINES_1, ExoticGarden.KITCHEN, "KITCHEN",
+		new ItemStack[] {new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new CustomItem(Material.WOOD_STAIRS, "&oWooden stairs (upside down)", 1), new ItemStack(Material.WOOD), new ItemStack(Material.STONE_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.WORKBENCH)},
 		new ItemStack[0], Material.IRON_TRAPDOOR)
 		.register(true, new MultiBlockInteractionHandler() {
 
 			@Override
 			public boolean onInteract(Player p, MultiBlock mb, Block b) {
 
-				SlimefunMachine machine = (SlimefunMachine) SlimefunItem.getByID("EG_KITCHEN");
+				SlimefunMachine machine = (SlimefunMachine) SlimefunItem.getByID("KITCHEN");
 
 				if (mb.isMultiBlock(machine)) {
 					if (Slimefun.hasUnlocked(p, machine.getItem(), true)) {
@@ -107,37 +105,37 @@ public class Kitchen {
 											}
 										}
 										//SOUND
-										Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+										Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 										
 											@Override
 											public void run() {
 												p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-												Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+												Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
 													@Override
 													public void run() {
 														p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-														Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+														Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
 															@Override
 															public void run() {
 																p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-																Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+																Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
 																	@Override
 																	public void run() {
 																		p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-																		Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+																		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
 																			@Override
 																			public void run() {
 																				p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-																				Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+																				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
 																					@Override
 																					public void run() {
 																						p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-																						Bukkit.getScheduler().scheduleSyncDelayedTask(SlimefunStartup.instance, new Runnable() {
+																						Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
 																							@Override
 																							public void run() {
@@ -178,6 +176,7 @@ public class Kitchen {
 			}
 		});
 		
+	    Slimefun.registerResearch(new Research(600, "Kitchen", 30), ExoticGarden.KITCHEN);
 	}
 
 }

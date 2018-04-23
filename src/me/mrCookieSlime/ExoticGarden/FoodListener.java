@@ -59,8 +59,9 @@ public class FoodListener implements Listener {
 					case DARK_OAK_DOOR:
 					case WOOD_DOOR:
 					case IRON_DOOR:
-					case BED: {return;}
-					default: {}
+					case BED: 
+						return;
+					default:
 				}
 			}
 		}

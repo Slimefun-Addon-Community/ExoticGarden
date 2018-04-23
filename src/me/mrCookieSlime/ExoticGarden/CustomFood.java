@@ -10,7 +10,7 @@ public class CustomFood extends EGPlant {
 	float food;
 
 	public CustomFood(Category category, ItemStack item, String name, ItemStack[] recipe, int food) {
-		super(category, item, name, Kitchen.EG_KITCHEN, true, recipe);
+		super(category, item, name, Kitchen.KITCHEN, true, recipe);
 		this.food = food;
 	}
 	
