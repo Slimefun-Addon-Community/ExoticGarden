@@ -127,7 +127,27 @@ public class FoodListener implements Listener {
 		} else {
 			if (e.getAction().toString().startsWith("DROP") || e.getWhoClicked().getEquipment().getHelmet() != null || e.getSlotType() == SlotType.CRAFTING) return;
 			SlimefunItem item = SlimefunItem.getByItem(e.getCurrentItem());
-			if (item != null && (item instanceof EGPlant) && e.getCurrentItem().getType() == Material.SKULL_ITEM) e.setCancelled(true);
+			if (item != null && (item instanceof EGPlant) && e.getCurrentItem().getType() == Material.SKULL_ITEM) {
+				if (e.getSlot() > 8) {
+					for (int i = 0; i < 9; i++) {
+						if (e.getClickedInventory().getItem(i) == null || e.getClickedInventory().getItem(i).getType() == Material.AIR) {
+							e.getClickedInventory().setItem(i, e.getCurrentItem());
+							e.setCurrentItem(new ItemStack(Material.AIR));
+							((Player) e.getWhoClicked()).updateInventory();
+							return;
+						}
+					}
+				}
+				for (int i = 9; i < 36; i++) {
+					if (e.getClickedInventory().getItem(i) == null || e.getClickedInventory().getItem(i).getType() == Material.AIR) {
+						e.getClickedInventory().setItem(i, e.getCurrentItem());
+						e.setCurrentItem(new ItemStack(Material.AIR));
+						((Player) e.getWhoClicked()).updateInventory();
+						return;
+					}
+				}
+				e.setCancelled(true);
+			}
 		}
 	}
 }
