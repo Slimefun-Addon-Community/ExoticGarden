@@ -6,6 +6,7 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
@@ -120,6 +121,7 @@ public class FoodListener implements Listener {
 	
 	@EventHandler
 	public void onEquip(InventoryClickEvent e) {
+		if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE) return;
 		if (!e.isShiftClick()) {
 			if (e.getSlotType() != SlotType.ARMOR) return;
 			SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
