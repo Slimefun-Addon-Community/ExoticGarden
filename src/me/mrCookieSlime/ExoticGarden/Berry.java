@@ -3,11 +3,10 @@ package me.mrCookieSlime.ExoticGarden;
 import java.util.Arrays;
 import java.util.List;
 
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class Berry {
 	
@@ -59,7 +58,7 @@ public class Berry {
 			default: return this.id + "_BUSH";
 		}
 	}
-
+	
 	public boolean isSoil(Material type) {
 		List<Material> soils = Arrays.asList(Material.GRASS, Material.DIRT);
 		return soils.contains(type);

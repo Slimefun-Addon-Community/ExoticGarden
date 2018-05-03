@@ -159,9 +159,8 @@ public class Kitchen {
 										if (resinv.getResult() != null) {
 											ItemStack s = new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount());
 											resinv.setResult(s);
-										} else {
-											resinv.setResult(adding);
 										}
+										else resinv.setResult(adding);
 									}
 									else Messages.local.sendTranslation(p, "machines.full-inventory", true);
 								}
@@ -170,7 +169,7 @@ public class Kitchen {
 						}
 						Messages.local.sendTranslation(p, "machines.pattern-not-found", true);
 					}
-							return true;
+					return true;
 				}
 				else return false;
 			}

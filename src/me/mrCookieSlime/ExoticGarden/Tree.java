@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import me.mrCookieSlime.ExoticGarden.Schematic.Schematic;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+
+import me.mrCookieSlime.ExoticGarden.Schematic.Schematic;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class Tree {
 	

@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.bukkit.plugin.Plugin;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -27,8 +28,7 @@ public class CSCoreLibLoader {
 		this.plugin = plugin;
 		try {
 			this.url = new URL("https://api.curseforge.com/servermods/files?projectIds=88802");
-		} catch (MalformedURLException e) {
-		}
+		} catch (MalformedURLException e) {}
 	}
 	
 	public boolean load() {

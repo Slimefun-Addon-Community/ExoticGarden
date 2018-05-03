@@ -1,13 +1,10 @@
 package me.mrCookieSlime.ExoticGarden;
 
-import me.mrCookieSlime.CSCoreLibPlugin.events.ItemUseEvent;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -15,6 +12,12 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+
+import me.mrCookieSlime.CSCoreLibPlugin.events.ItemUseEvent;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class FoodListener implements Listener {
 	
@@ -69,46 +72,38 @@ public class FoodListener implements Listener {
 		EquipmentSlot hand = e.getParentEvent().getHand();
 		
 		switch (hand) {
-		case HAND: {
-			SlimefunItem item = SlimefunItem.getByItem(new CustomItem(e.getPlayer().getInventory().getItemInMainHand(), 1));
-			if (item != null) {
-				if (item instanceof EGPlant) {
-					if (((EGPlant) item).isEdible()) {
-						((EGPlant) item).restoreHunger(e.getPlayer());
-						e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
-						Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-							
-							@Override
-							public void run() {
-								e.getPlayer().getInventory().setItemInMainHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInMainHand(), 1));
-							}
-						}, 0L);
-					}
+			case HAND: {
+				SlimefunItem item = SlimefunItem.getByItem(new CustomItem(e.getPlayer().getInventory().getItemInMainHand(), 1));
+				if (item != null && (item instanceof EGPlant) && ((EGPlant) item).isEdible()) {
+					((EGPlant) item).restoreHunger(e.getPlayer());
+					e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
+					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+						
+						@Override
+						public void run() {
+							e.getPlayer().getInventory().setItemInMainHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInMainHand(), 1));
+						}
+					}, 0L);
 				}
+				break;
 			}
-			break;
-		}
-		case OFF_HAND: {
-			SlimefunItem item = SlimefunItem.getByItem(new CustomItem(e.getPlayer().getInventory().getItemInOffHand(), 1));
-			if (item != null) {
-				if (item instanceof EGPlant) {
-					if (((EGPlant) item).isEdible()) {
-						((EGPlant) item).restoreHunger(e.getPlayer());
-						e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
-						Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-							
-							@Override
-							public void run() {
-								e.getPlayer().getInventory().setItemInOffHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInOffHand(), 1));
-							}
-						}, 0L);
-					}
+			case OFF_HAND: {
+				SlimefunItem item = SlimefunItem.getByItem(new CustomItem(e.getPlayer().getInventory().getItemInOffHand(), 1));
+				if (item != null && (item instanceof EGPlant) && ((EGPlant) item).isEdible()) {
+					((EGPlant) item).restoreHunger(e.getPlayer());
+					e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
+					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+						
+						@Override
+						public void run() {
+							e.getPlayer().getInventory().setItemInOffHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInOffHand(), 1));
+						}
+					}, 0L);
 				}
+				break;
 			}
-			break;
-		}
-		default:
-			break;
+			default:
+				break;
 		}
 	}
 	
@@ -120,6 +115,7 @@ public class FoodListener implements Listener {
 	
 	@EventHandler
 	public void onEquip(InventoryClickEvent e) {
+		if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE) return;
 		if (!e.isShiftClick()) {
 			if (e.getSlotType() != SlotType.ARMOR) return;
 			SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
@@ -127,7 +123,28 @@ public class FoodListener implements Listener {
 		} else {
 			if (e.getAction().toString().startsWith("DROP") || e.getWhoClicked().getEquipment().getHelmet() != null || e.getSlotType() == SlotType.CRAFTING) return;
 			SlimefunItem item = SlimefunItem.getByItem(e.getCurrentItem());
-			if (item != null && (item instanceof EGPlant) && e.getCurrentItem().getType() == Material.SKULL_ITEM) e.setCancelled(true);
+			if (item != null && (item instanceof EGPlant) && e.getCurrentItem().getType() == Material.SKULL_ITEM) {
+				if (e.getSlot() > 8) {
+					for (int i = 0; i < 9; i++) {
+						if (e.getClickedInventory().getItem(i) == null || e.getClickedInventory().getItem(i).getType() == Material.AIR) {
+							e.getClickedInventory().setItem(i, e.getCurrentItem());
+							e.setCurrentItem(new ItemStack(Material.AIR));
+							((Player) e.getWhoClicked()).updateInventory();
+							return;
+						}
+					}
+				}
+				for (int i = 9; i < 36; i++) {
+					if (e.getClickedInventory().getItem(i) == null || e.getClickedInventory().getItem(i).getType() == Material.AIR) {
+						e.getClickedInventory().setItem(i, e.getCurrentItem());
+						e.setCurrentItem(new ItemStack(Material.AIR));
+						((Player) e.getWhoClicked()).updateInventory();
+						return;
+					}
+				}
+				e.setCancelled(true);
+			}
 		}
 	}
+
 }

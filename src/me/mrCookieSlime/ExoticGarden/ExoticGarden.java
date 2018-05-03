@@ -152,12 +152,10 @@ public class ExoticGarden extends JavaPlugin {
 			registerMagicalPlant("Slime", new ItemStack(Material.SLIME_BALL, 8), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTBlNjVlNmU1MTEzYTUxODdkYWQ0NmRmYWQzZDNiZjg1ZThlZjgwN2Y4MmFhYzIyOGE1OWM0YTk1ZDZmNmEifX19",
 			new ItemStack[] {null, new ItemStack(Material.SLIME_BALL), null, new ItemStack(Material.SLIME_BALL), getItem("ENDER_PLANT"), new ItemStack(Material.SLIME_BALL), null, new ItemStack(Material.SLIME_BALL), null});
 			
-			
 			final ItemStack grass_seeds = new CustomItem(new MaterialData(Material.PUMPKIN_SEEDS), "&rGrass Seeds", "", "&7&oCan be planted on Dirt");
 			
 			final SlimefunItem crook = new SlimefunItem(Categories.TOOLS, new CustomItem(new MaterialData(Material.WOOD_HOE), "&rCrook", "", "&7+ &b25% &7Sapling Drop Rate"), "CROOK", RecipeType.ENHANCED_CRAFTING_TABLE,
 			new ItemStack[] {new ItemStack(Material.STICK), new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null});
-			
 			crook.register(false, new BlockBreakHandler() {
 				
 				@Override
@@ -215,7 +213,7 @@ public class ExoticGarden extends JavaPlugin {
 			cfg.save();
 		}
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	private void registerDishes() {
 		new Juice(category_drinks, new CustomPotion("&aLime Smoothie", Color.LIME, new PotionEffect(PotionEffectType.SATURATION, 10, 0), "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"), "LIME_SMOOTHIE", RecipeType.ENHANCED_CRAFTING_TABLE,
@@ -645,7 +643,7 @@ public class ExoticGarden extends JavaPlugin {
 		18)
 		.register();
 	}
-
+	
 	@Override
 	public void onDisable() {
 		berries = null;
@@ -677,6 +675,7 @@ public class ExoticGarden extends JavaPlugin {
 			new ItemStack[] {getItem(fruitName), null, null, null, null, null, null, null, null})
 			.register();
 		}
+		
 		if (pie) {
 			try {
 				new CustomFood(category_food, new CustomItem(getSkull(Material.PUMPKIN_PIE, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxOGM2YjBhMjlmYzFmZTc5MWM4OTc3NGQ4MjhmZjYzZDJhOWZhNmM4MzM3M2VmM2FhNDdiZjNlYjc5In19fQ=="), color + StringUtils.format(fruitName) + " Pie", "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"), fruitName + "_PIE",
@@ -764,7 +763,7 @@ public class ExoticGarden extends JavaPlugin {
 			return material.toItemStack(1);
 		}
 	}
-
+	
 	public void registerPlant(String name, String color, Material material, PlantType type, PlantData data) {
 		Berry berry = new Berry(name.toUpperCase().replace(" ", "_"), type, data);
 		berries.add(berry);
@@ -779,7 +778,7 @@ public class ExoticGarden extends JavaPlugin {
 		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase().replace(" ", "_") + "_BUSH"), null, null, null, null})
 		.register();
 	}
-
+	
 	public void registerMagicalPlant(String name, ItemStack item, String skull, ItemStack[] recipe) {
 		ItemStack essence = new CustomItem(new MaterialData(Material.BLAZE_POWDER), "&rMagical Essence", "", "&7" + name);
 		
@@ -815,34 +814,34 @@ public class ExoticGarden extends JavaPlugin {
 			for (Berry berry: berries) {
 				if (item.getID().equalsIgnoreCase(berry.getID())) {
 					switch (berry.getType()) {
-					case ORE_PLANT:
-					case DOUBLE_PLANT: {
-						Block plant;
-						if (BlockStorage.check(block.getRelative(BlockFace.DOWN)) == null) {
-							plant = block;
-							BlockStorage.retrieve(block.getRelative(BlockFace.UP));
-							block.getWorld().playEffect(block.getRelative(BlockFace.UP).getLocation(), Effect.STEP_SOUND, Material.LEAVES);
-							block.getRelative(BlockFace.UP).setType(Material.AIR);;
+						case ORE_PLANT:
+						case DOUBLE_PLANT: {
+							Block plant;
+							if (BlockStorage.check(block.getRelative(BlockFace.DOWN)) == null) {
+								plant = block;
+								BlockStorage.retrieve(block.getRelative(BlockFace.UP));
+								block.getWorld().playEffect(block.getRelative(BlockFace.UP).getLocation(), Effect.STEP_SOUND, Material.LEAVES);
+								block.getRelative(BlockFace.UP).setType(Material.AIR);;
+							}
+							else {
+								plant = block.getRelative(BlockFace.DOWN);
+								BlockStorage.retrieve(block);
+								block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.LEAVES);
+								block.setType(Material.AIR);;
+							}
+							plant.setType(Material.SAPLING);
+							plant.setData((byte) 0);
+							itemstack = berry.getItem();
+							BlockStorage.store(plant, getItem(berry.toBush()));
+							break;
 						}
-						else {
-							plant = block.getRelative(BlockFace.DOWN);
-							BlockStorage.retrieve(block);
-							block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.LEAVES);
-							block.setType(Material.AIR);;
+						default: {
+							block.setType(Material.SAPLING);
+							block.setData((byte) 0);
+							itemstack = berry.getItem();
+							BlockStorage.store(block, getItem(berry.toBush()));
+							break;
 						}
-						plant.setType(Material.SAPLING);
-						plant.setData((byte) 0);
-						itemstack = berry.getItem();
-						BlockStorage.store(plant, getItem(berry.toBush()));
-						break;
-					}
-					default: {
-						block.setType(Material.SAPLING);
-						block.setData((byte) 0);
-						itemstack = berry.getItem();
-						BlockStorage.store(block, getItem(berry.toBush()));
-						break;
-					}
 					}
 				}
 			}

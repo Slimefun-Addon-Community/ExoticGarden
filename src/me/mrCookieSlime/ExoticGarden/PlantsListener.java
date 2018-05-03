@@ -5,13 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
-import me.mrCookieSlime.ExoticGarden.Schematic.Schematic;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,6 +24,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
+
+import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
+import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
+import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
+import me.mrCookieSlime.ExoticGarden.Schematic.Schematic;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 public class PlantsListener implements Listener {
 	
@@ -135,47 +135,47 @@ public class PlantsListener implements Listener {
 					if (!current.getType().isSolid() && current.getType() != Material.STATIONARY_WATER && berry.isSoil(current.getRelative(BlockFace.DOWN).getType())) {
 						BlockStorage.store(current, berry.getItem());
 						switch(berry.getType()) {
-						case BUSH: {
-							current.setType(Material.LEAVES);
-							current.setData(berry.getData().toByte());
-							break;
-						}
-						case FRUIT: {
-							current.setType(Material.SKULL);
-							Skull s = (Skull) current.getState();
-							s.setSkullType(SkullType.PLAYER);
-							s.setRotation(bf[new Random().nextInt(bf.length)]);
-							s.setRawData((byte) 1);
-							s.update();
-							
-							try {
-								CustomSkull.setSkull(current, berry.getData().getTexture());
-							} catch (Exception e1) {
-								e1.printStackTrace();
+							case BUSH: {
+								current.setType(Material.LEAVES);
+								current.setData(berry.getData().toByte());
+								break;
 							}
-							break;
-						}
-						case ORE_PLANT:
-						case DOUBLE_PLANT: {
-							BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
-							current.setType(Material.LEAVES);
-							current.setData((byte) 0x4);
-							current.getRelative(BlockFace.UP).setType(Material.SKULL);
-							Skull s = (Skull) current.getRelative(BlockFace.UP).getState();
-							s.setSkullType(SkullType.PLAYER);
-							s.setRotation(bf[new Random().nextInt(bf.length)]);
-							s.setRawData((byte) 1);
-							s.update();
-							
-							try {
-								CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getData().getTexture());
-							} catch (Exception e1) {
-								e1.printStackTrace();
+							case FRUIT: {
+								current.setType(Material.SKULL);
+								Skull s = (Skull) current.getState();
+								s.setSkullType(SkullType.PLAYER);
+								s.setRotation(bf[new Random().nextInt(bf.length)]);
+								s.setRawData((byte) 1);
+								s.update();
+								
+								try {
+									CustomSkull.setSkull(current, berry.getData().getTexture());
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+								break;
 							}
-							break;
-						}
-						default:
-							break;
+							case ORE_PLANT:
+							case DOUBLE_PLANT: {
+								BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
+								current.setType(Material.LEAVES);
+								current.setData((byte) 0x4);
+								current.getRelative(BlockFace.UP).setType(Material.SKULL);
+								Skull s = (Skull) current.getRelative(BlockFace.UP).getState();
+								s.setSkullType(SkullType.PLAYER);
+								s.setRotation(bf[new Random().nextInt(bf.length)]);
+								s.setRawData((byte) 1);
+								s.update();
+								
+								try {
+									CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getData().getTexture());
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+								break;
+							}
+							default:
+								break;
 						}
 						break;
 					}
@@ -248,17 +248,17 @@ public class PlantsListener implements Listener {
 			}
 		}
 	}
-
+	
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	void onBlockExplode(BlockExplodeEvent e) {
 		e.blockList().removeAll(explosionHandler(e.blockList()));
 	}
-
+	
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	void onEntityExplode(EntityExplodeEvent e) {
 		e.blockList().removeAll(explosionHandler(e.blockList()));
 	}
-
+	
 	Set<Block> explosionHandler(List<Block> blockList) {
 		Set<Block> blocksToRemove = new HashSet<Block>();
 		for (Block block : blockList) {
@@ -292,4 +292,5 @@ public class PlantsListener implements Listener {
 			}
 		}
 	}
+
 }
