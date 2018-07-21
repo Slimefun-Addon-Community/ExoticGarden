@@ -33,15 +33,15 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 public class PlantsListener implements Listener {
-	
+
 	Config cfg;
 	BlockFace[] bf = {BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
-	
+
 	public PlantsListener(ExoticGarden plugin) {
 		cfg = plugin.cfg;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onGrow(StructureGrowEvent e) {
@@ -78,7 +78,7 @@ public class PlantsListener implements Listener {
 								default:
 									return;
 							}
-							
+
 							BlockStorage.store(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getItem());
 							e.getLocation().getBlock().setType(Material.LEAVES);
 							e.getLocation().getBlock().setData((byte) 0x4);
@@ -88,7 +88,7 @@ public class PlantsListener implements Listener {
 							s.setRotation(bf[new Random().nextInt(bf.length)]);
 							s.setRawData((byte) 1);
 							s.update();
-							
+
 							try {
 								CustomSkull.setSkull(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getData().getTexture());
 							} catch (Exception e1) {
@@ -103,7 +103,7 @@ public class PlantsListener implements Listener {
 							s.setRotation(bf[new Random().nextInt(bf.length)]);
 							s.setRawData((byte) 1);
 							s.update();
-							
+
 							try {
 								CustomSkull.setSkull(e.getLocation().getBlock(), berry.getData().getTexture());
 							} catch (Exception e1) {
@@ -119,7 +119,7 @@ public class PlantsListener implements Listener {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onGenerate(ChunkPopulateEvent e) {
@@ -147,7 +147,7 @@ public class PlantsListener implements Listener {
 								s.setRotation(bf[new Random().nextInt(bf.length)]);
 								s.setRawData((byte) 1);
 								s.update();
-								
+
 								try {
 									CustomSkull.setSkull(current, berry.getData().getTexture());
 								} catch (Exception e1) {
@@ -166,7 +166,7 @@ public class PlantsListener implements Listener {
 								s.setRotation(bf[new Random().nextInt(bf.length)]);
 								s.setRawData((byte) 1);
 								s.update();
-								
+
 								try {
 									CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getData().getTexture());
 								} catch (Exception e1) {
@@ -207,7 +207,7 @@ public class PlantsListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onHarvest(BlockBreakEvent e) {
 		if (CSCoreLib.getLib().getProtectionManager().canBuild(e.getPlayer().getUniqueId(), e.getBlock())) {
@@ -225,7 +225,7 @@ public class PlantsListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onDecay(LeavesDecayEvent e) {
 		dropFruitFromTree(e.getBlock());
@@ -236,7 +236,7 @@ public class PlantsListener implements Listener {
 			e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
 		}
 	}
-	
+
 	@EventHandler
 	public void onInteract(PlayerInteractEvent e) {
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
@@ -248,17 +248,17 @@ public class PlantsListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	void onBlockExplode(BlockExplodeEvent e) {
 		e.blockList().removeAll(explosionHandler(e.blockList()));
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	void onEntityExplode(EntityExplodeEvent e) {
 		e.blockList().removeAll(explosionHandler(e.blockList()));
 	}
-	
+
 	Set<Block> explosionHandler(List<Block> blockList) {
 		Set<Block> blocksToRemove = new HashSet<Block>();
 		for (Block block : blockList) {
@@ -270,7 +270,7 @@ public class PlantsListener implements Listener {
 		}
 		return blocksToRemove;
 	}
-	
+
 	public void dropFruitFromTree(Block block) {
 		for (int x = -1; x < 2; x++) {
 			for (int y = -1; y < 2; y++) {

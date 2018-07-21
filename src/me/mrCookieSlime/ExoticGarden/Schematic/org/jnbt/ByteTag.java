@@ -44,7 +44,7 @@ public final class ByteTag extends Tag {
 	 * The value.
 	 */
 	private final byte value;
-	
+
 	/**
 	 * Creates the tag.
 	 * @param name The name.
@@ -59,7 +59,7 @@ public final class ByteTag extends Tag {
 	public Byte getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		String name = getName();
@@ -69,5 +69,5 @@ public final class ByteTag extends Tag {
 		}
 		return "TAG_Byte" + append + ": " + value;
 	}
-	
+
 }

@@ -39,12 +39,12 @@ package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
  *
  */
 public final class ByteArrayTag extends Tag {
-	
+
 	/**
 	 * The value.
 	 */
 	private final byte[] value;
-	
+
 	/**
 	 * Creates the tag.
 	 * @param name The name.
@@ -54,12 +54,12 @@ public final class ByteArrayTag extends Tag {
 		super(name);
 		this.value = value;
 	}
-	
+
 	@Override
 	public byte[] getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder hex = new StringBuilder();

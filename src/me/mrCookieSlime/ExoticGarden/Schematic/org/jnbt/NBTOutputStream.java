@@ -52,12 +52,12 @@ import java.util.zip.GZIPOutputStream;
  *
  */
 public final class NBTOutputStream implements Closeable {
-	
+
 	/**
 	 * The output stream.
 	 */
 	private final DataOutputStream os;
-	
+
 	/**
 	 * Creates a new <code>NBTOutputStream</code>, which will write data to the
 	 * specified underlying output stream.
@@ -67,7 +67,7 @@ public final class NBTOutputStream implements Closeable {
 	public NBTOutputStream(OutputStream os) throws IOException {
 		this.os = new DataOutputStream(new GZIPOutputStream(os));
 	}
-	
+
 	/**
 	 * Writes a tag.
 	 * @param tag The tag to write.
@@ -77,15 +77,15 @@ public final class NBTOutputStream implements Closeable {
 		int type = NBTUtils.getTypeCode(tag.getClass());
 		String name = tag.getName();
 		byte[] nameBytes = name.getBytes(NBTConstants.CHARSET);
-		
+
 		os.writeByte(type);
 		os.writeShort(nameBytes.length);
 		os.write(nameBytes);
-		
+
 		if(type == NBTConstants.TYPE_END) {
 			throw new IOException("Named TAG_End not permitted.");
 		}
-		
+
 		writeTagPayload(tag);
 	}
 
@@ -176,7 +176,7 @@ public final class NBTOutputStream implements Closeable {
 		Class<? extends Tag> clazz = tag.getType();
 		List<Tag> tags = tag.getValue();
 		int size = tags.size();
-		
+
 		os.writeByte(NBTUtils.getTypeCode(clazz));
 		os.writeInt(size);
 		for(int i = 0; i < size; i++) {

@@ -46,14 +46,14 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 * @author Max
 */
 public class Schematic {
-	
+
 	private short[] blocks;
 	private byte[] data;
 	private short width;
 	private short lenght;
 	private short height;
 	private String name;
-	
+
 	public Schematic(String name, short[] blocks, byte[] data, short width, short lenght, short height) {
 		this.blocks = blocks;
 		this.data = data;
@@ -62,61 +62,61 @@ public class Schematic {
 		this.height = height;
 		this.name = name;
 	}
-	
+
 	/**
 	* @return the blocks
 	*/
 	public short[] getBlocks() {
 		return blocks;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	* @return the data
 	*/
 	public byte[] getData() {
 		return data;
 	}
-	
+
 	/**
 	* @return the width
 	*/
 	public short getWidth() {
 		return width;
 	}
-	
+
 	/**
 	* @return the lenght
 	*/
 	public short getLenght() {
 		return lenght;
 	}
-	
+
 	/**
 	* @return the height
 	*/
 	public short getHeight() {
 		return height;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static void pasteSchematic(Location loc, Tree tree) {
 		Schematic schematic = null;
 		try {
 			schematic = tree.getSchematic();
 		} catch (IOException e) {}
-		
+
 		BlockFace[] bf = {BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
 		short[] blocks = schematic.getBlocks();
 		byte[] blockData = schematic.getData();
-		
+
 		short length = schematic.getLenght();
 		short width = schematic.getWidth();
 		short height = schematic.getHeight();
-		
+
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
 				for (int z = 0; z < length; ++z) {
@@ -136,13 +136,13 @@ public class Schematic {
 									s.setRotation(bf[new Random().nextInt(bf.length)]);
 									s.setRawData((byte) 1);
 									s.update();
-									
+
 									try {
 										CustomSkull.setSkull(s.getBlock(), tree.getTexture());
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
-									
+
 									BlockStorage.store(s.getBlock(), tree.getFruit());
 								}
 							}
@@ -152,38 +152,38 @@ public class Schematic {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("resource")
 	public static Schematic loadSchematic(File file) throws IOException {
 		FileInputStream stream = new FileInputStream(file);
 		NBTInputStream nbtStream = new NBTInputStream(stream);
-		
+
 		CompoundTag schematicTag = (CompoundTag) nbtStream.readTag();
 		if (!schematicTag.getName().equals("Schematic")) {
 			throw new IllegalArgumentException("Tag \"Schematic\" does not exist or is not first");
 		}
-		
+
 		Map<String, Tag> schematic = schematicTag.getValue();
 		if (!schematic.containsKey("Blocks")) {
 			throw new IllegalArgumentException("Schematic file is missing a \"Blocks\" tag");
 		}
-		
+
 		short width = getChildTag(schematic, "Width", ShortTag.class).getValue();
 		short length = getChildTag(schematic, "Length", ShortTag.class).getValue();
 		short height = getChildTag(schematic, "Height", ShortTag.class).getValue();
-		
+
 		// Get blocks
 		byte[] blockId = getChildTag(schematic, "Blocks", ByteArrayTag.class).getValue();
 		byte[] blockData = getChildTag(schematic, "Data", ByteArrayTag.class).getValue();
 		byte[] addId = new byte[0];
 		short[] blocks = new short[blockId.length]; // Have to later combine IDs
-		
+
 		// We support 4096 block IDs using the same method as vanilla Minecraft, where
 		// the highest 4 bits are stored in a separate byte array.
 		if (schematic.containsKey("AddBlocks")) {
 			addId = getChildTag(schematic, "AddBlocks", ByteArrayTag.class).getValue();
 		}
-		
+
 		// Combine the AddBlocks data with the first 8-bit block ID
 		for (int index = 0; index < blockId.length; index++) {
 			if ((index >> 1) >= addId.length) { // No corresponding AddBlocks index
@@ -196,10 +196,10 @@ public class Schematic {
 				}
 			}
 		}
-		
+
 		return new Schematic(file.getName().replace(".schematic", ""), blocks, blockData, width, length, height);
 	}
-	
+
 	/**
 	* Get child tag of a NBT structure.
 	*
@@ -214,12 +214,12 @@ public class Schematic {
 		if (!items.containsKey(key)) {
 			throw new IllegalArgumentException("Schematic file is missing a \"" + key + "\" tag");
 		}
-		
+
 		Tag tag = items.get(key);
 		if (!expected.isInstance(tag)) {
 			throw new IllegalArgumentException(key + " tag is not of tag type " + expected.getName());
 		}
-		
+
 		return expected.cast(tag);
 	}
 

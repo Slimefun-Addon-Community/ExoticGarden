@@ -1,10 +1,8 @@
 package me.mrCookieSlime.ExoticGarden;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -12,26 +10,24 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-
 import me.mrCookieSlime.CSCoreLibPlugin.events.ItemUseEvent;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class FoodListener implements Listener {
-	
+
 	ExoticGarden plugin;
-	
+
 	public FoodListener(ExoticGarden plugin) {
 		this.plugin = plugin;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
-	
+
 	@EventHandler(priority=EventPriority.HIGH)
 	public void onUse(final ItemUseEvent e) {
 		if (e.getPlayer().getFoodLevel() >= 20) return;
-		
+
 		if (e.getClickedBlock() != null) {
 			if (!e.getPlayer().isSneaking()) {
 				switch (e.getClickedBlock().getType()) {
@@ -68,9 +64,9 @@ public class FoodListener implements Listener {
 				}
 			}
 		}
-		
+
 		EquipmentSlot hand = e.getParentEvent().getHand();
-		
+
 		switch (hand) {
 			case HAND: {
 				SlimefunItem item = SlimefunItem.getByItem(new CustomItem(e.getPlayer().getInventory().getItemInMainHand(), 1));
@@ -106,21 +102,31 @@ public class FoodListener implements Listener {
 				break;
 		}
 	}
-	
+
 	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
 	public void onPlace(BlockPlaceEvent e) {
 		SlimefunItem item = SlimefunItem.getByItem(e.getItemInHand());
 		if (item != null && (item instanceof EGPlant) && e.getItemInHand().getType() == Material.SKULL_ITEM) e.setCancelled(true);
 	}
-	
+
 	@EventHandler
 	public void onEquip(InventoryClickEvent e) {
+		if (e.getSlotType() != SlotType.ARMOR) return;
+		SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
+		if (item != null && (item instanceof EGPlant) && e.getCursor().getType() == Material.SKULL_ITEM) e.setCancelled(true);
+	}
+
+	// getClickedInventory() requires Spigot to work
+	/*@EventHandler
+	public void onEquip(InventoryClickEvent e) {
 		if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE) return;
+
 		if (!e.isShiftClick()) {
 			if (e.getSlotType() != SlotType.ARMOR) return;
 			SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
 			if (item != null && (item instanceof EGPlant) && e.getCursor().getType() == Material.SKULL_ITEM) e.setCancelled(true);
 		} else {
+			if (e.getInventory().getType() != InventoryType.CRAFTING) return;
 			if (e.getAction().toString().startsWith("DROP") || e.getWhoClicked().getEquipment().getHelmet() != null || e.getSlotType() == SlotType.CRAFTING) return;
 			SlimefunItem item = SlimefunItem.getByItem(e.getCurrentItem());
 			if (item != null && (item instanceof EGPlant) && e.getCurrentItem().getType() == Material.SKULL_ITEM) {
@@ -145,6 +151,6 @@ public class FoodListener implements Listener {
 				e.setCancelled(true);
 			}
 		}
-	}
+	}*/
 
 }

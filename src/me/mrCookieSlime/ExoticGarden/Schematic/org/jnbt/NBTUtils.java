@@ -39,7 +39,7 @@ package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
  *
  */
 public final class NBTUtils {
-	
+
 	/**
 	 * Gets the type name of a tag.
 	 * @param clazz The tag class.
@@ -72,7 +72,7 @@ public final class NBTUtils {
 			throw new IllegalArgumentException("Invalid tag classs (" + clazz.getName() + ").");
 		}
 	}
-	
+
 	/**
 	 * Gets the type code of a tag class.
 	 * @param clazz The tag class.
@@ -106,7 +106,7 @@ public final class NBTUtils {
 			throw new IllegalArgumentException("Invalid tag classs (" + clazz.getName() + ").");
 		}
 	}
-	
+
 	/**
 	 * Gets the class of a type of tag.
 	 * @param type The type.
@@ -141,12 +141,12 @@ public final class NBTUtils {
 			throw new IllegalArgumentException("Invalid tag type : " + type + ".");
 		}
 	}
-	
+
 	/**
 	 * Default private constructor.
 	 */
 	private NBTUtils() {
-		
+
 	}
 
 }

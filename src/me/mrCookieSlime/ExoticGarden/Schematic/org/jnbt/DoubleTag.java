@@ -39,7 +39,7 @@ package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
  *
  */
 public final class DoubleTag extends Tag {
-	
+
 	/**
 	 * The value.
 	 */
@@ -54,12 +54,12 @@ public final class DoubleTag extends Tag {
 		super(name);
 		this.value = value;
 	}
-	
+
 	@Override
 	public Double getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		String name = getName();

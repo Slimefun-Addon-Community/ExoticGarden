@@ -12,10 +12,10 @@ import me.mrCookieSlime.ExoticGarden.Schematic.Schematic;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class Tree {
-	
+
 	String sapling, schematic, texture, fruit;
 	List<Material> soils;
-	
+
 	public Tree(String name, String fruit, String texture, Material... soil) {
 		this.sapling = name + "_SAPLING";
 		this.schematic = name + "_TREE";
@@ -23,15 +23,15 @@ public class Tree {
 		this.fruit = fruit;
 		this.soils = Arrays.asList(soil);
 	}
-	
+
 	public Schematic getSchematic() throws IOException {
 	    return Schematic.loadSchematic(new File("plugins/ExoticGarden/" + schematic + ".schematic"));
 	}
-	
+
 	public ItemStack getItem() {
 		return SlimefunItem.getByID(sapling).getItem();
 	}
-	
+
 	public String getTexture() {
 		return this.texture;
 	}
@@ -43,7 +43,7 @@ public class Tree {
 	public String getSapling() {
 		return this.sapling;
 	}
-	
+
 	public boolean isSoil(Material material) {
 		return soils.contains(material);
 	}

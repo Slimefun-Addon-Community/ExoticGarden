@@ -44,7 +44,7 @@ public final class IntTag extends Tag {
 	 * The value.
 	 */
 	private final int value;
-	
+
 	/**
 	 * Creates the tag.
 	 * @param name The name.
@@ -59,7 +59,7 @@ public final class IntTag extends Tag {
 	public Integer getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		String name = getName();

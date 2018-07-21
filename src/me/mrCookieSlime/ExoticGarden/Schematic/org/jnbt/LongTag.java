@@ -44,7 +44,7 @@ public final class LongTag extends Tag {
 	 * The value.
 	 */
 	private final long value;
-	
+
 	/**
 	 * Creates the tag.
 	 * @param name The name.
@@ -54,12 +54,12 @@ public final class LongTag extends Tag {
 		super(name);
 		this.value = value;
 	}
-	
+
 	@Override
 	public Long getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		String name = getName();

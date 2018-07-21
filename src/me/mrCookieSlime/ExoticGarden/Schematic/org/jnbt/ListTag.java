@@ -47,12 +47,12 @@ public final class ListTag extends Tag {
 	 * The type.
 	 */
 	private final Class<? extends Tag> type;
-	
+
 	/**
 	 * The value.
 	 */
 	private final List<Tag> value;
-	
+
 	/**
 	 * Creates the tag.
 	 * @param name The name.
@@ -64,7 +64,7 @@ public final class ListTag extends Tag {
 		this.type = type;
 		this.value = Collections.unmodifiableList(value);
 	}
-	
+
 	/**
 	 * Gets the type of item in this list.
 	 * @return The type of item in this list.
@@ -72,12 +72,12 @@ public final class ListTag extends Tag {
 	public Class<? extends Tag> getType() {
 		return type;
 	}
-	
+
 	@Override
 	public List<Tag> getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		String name = getName();

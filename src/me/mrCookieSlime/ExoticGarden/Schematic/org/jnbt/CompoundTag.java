@@ -42,12 +42,12 @@ import java.util.Map;
  *
  */
 public final class CompoundTag extends Tag {
-	
+
 	/**
 	 * The value.
 	 */
 	private final Map<String, Tag> value;
-	
+
 	/**
 	 * Creates the tag.
 	 * @param name The name.
@@ -62,7 +62,7 @@ public final class CompoundTag extends Tag {
 	public Map<String, Tag> getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		String name = getName();

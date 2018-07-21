@@ -44,7 +44,7 @@ public final class FloatTag extends Tag {
 	 * The value.
 	 */
 	private final float value;
-	
+
 	/**
 	 * Creates the tag.
 	 * @param name The name.
@@ -54,12 +54,12 @@ public final class FloatTag extends Tag {
 		super(name);
 		this.value = value;
 	}
-	
+
 	@Override
 	public Float getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		String name = getName();
