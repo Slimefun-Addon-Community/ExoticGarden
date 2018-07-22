@@ -58,10 +58,11 @@ public class FoodListener implements Listener {
 					case DARK_OAK_DOOR:
 					case WOOD_DOOR:
 					case IRON_DOOR:
-					case BED: 
+					case BED_BLOCK: 
 						return;
 					default:
 				}
+				if (ExoticGarden.getBerry(e.getClickedBlock()) != null) return;
 			}
 		}
 
@@ -73,12 +74,8 @@ public class FoodListener implements Listener {
 				if (item != null && (item instanceof EGPlant) && ((EGPlant) item).isEdible()) {
 					((EGPlant) item).restoreHunger(e.getPlayer());
 					e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
-					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						
-						@Override
-						public void run() {
-							e.getPlayer().getInventory().setItemInMainHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInMainHand(), 1));
-						}
+					Bukkit.getScheduler().runTaskLater(plugin, () -> {
+						e.getPlayer().getInventory().setItemInMainHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInMainHand(), 1));
 					}, 0L);
 				}
 				break;
@@ -88,12 +85,8 @@ public class FoodListener implements Listener {
 				if (item != null && (item instanceof EGPlant) && ((EGPlant) item).isEdible()) {
 					((EGPlant) item).restoreHunger(e.getPlayer());
 					e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
-					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						
-						@Override
-						public void run() {
-							e.getPlayer().getInventory().setItemInOffHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInOffHand(), 1));
-						}
+					Bukkit.getScheduler().runTaskLater(plugin, () -> {
+						e.getPlayer().getInventory().setItemInOffHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInOffHand(), 1));
 					}, 0L);
 				}
 				break;
@@ -115,42 +108,5 @@ public class FoodListener implements Listener {
 		SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
 		if (item != null && (item instanceof EGPlant) && e.getCursor().getType() == Material.SKULL_ITEM) e.setCancelled(true);
 	}
-
-	// getClickedInventory() requires Spigot to work
-	/*@EventHandler
-	public void onEquip(InventoryClickEvent e) {
-		if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE) return;
-
-		if (!e.isShiftClick()) {
-			if (e.getSlotType() != SlotType.ARMOR) return;
-			SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
-			if (item != null && (item instanceof EGPlant) && e.getCursor().getType() == Material.SKULL_ITEM) e.setCancelled(true);
-		} else {
-			if (e.getInventory().getType() != InventoryType.CRAFTING) return;
-			if (e.getAction().toString().startsWith("DROP") || e.getWhoClicked().getEquipment().getHelmet() != null || e.getSlotType() == SlotType.CRAFTING) return;
-			SlimefunItem item = SlimefunItem.getByItem(e.getCurrentItem());
-			if (item != null && (item instanceof EGPlant) && e.getCurrentItem().getType() == Material.SKULL_ITEM) {
-				if (e.getSlot() > 8) {
-					for (int i = 0; i < 9; i++) {
-						if (e.getClickedInventory().getItem(i) == null || e.getClickedInventory().getItem(i).getType() == Material.AIR) {
-							e.getClickedInventory().setItem(i, e.getCurrentItem());
-							e.setCurrentItem(new ItemStack(Material.AIR));
-							((Player) e.getWhoClicked()).updateInventory();
-							return;
-						}
-					}
-				}
-				for (int i = 9; i < 36; i++) {
-					if (e.getClickedInventory().getItem(i) == null || e.getClickedInventory().getItem(i).getType() == Material.AIR) {
-						e.getClickedInventory().setItem(i, e.getCurrentItem());
-						e.setCurrentItem(new ItemStack(Material.AIR));
-						((Player) e.getWhoClicked()).updateInventory();
-						return;
-					}
-				}
-				e.setCancelled(true);
-			}
-		}
-	}*/
 
 }

@@ -239,7 +239,7 @@ public class PlantsListener implements Listener {
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent e) {
-		if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getPlayer().isSneaking()) return;
 		if (CSCoreLib.getLib().getProtectionManager().canBuild(e.getPlayer().getUniqueId(), e.getClickedBlock())) {
 			ItemStack item = ExoticGarden.harvestPlant(e.getClickedBlock());
 			if (item != null ) {

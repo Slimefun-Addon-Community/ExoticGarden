@@ -25,7 +25,7 @@ public class Tree {
 	}
 
 	public Schematic getSchematic() throws IOException {
-	    return Schematic.loadSchematic(new File("plugins/ExoticGarden/" + schematic + ".schematic"));
+	    return Schematic.loadSchematic(new File("plugins/ExoticGarden/schematics/" + schematic + ".schematic"));
 	}
 
 	public ItemStack getItem() {

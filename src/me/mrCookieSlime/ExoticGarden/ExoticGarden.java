@@ -64,6 +64,7 @@ public class ExoticGarden extends JavaPlugin {
 		CSCoreLibLoader loader = new CSCoreLibLoader(this);
 		if (loader.load()) {
 			if (!new File("plugins/ExoticGarden").exists()) new File("plugins/ExoticGarden").mkdirs();
+	    	if (!new File("plugins/ExoticGarden/schematics").exists()) new File("plugins/ExoticGarden/schematics").mkdirs();
 			PluginUtils utils = new PluginUtils(this);
 			utils.setupConfig();
 			cfg = utils.getConfig();
@@ -102,7 +103,7 @@ public class ExoticGarden extends JavaPlugin {
 			registerPlant("Corn", "&6", Material.GOLDEN_CARROT, PlantType.DOUBLE_PLANT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWJkMzgwMmU1ZmFjMDNhZmFiNzQyYjBmM2NjYTQxYmNkNDcyM2JlZTkxMWQyM2JlMjljZmZkNWI5NjVmMSJ9fX0="));
 			registerPlant("Pineapple", "&6", Material.GOLDEN_CARROT, PlantType.DOUBLE_PLANT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDdlZGRkODJlNTc1ZGZkNWI3NTc5ZDg5ZGNkMjM1MGM5OTFmMDQ4M2E3NjQ3Y2ZmZDNkMmM1ODdmMjEifX19"));
 
-			registerTree("Oak Apple", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2JiMzExZjNiYTFjMDdjM2QxMTQ3Y2QyMTBkODFmZTExZmQ4YWU5ZTNkYjIxMmEwZmE3NDg5NDZjMzYzMyJ9fX0=", "APPLE_OAK", "&c", Color.FUCHSIA, "Oak Apple Juice", true, Material.DIRT, Material.GRASS);
+			registerTree("Oak Apple", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2JiMzExZjNiYTFjMDdjM2QxMTQ3Y2QyMTBkODFmZTExZmQ4YWU5ZTNkYjIxMmEwZmE3NDg5NDZjMzYzMyJ9fX0=", "OAK_APPLE", "&c", Color.FUCHSIA, "Oak Apple Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Coconut", new MaterialData(Material.INK_SACK, (byte) 3), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQyN2RlZDU3Yjk0Y2Y3MTViMDQ4ZWY1MTdhYjNmODViZWY1YTdiZTY5ZjE0YjE1NzNlMTRlN2U0MmUyZTgifX19", "COCONUT", "&6", Color.MAROON, "Coconut Milk", false, Material.SAND);
 			registerTree("Cherry", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUyMDc2NmI4N2QyNDYzYzM0MTczZmZjZDU3OGIwZTY3ZDE2M2QzN2EyZDdjMmU3NzkxNWNkOTExNDRkNDBkMSJ9fX0=", "CHERRY", "&c", Color.FUCHSIA, "Cherry Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Pomegranate", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2JiMzExZjNiYTFjMDdjM2QxMTQ3Y2QyMTBkODFmZTExZmQ4YWU5ZTNkYjIxMmEwZmE3NDg5NDZjMzYzMyJ9fX0=", "POMEGRANATE", "&4", Color.RED, "Pomegranate Juice", true, Material.DIRT, Material.GRASS);
@@ -692,7 +693,7 @@ public class ExoticGarden extends JavaPlugin {
 	    int read;
 	    byte[] buffer = new byte[4096];
 	    try {
-	        out = new FileOutputStream(new File("plugins/ExoticGarden/" + id + "_TREE.schematic"));
+	        out = new FileOutputStream(new File("plugins/ExoticGarden/schematics/" + id + "_TREE.schematic"));
 	        while ((read = stream.read(buffer)) > 0) {
 	            out.write(buffer, 0, read);
 	        }
