@@ -1,6 +1,4 @@
-package org.jnbt;
-
-import java.nio.charset.Charset;
+package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
 
 /*
  * JNBT License
@@ -36,37 +34,40 @@ import java.nio.charset.Charset;
  */
 
 /**
- * A class which holds constant values.
+ * The <code>TAG_Long</code> tag.
  * @author Graham Edgecombe
  *
  */
-public final class NBTConstants {
-	
+public final class LongTag extends Tag {
+
 	/**
-	 * The character set used by NBT (UTF-8).
+	 * The value.
 	 */
-	public static final Charset CHARSET = Charset.forName("UTF-8");
-	
+	private final long value;
+
 	/**
-	 * Tag type constants.
+	 * Creates the tag.
+	 * @param name The name.
+	 * @param value The value.
 	 */
-	public static final int TYPE_END = 0,
-		TYPE_BYTE = 1,
-		TYPE_SHORT = 2,
-		TYPE_INT = 3,
-		TYPE_LONG = 4,
-		TYPE_FLOAT = 5,
-		TYPE_DOUBLE = 6,
-		TYPE_BYTE_ARRAY = 7,
-		TYPE_STRING = 8,
-		TYPE_LIST = 9,
-		TYPE_COMPOUND = 10;
-	
-	/**
-	 * Default private constructor.
-	 */
-	private NBTConstants() {
-		
+	public LongTag(String name, long value) {
+		super(name);
+		this.value = value;
+	}
+
+	@Override
+	public Long getValue() {
+		return value;
+	}
+
+	@Override
+	public String toString() {
+		String name = getName();
+		String append = "";
+		if(name != null && !name.equals("")) {
+			append = "(\"" + this.getName() + "\")";
+		}
+		return "TAG_Long" + append + ": " + value;
 	}
 
 }

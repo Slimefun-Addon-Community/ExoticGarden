@@ -1,4 +1,4 @@
-package org.jnbt;
+package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
 
 /*
  * JNBT License
@@ -34,27 +34,40 @@ package org.jnbt;
  */
 
 /**
- * The <code>TAG_End</code> tag.
+ * The <code>TAG_Byte</code> tag.
  * @author Graham Edgecombe
  *
  */
-public final class EndTag extends Tag {
+public final class ByteTag extends Tag {
+
+	/**
+	 * The value.
+	 */
+	private final byte value;
 
 	/**
 	 * Creates the tag.
+	 * @param name The name.
+	 * @param value The value.
 	 */
-	public EndTag() {
-		super("");
+	public ByteTag(String name, byte value) {
+		super(name);
+		this.value = value;
 	}
 
 	@Override
-	public Object getValue() {
-		return null;
+	public Byte getValue() {
+		return value;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "TAG_End";
+		String name = getName();
+		String append = "";
+		if(name != null && !name.equals("")) {
+			append = "(\"" + this.getName() + "\")";
+		}
+		return "TAG_Byte" + append + ": " + value;
 	}
 
 }

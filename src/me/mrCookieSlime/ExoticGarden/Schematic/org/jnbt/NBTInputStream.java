@@ -1,4 +1,4 @@
-package org.jnbt;
+package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
 
 /*
  * JNBT License
@@ -55,12 +55,12 @@ import java.util.zip.GZIPInputStream;
  *
  */
 public final class NBTInputStream implements Closeable {
-	
+
 	/**
 	 * The data input stream.
 	 */
 	private final DataInputStream is;
-	
+
 	/**
 	 * Creates a new <code>NBTInputStream</code>, which will source its data
 	 * from the specified input stream.
@@ -70,7 +70,7 @@ public final class NBTInputStream implements Closeable {
 	public NBTInputStream(InputStream is) throws IOException {
 		this.is = new DataInputStream(new GZIPInputStream(is));
 	}
-	
+
 	/**
 	 * Reads an NBT tag from the stream.
 	 * @return The tag that was read.
@@ -79,7 +79,7 @@ public final class NBTInputStream implements Closeable {
 	public Tag readTag() throws IOException {
 		return readTag(0);
 	}
-	
+
 	/**
 	 * Reads an NBT from the stream.
 	 * @param depth The depth of this tag.
@@ -88,7 +88,7 @@ public final class NBTInputStream implements Closeable {
 	 */
 	private Tag readTag(int depth) throws IOException {
 		int type = is.readByte() & 0xFF;
-				
+
 		String name;
 		if(type != NBTConstants.TYPE_END) {
 			int nameLength = is.readShort() & 0xFFFF;
@@ -98,7 +98,7 @@ public final class NBTInputStream implements Closeable {
 		} else {
 			name = "";
 		}
-		
+
 		return readTagPayload(type, name, depth);
 	}
 
@@ -143,7 +143,7 @@ public final class NBTInputStream implements Closeable {
 		case NBTConstants.TYPE_LIST:
 			int childType = is.readByte();
 			length = is.readInt();
-			
+
 			List<Tag> tagList = new ArrayList<Tag>();
 			for(int i = 0; i < length; i++) {
 				Tag tag = readTagPayload(childType, "", depth + 1);
@@ -152,7 +152,7 @@ public final class NBTInputStream implements Closeable {
 				}
 				tagList.add(tag);
 			}
-			
+
 			return new ListTag(name, NBTUtils.getTypeClass(childType), tagList);
 		case NBTConstants.TYPE_COMPOUND:
 			Map<String, Tag> tagMap = new HashMap<String, Tag>();
@@ -164,7 +164,7 @@ public final class NBTInputStream implements Closeable {
 					tagMap.put(tag.getName(), tag);
 				}
 			}
-			
+
 			return new CompoundTag(name, tagMap);
 		default:
 			throw new IOException("Invalid tag type: " + type + ".");

@@ -12,25 +12,25 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.bukkit.plugin.Plugin;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 public class CSCoreLibLoader {
-	
+
 	Plugin plugin;
 	URL url;
 	URL download;
 	File file;
-	
+
 	public CSCoreLibLoader(Plugin plugin) {
 		this.plugin = plugin;
 		try {
 			this.url = new URL("https://api.curseforge.com/servermods/files?projectIds=88802");
-		} catch (MalformedURLException e) {
-		}
+		} catch (MalformedURLException e) {}
 	}
-	
+
 	public boolean load() {
 		if (plugin.getServer().getPluginManager().isPluginEnabled("CS-CoreLib")) return true;
 		else {
@@ -38,7 +38,7 @@ public class CSCoreLibLoader {
 			System.err.println("#################### - INFO - ####################");
 			System.err.println(" ");
 			System.err.println(plugin.getName() + " could not be loaded.");
-			System.err.println("It appears that you have not installed CS-CoreLib");
+			System.err.println("It appears that you have not installed CS-CoreLib.");
 			System.err.println("Your Server will now try to download and install");
 			System.err.println("CS-CoreLib for you.");
 			System.err.println("You will be asked to restart your Server when it's finished.");
@@ -47,12 +47,8 @@ public class CSCoreLibLoader {
 			System.err.println(" ");
 			System.err.println("#################### - INFO - ####################");
 			System.err.println(" ");
-			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-				
-				@Override
-				public void run() {
-					if (connect()) install();
-				}
+			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+				if (connect()) install();
 			}, 10L);
 			return false;
 		}
@@ -125,7 +121,7 @@ public class CSCoreLibLoader {
         	System.err.println(" ");
         	System.err.println("#################### - WARNING - ####################");
 			System.err.println(" ");
-			System.err.println("Failed to download CS-CoreLib");
+			System.err.println("Failed to download CS-CoreLib.");
 			System.err.println("Please download & install CS-CoreLib manually:");
 			System.err.println("https://dev.bukkit.org/projects/cs-corelib");
 			System.err.println(" ");

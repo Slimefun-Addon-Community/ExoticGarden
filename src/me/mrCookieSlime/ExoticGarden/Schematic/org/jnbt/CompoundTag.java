@@ -1,4 +1,4 @@
-package org.jnbt;
+package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
 
 /*
  * JNBT License
@@ -33,33 +33,36 @@ package org.jnbt;
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+import java.util.Collections;
+import java.util.Map;
+
 /**
- * The <code>TAG_Long</code> tag.
+ * The <code>TAG_Compound</code> tag.
  * @author Graham Edgecombe
  *
  */
-public final class LongTag extends Tag {
+public final class CompoundTag extends Tag {
 
 	/**
 	 * The value.
 	 */
-	private final long value;
-	
+	private final Map<String, Tag> value;
+
 	/**
 	 * Creates the tag.
 	 * @param name The name.
 	 * @param value The value.
 	 */
-	public LongTag(String name, long value) {
+	public CompoundTag(String name, Map<String, Tag> value) {
 		super(name);
-		this.value = value;
+		this.value = Collections.unmodifiableMap(value);
 	}
-	
+
 	@Override
-	public Long getValue() {
+	public Map<String, Tag> getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		String name = getName();
@@ -67,7 +70,13 @@ public final class LongTag extends Tag {
 		if(name != null && !name.equals("")) {
 			append = "(\"" + this.getName() + "\")";
 		}
-		return "TAG_Long" + append + ": " + value;
+		StringBuilder bldr = new StringBuilder();
+		bldr.append("TAG_Compound" + append + ": " + value.size() + " entries\r\n{\r\n");
+		for(Map.Entry<String, Tag> entry : value.entrySet()) {
+			bldr.append("   " + entry.getValue().toString().replaceAll("\r\n", "\r\n   ") + "\r\n");
+		}
+		bldr.append("}");
+		return bldr.toString();
 	}
 
 }
