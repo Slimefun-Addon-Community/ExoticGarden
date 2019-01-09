@@ -1,10 +1,6 @@
 package me.mrCookieSlime.ExoticGarden;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -688,25 +684,8 @@ public class ExoticGarden extends JavaPlugin {
 			}
 		}
 
-		InputStream stream = Tree.class.getResourceAsStream("schematics/" + id + "_TREE.schematic");
-	    OutputStream out = null;
-	    int read;
-	    byte[] buffer = new byte[4096];
-	    try {
-	        out = new FileOutputStream(new File("plugins/ExoticGarden/schematics/" + id + "_TREE.schematic"));
-	        while ((read = stream.read(buffer)) > 0) {
-	            out.write(buffer, 0, read);
-	        }
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-				stream.close();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	    }
+		if (!new File("plugins/ExoticGarden/schematics", id + "_TREE.schematic").exists())
+			saveResource("schematics/" + id + "_TREE.schematic", false);
 	}
 
 	public void registerBerry(String name, String color, Color pcolor, PlantType type, PlantData data) {
