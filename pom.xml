@@ -47,6 +47,14 @@
                     <include>plugin.yml</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>${basedir}/src</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>config.yml</include>
+                    <include>**/schematics/*.schematic</include>
+                </includes>
+            </resource>
         </resources>
     </build>
     <dependencies>
