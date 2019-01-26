@@ -52,7 +52,7 @@ public class ExoticGarden extends JavaPlugin {
 
 	private static boolean skullitems;
 
-	public static ItemStack KITCHEN = new CustomItem(Material.CAULDRON_ITEM, "&eKitchen", 0, new String[] {"", "&a&oYou can make a bunch of different yummies here"});
+	public static ItemStack KITCHEN = new CustomItem(Material.CAULDRON, "&eKitchen", 0, new String[] {"", "&a&oYou can make a bunch of different yummies here"});
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -69,7 +69,7 @@ public class ExoticGarden extends JavaPlugin {
 
 			skullitems = cfg.getBoolean("options.item-heads");
 
-			category_main = new Category(new CustomItem(getSkull(Material.NETHER_STALK, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVhNWM0YTBhMTZkYWJjOWIxZWM3MmZjODNlMjNhYzE1ZDAxOTdkZTYxYjEzOGJhYmNhN2M4YTI5YzgyMCJ9fX0="), "&aExotic Garden - Plants and Fruits", "", "&a> Click to open"));
+			category_main = new Category(new CustomItem(getSkull(Material.NETHER_WART, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVhNWM0YTBhMTZkYWJjOWIxZWM3MmZjODNlMjNhYzE1ZDAxOTdkZTYxYjEzOGJhYmNhN2M4YTI5YzgyMCJ9fX0="), "&aExotic Garden - Plants and Fruits", "", "&a> Click to open"));
 			category_food = new Category(new CustomItem(getSkull(Material.BREAD, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTE0MjE2ZDEwNzE0MDgyYmJlM2Y0MTI0MjNlNmIxOTIzMjM1MmY0ZDY0ZjlhY2EzOTEzY2I0NjMxOGQzZWQifX19"), "&aExotic Garden - Food", "", "&a> Click to open"));
 			category_drinks = new Category(new CustomItem(getSkull(Material.POTION, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmE4ZjFmNzBlODU4MjU2MDdkMjhlZGNlMWEyYWQ0NTA2ZTczMmI0YTUzNDVhNWVhNmU4MDdjNGIzMTNlODgifX19"), "&aExotic Garden - Drinks", "", "&a> Click to open"));
 			category_magic = new Category(new CustomItem(new MaterialData(Material.BLAZE_POWDER), "&5Exotic Garden - Magical Plants", "", "&a> Click to open"));
@@ -90,20 +90,20 @@ public class ExoticGarden extends JavaPlugin {
 			registerBerry("Strawberry", "&4", Color.FUCHSIA, PlantType.FRUIT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2JjODI2YWFhZmI4ZGJmNjc4ODFlNjg5NDQ0MTRmMTM5ODUwNjRhM2Y4ZjA0NGQ4ZWRmYjQ0NDNlNzZiYSJ9fX0="));
 
 			registerPlant("Tomato", "&4", Material.APPLE, PlantType.FRUIT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTkxNzIyMjZkMjc2MDcwZGMyMWI3NWJhMjVjYzJhYTU2NDlkYTVjYWM3NDViYTk3NzY5NWI1OWFlYmQifX19"));
-			registerPlant("Lettuce", "&2", Material.LEAVES, PlantType.FRUIT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDc3ZGQ4NDJjOTc1ZDhmYjAzYjFhZGQ2NmRiODM3N2ExOGJhOTg3MDUyMTYxZjIyNTkxZTZhNGVkZTdmNSJ9fX0="));
-			registerPlant("Tea Leaf", "&a", Material.LEAVES, PlantType.DOUBLE_PLANT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTUxNGM4YjQ2MTI0N2FiMTdmZTM2MDZlNmUyZjRkMzYzZGNjYWU5ZWQ1YmVkZDAxMmI0OThkN2FlOGViMyJ9fX0="));
-			registerPlant("Cabbage", "&2", Material.LEAVES, PlantType.FRUIT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmNkNmQ2NzMyMGM5MTMxYmU4NWExNjRjZDdjNWZjZjI4OGYyOGMyODE2NTQ3ZGIzMGEzMTg3NDE2YmRjNDViIn19fQ=="));
-			registerPlant("Sweet Potato", "&6", Material.LEAVES, PlantType.FRUIT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ZmNDg1NzhiNjY4NGUxNzk5NDRhYjFiYzc1ZmVjNzVmOGZkNTkyZGZiNDU2ZjZkZWY3NjU3NzEwMWE2NiJ9fX0="));
+			registerPlant("Lettuce", "&2", Material.OAK_LEAVES, PlantType.FRUIT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDc3ZGQ4NDJjOTc1ZDhmYjAzYjFhZGQ2NmRiODM3N2ExOGJhOTg3MDUyMTYxZjIyNTkxZTZhNGVkZTdmNSJ9fX0="));
+			registerPlant("Tea Leaf", "&a", Material.OAK_LEAVES, PlantType.DOUBLE_PLANT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTUxNGM4YjQ2MTI0N2FiMTdmZTM2MDZlNmUyZjRkMzYzZGNjYWU5ZWQ1YmVkZDAxMmI0OThkN2FlOGViMyJ9fX0="));
+			registerPlant("Cabbage", "&2", Material.OAK_LEAVES, PlantType.FRUIT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmNkNmQ2NzMyMGM5MTMxYmU4NWExNjRjZDdjNWZjZjI4OGYyOGMyODE2NTQ3ZGIzMGEzMTg3NDE2YmRjNDViIn19fQ=="));
+			registerPlant("Sweet Potato", "&6", Material.OAK_LEAVES, PlantType.FRUIT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ZmNDg1NzhiNjY4NGUxNzk5NDRhYjFiYzc1ZmVjNzVmOGZkNTkyZGZiNDU2ZjZkZWY3NjU3NzEwMWE2NiJ9fX0="));
 			registerPlant("Mustard Seed", "&e", Material.GOLD_NUGGET, PlantType.FRUIT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQ1M2E0MjQ5NWZhMjdmYjkyNTY5OWJjM2U1ZjI5NTNjYzJkYzMxZDAyN2QxNGZjZjdiOGMyNGI0NjcxMjFmIn19fQ=="));
 
 			registerPlant("Corn", "&6", Material.GOLDEN_CARROT, PlantType.DOUBLE_PLANT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWJkMzgwMmU1ZmFjMDNhZmFiNzQyYjBmM2NjYTQxYmNkNDcyM2JlZTkxMWQyM2JlMjljZmZkNWI5NjVmMSJ9fX0="));
 			registerPlant("Pineapple", "&6", Material.GOLDEN_CARROT, PlantType.DOUBLE_PLANT, new PlantData("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDdlZGRkODJlNTc1ZGZkNWI3NTc5ZDg5ZGNkMjM1MGM5OTFmMDQ4M2E3NjQ3Y2ZmZDNkMmM1ODdmMjEifX19"));
 
 			registerTree("Oak Apple", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2JiMzExZjNiYTFjMDdjM2QxMTQ3Y2QyMTBkODFmZTExZmQ4YWU5ZTNkYjIxMmEwZmE3NDg5NDZjMzYzMyJ9fX0=", "OAK_APPLE", "&c", Color.FUCHSIA, "Oak Apple Juice", true, Material.DIRT, Material.GRASS);
-			registerTree("Coconut", new MaterialData(Material.INK_SACK, (byte) 3), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQyN2RlZDU3Yjk0Y2Y3MTViMDQ4ZWY1MTdhYjNmODViZWY1YTdiZTY5ZjE0YjE1NzNlMTRlN2U0MmUyZTgifX19", "COCONUT", "&6", Color.MAROON, "Coconut Milk", false, Material.SAND);
+			registerTree("Coconut", new MaterialData(Material.INK_SAC, (byte) 3), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQyN2RlZDU3Yjk0Y2Y3MTViMDQ4ZWY1MTdhYjNmODViZWY1YTdiZTY5ZjE0YjE1NzNlMTRlN2U0MmUyZTgifX19", "COCONUT", "&6", Color.MAROON, "Coconut Milk", false, Material.SAND);
 			registerTree("Cherry", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzUyMDc2NmI4N2QyNDYzYzM0MTczZmZjZDU3OGIwZTY3ZDE2M2QzN2EyZDdjMmU3NzkxNWNkOTExNDRkNDBkMSJ9fX0=", "CHERRY", "&c", Color.FUCHSIA, "Cherry Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Pomegranate", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2JiMzExZjNiYTFjMDdjM2QxMTQ3Y2QyMTBkODFmZTExZmQ4YWU5ZTNkYjIxMmEwZmE3NDg5NDZjMzYzMyJ9fX0=", "POMEGRANATE", "&4", Color.RED, "Pomegranate Juice", true, Material.DIRT, Material.GRASS);
-			registerTree("Lemon", new MaterialData(Material.POTATO_ITEM), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTU3ZmQ1NmNhMTU5Nzg3NzkzMjRkZjUxOTM1NGI2NjM5YThkOWJjMTE5MmM3YzNkZTkyNWEzMjliYWVmNmMifX19", "LEMON", "&e", Color.YELLOW, "Lemon Juice", true, Material.DIRT, Material.GRASS);
+			registerTree("Lemon", new MaterialData(Material.POTATO), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTU3ZmQ1NmNhMTU5Nzg3NzkzMjRkZjUxOTM1NGI2NjM5YThkOWJjMTE5MmM3YzNkZTkyNWEzMjliYWVmNmMifX19", "LEMON", "&e", Color.YELLOW, "Lemon Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Plum", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjlkNjY0MzE5ZmYzODFiNGVlNjlhNjk3NzE1Yjc2NDJiMzJkNTRkNzI2Yzg3ZjY0NDBiZjAxN2E0YmNkNyJ9fX0=", "PLUM", "&5", Color.RED, "Plum Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Lime", new MaterialData(Material.SLIME_BALL), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWE1MTUzNDc5ZDlmMTQ2YTVlZTNjOWUyMThmNWU3ZTg0YzRmYTM3NWU0Zjg2ZDMxNzcyYmE3MWY2NDY4In19fQ==", "LIME", "&a", Color.LIME, "Lime Juice", true, Material.DIRT, Material.GRASS);
 			registerTree("Orange", new MaterialData(Material.APPLE), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjViMWRiNTQ3ZDFiNzk1NmQ0NTExYWNjYjE1MzNlMjE3NTZkN2NiYzM4ZWI2NDM1NWEyNjI2NDEyMjEyIn19fQ==", "ORANGE", "&6", Color.ORANGE, "Orange Juice", true, Material.DIRT, Material.GRASS);
@@ -114,7 +114,7 @@ public class ExoticGarden extends JavaPlugin {
 			registerDishes();
 
 			registerMagicalPlant("Coal", new ItemStack(Material.COAL, 2), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzc4OGY1ZGRhZjUyYzU4NDIyODdiOTQyN2E3NGRhYzhmMDkxOWViMmZkYjFiNTEzNjVhYjI1ZWIzOTJjNDcifX19",
-			new ItemStack[] {null, new ItemStack(Material.COAL_ORE), null, new ItemStack(Material.COAL_ORE), new ItemStack(Material.SEEDS), new ItemStack(Material.COAL_ORE), null, new ItemStack(Material.COAL_ORE), null});
+			new ItemStack[] {null, new ItemStack(Material.COAL_ORE), null, new ItemStack(Material.COAL_ORE), new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.COAL_ORE), null, new ItemStack(Material.COAL_ORE), null});
 
 			registerMagicalPlant("Iron", new ItemStack(Material.IRON_INGOT), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGI5N2JkZjkyYjYxOTI2ZTM5ZjVjZGRmMTJmOGY3MTMyOTI5ZGVlNTQxNzcxZTBiNTkyYzhiODJjOWFkNTJkIn19fQ==",
 			new ItemStack[] {null, new ItemStack(Material.IRON_BLOCK), null, new ItemStack(Material.IRON_BLOCK), getItem("COAL_PLANT"), new ItemStack(Material.IRON_BLOCK), null, new ItemStack(Material.IRON_BLOCK), null});
@@ -125,14 +125,14 @@ public class ExoticGarden extends JavaPlugin {
 			registerMagicalPlant("Redstone", new ItemStack(Material.REDSTONE, 8), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZThkZWVlNTg2NmFiMTk5ZWRhMWJkZDc3MDdiZGI5ZWRkNjkzNDQ0ZjFlM2JkMzM2YmQyYzc2NzE1MWNmMiJ9fX0=",
 			new ItemStack[] {null, new ItemStack(Material.REDSTONE_BLOCK), null, new ItemStack(Material.REDSTONE_BLOCK), getItem("GOLD_PLANT"), new ItemStack(Material.REDSTONE_BLOCK), null, new ItemStack(Material.REDSTONE_BLOCK), null});
 
-			registerMagicalPlant("Lapis", new MaterialData(Material.INK_SACK, (byte) 4).toItemStack(16), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmFhMGQwZmVhMWFmYWVlMzM0Y2FiNGQyOWQ4Njk2NTJmNTU2M2M2MzUyNTNjMGNiZWQ3OTdlZDNjZjU3ZGUwIn19fQ==",
+			registerMagicalPlant("Lapis", new MaterialData(Material.INK_SAC, (byte) 4).toItemStack(16), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmFhMGQwZmVhMWFmYWVlMzM0Y2FiNGQyOWQ4Njk2NTJmNTU2M2M2MzUyNTNjMGNiZWQ3OTdlZDNjZjU3ZGUwIn19fQ==",
 			new ItemStack[] {null, new ItemStack(Material.LAPIS_ORE), null, new ItemStack(Material.LAPIS_ORE), getItem("REDSTONE_PLANT"), new ItemStack(Material.LAPIS_ORE), null, new ItemStack(Material.LAPIS_ORE), null});
 
 			registerMagicalPlant("Ender", new ItemStack(Material.ENDER_PEARL, 4), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGUzNWFhZGU4MTI5MmU2ZmY0Y2QzM2RjMGVhNmExMzI2ZDA0NTk3YzBlNTI5ZGVmNDE4MmIxZDE1NDhjZmUxIn19fQ==",
 			new ItemStack[] {null, new ItemStack(Material.ENDER_PEARL), null, new ItemStack(Material.ENDER_PEARL), getItem("LAPIS_PLANT"), new ItemStack(Material.ENDER_PEARL), null, new ItemStack(Material.ENDER_PEARL), null});
 
 			registerMagicalPlant("Quartz", new ItemStack(Material.QUARTZ, 8), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjZkZTU4ZDU4M2MxMDNjMWNkMzQ4MjQzODBjOGE0NzdlODk4ZmRlMmViOWE3NGU3MWYxYTk4NTA1M2I5NiJ9fX0=",
-			new ItemStack[] {null, new ItemStack(Material.QUARTZ_ORE), null, new ItemStack(Material.QUARTZ_ORE), getItem("ENDER_PLANT"), new ItemStack(Material.QUARTZ_ORE), null, new ItemStack(Material.QUARTZ_ORE), null});
+			new ItemStack[] {null, new ItemStack(Material.NETHER_QUARTZ_ORE), null, new ItemStack(Material.NETHER_QUARTZ_ORE), getItem("ENDER_PLANT"), new ItemStack(Material.NETHER_QUARTZ_ORE), null, new ItemStack(Material.NETHER_QUARTZ_ORE), null});
 
 			registerMagicalPlant("Diamond", new ItemStack(Material.DIAMOND), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjg4Y2Q2ZGQ1MDM1OWM3ZDU4OThjN2M3ZTNlMjYwYmZjZDNkY2IxNDkzYTg5YjllODhlOWNiZWNiZmU0NTk0OSJ9fX0=",
 			new ItemStack[] {null, new ItemStack(Material.DIAMOND), null, new ItemStack(Material.DIAMOND), getItem("QUARTZ_PLANT"), new ItemStack(Material.DIAMOND), null, new ItemStack(Material.DIAMOND), null});
@@ -151,7 +151,7 @@ public class ExoticGarden extends JavaPlugin {
 
 			final ItemStack grass_seeds = new CustomItem(new MaterialData(Material.PUMPKIN_SEEDS), "&rGrass Seeds", "", "&7&oCan be planted on Dirt");
 
-			final SlimefunItem crook = new SlimefunItem(Categories.TOOLS, new CustomItem(new MaterialData(Material.WOOD_HOE), "&rCrook", "", "&7+ &b25% &7Sapling Drop Rate"), "CROOK", RecipeType.ENHANCED_CRAFTING_TABLE,
+			final SlimefunItem crook = new SlimefunItem(Categories.TOOLS, new CustomItem(new MaterialData(Material.WOODEN_HOE), "&rCrook", "", "&7+ &b25% &7Sapling Drop Rate"), "CROOK", RecipeType.ENHANCED_CRAFTING_TABLE,
 			new ItemStack[] {new ItemStack(Material.STICK), new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null});
 			crook.register(false, new BlockBreakHandler() {
 
@@ -159,8 +159,8 @@ public class ExoticGarden extends JavaPlugin {
 				public boolean onBlockBreak(BlockBreakEvent arg0, ItemStack arg1, int arg2,List<ItemStack> arg3) {
 					if (SlimefunManager.isItemSimiliar(arg1, crook.getItem(), true)) {
 						PlayerInventory.damageItemInHand(arg0.getPlayer());
-						if ((arg0.getBlock().getType() == Material.LEAVES || arg0.getBlock().getType() == Material.LEAVES_2) && CSCoreLib.randomizer().nextInt(100) < 25) {
-							ItemStack sapling = new MaterialData(Material.SAPLING, (byte) ((arg0.getBlock().getData() % 4) + (arg0.getBlock().getType() == Material.LEAVES_2 ? 4: 0))).toItemStack(1);
+						if ((arg0.getBlock().getType() == Material.OAK_LEAVES || arg0.getBlock().getType() == Material.BIRCH_LEAVES) && CSCoreLib.randomizer().nextInt(100) < 25) {
+							ItemStack sapling = new MaterialData(Material.OAK_SAPLING, (byte) ((arg0.getBlock().getData() % 4) + (arg0.getBlock().getType() == Material.BIRCH_LEAVES ? 4: 0))).toItemStack(1);
 							arg3.add(sapling);
 						}
 						return true;
@@ -169,8 +169,8 @@ public class ExoticGarden extends JavaPlugin {
 				}
 			});
 
-			new SlimefunItem(category_main, grass_seeds, "GRASS_SEEDS", new RecipeType(new CustomItem(Material.LONG_GRASS, "&7Breaking Grass", 1)),
-			new ItemStack[] {null, null, null, null, new CustomItem(Material.LONG_GRASS, 1), null, null, null, null})
+			new SlimefunItem(category_main, grass_seeds, "GRASS_SEEDS", new RecipeType(new CustomItem(Material.TALL_GRASS, "&7Breaking Grass", 1)),
+			new ItemStack[] {null, null, null, null, new CustomItem(Material.TALL_GRASS, 1), null, null, null, null})
 			.register(false, new ItemInteractionHandler() {
 
 				@Override
@@ -190,15 +190,15 @@ public class ExoticGarden extends JavaPlugin {
 			new PlantsListener(this);
 			new FoodListener(this);
 
-			items.put("SEEDS", new ItemStack(Material.SEEDS));
+			items.put("SEEDS", new ItemStack(Material.WHEAT_SEEDS));
 			items.put("PUMPKIN_SEEDS", new ItemStack(Material.PUMPKIN_SEEDS));
 			items.put("MELON_SEEDS", new ItemStack(Material.MELON_SEEDS));
-			items.put("OAK_SAPLING", new ItemStack(Material.SAPLING));
-			items.put("SPRUCE_SAPLING", new CustomItem(Material.SAPLING, 1));
-			items.put("BIRCH_SAPLING", new CustomItem(Material.SAPLING, 2));
-			items.put("JUNGLE_SAPLING", new CustomItem(Material.SAPLING, 3));
-			items.put("ACACIA_SAPLING", new CustomItem(Material.SAPLING, 4));
-			items.put("DARK_OAK_SAPLING", new CustomItem(Material.SAPLING, 5));
+			items.put("OAK_SAPLING", new ItemStack(Material.OAK_SAPLING));
+			items.put("SPRUCE_SAPLING", new CustomItem(Material.OAK_SAPLING, 1));
+			items.put("BIRCH_SAPLING", new CustomItem(Material.OAK_SAPLING, 2));
+			items.put("JUNGLE_SAPLING", new CustomItem(Material.OAK_SAPLING, 3));
+			items.put("ACACIA_SAPLING", new CustomItem(Material.OAK_SAPLING, 4));
+			items.put("DARK_OAK_SAPLING", new CustomItem(Material.OAK_SAPLING, 5));
 			items.put("GRASS_SEEDS", grass_seeds);
 
 			Iterator<String> iterator = items.keySet().iterator();
@@ -270,12 +270,12 @@ public class ExoticGarden extends JavaPlugin {
 		new ItemStack[] {getItem("CORN"), null, null, null, null, null, null, null, null})
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(new MaterialData(Material.INK_SACK, (byte) 3), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODE5Zjk0OGQxNzcxOGFkYWNlNWRkNmUwNTBjNTg2MjI5NjUzZmVmNjQ1ZDcxMTNhYjk0ZDE3YjYzOWNjNDY2In19fQ=="), "&rChocolate Bar", "", "&7&oRestores &b&o" + "1.5" + " &7&oHunger"), "CHOCOLATE_BAR",
-		new ItemStack[] {new MaterialData(Material.INK_SACK, (byte) 3).toItemStack(1), SlimefunItems.HEAVY_CREAM, null, null, null, null, null, null, null},
+		new CustomFood(category_food, new CustomItem(getSkull(new MaterialData(Material.INK_SAC, (byte) 3), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODE5Zjk0OGQxNzcxOGFkYWNlNWRkNmUwNTBjNTg2MjI5NjUzZmVmNjQ1ZDcxMTNhYjk0ZDE3YjYzOWNjNDY2In19fQ=="), "&rChocolate Bar", "", "&7&oRestores &b&o" + "1.5" + " &7&oHunger"), "CHOCOLATE_BAR",
+		new ItemStack[] {new MaterialData(Material.INK_SAC, (byte) 3).toItemStack(1), SlimefunItems.HEAVY_CREAM, null, null, null, null, null, null, null},
 		3)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_SOUP, "&rPotato Salad", 0, new String[] {"", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"}), "POTATO_SALAD",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&rPotato Salad", 0, new String[] {"", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"}), "POTATO_SALAD",
 		new ItemStack[] {new ItemStack(Material.BAKED_POTATO), getItem("MAYO"), new ItemStack(Material.BOWL), null, null, null, null, null, null},
 		6)
 		.register();
@@ -285,27 +285,27 @@ public class ExoticGarden extends JavaPlugin {
 		11)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.BREAD, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTE0MjE2ZDEwNzE0MDgyYmJlM2Y0MTI0MjNlNmIxOTIzMjM1MmY0ZDY0ZjlhY2EzOTEzY2I0NjMxOGQzZWQifX19"), "&rFish Sandwich", "", "&7&oRestores &b&o" + "5.5" + " &7&oHunger"), "FISH_SANDWICH",
-		new ItemStack[] {new ItemStack(Material.COOKED_FISH), getItem("MAYO"), new ItemStack(Material.BREAD), null, null, null, null, null, null},
-		11)
-		.register();
+        new CustomFood(category_food, new CustomItem(getSkull(Material.BREAD, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTE0MjE2ZDEwNzE0MDgyYmJlM2Y0MTI0MjNlNmIxOTIzMjM1MmY0ZDY0ZjlhY2EzOTEzY2I0NjMxOGQzZWQifX19"), "&rFish Sandwich", "", "&7&oRestores &b&o" + "5.5" + " &7&oHunger"), "FISH_SANDWICH",
+        new ItemStack[] {new ItemStack(Material.COOKED_COD), getItem("MAYO"), new ItemStack(Material.BREAD), null, null, null, null, null, null},
+        11)
+        .register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_SOUP, "&rEgg Salad", 0, new String[] {"", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"}), "EGG_SALAD",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&rEgg Salad", 0, new String[] {"", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"}), "EGG_SALAD",
 		new ItemStack[] {new ItemStack(Material.EGG), getItem("MAYO"), new ItemStack(Material.BOWL), null, null, null, null, null, null},
 		6)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_SOUP, "&4Tomato Soup", 0, new String[] {"", "&7&oRestores &b&o" + "5.5" + " &7&oHunger"}), "TOMATO_SOUP",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&4Tomato Soup", 0, new String[] {"", "&7&oRestores &b&o" + "5.5" + " &7&oHunger"}), "TOMATO_SOUP",
 		new ItemStack[] {new ItemStack(Material.BOWL), getItem("TOMATO"), null, null, null, null, null, null, null},
 		5)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_SOUP, "&cStrawberry Salad", 0, new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}), "STRAWBERRY_SALAD",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&cStrawberry Salad", 0, new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}), "STRAWBERRY_SALAD",
 		new ItemStack[] {new ItemStack(Material.BOWL), getItem("STRAWBERRY"), null, null, null, null, null, null, null},
 		4)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_SOUP, "&cGrape Salad", 0, new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}), "GRAPE_SALAD",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&cGrape Salad", 0, new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}), "GRAPE_SALAD",
 		new ItemStack[] {new ItemStack(Material.BOWL), getItem("GRAPE"), null, null, null, null, null, null, null},
 		4)
 		.register();
@@ -355,12 +355,12 @@ public class ExoticGarden extends JavaPlugin {
 		3)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_SOUP, "&rCreamed Corn", 0, new String[] {"", "&7&oRestores &b&o" + "4.0" + " &7&oHunger"}), "CREAMED_CORN",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&rCreamed Corn", 0, new String[] {"", "&7&oRestores &b&o" + "4.0" + " &7&oHunger"}), "CREAMED_CORN",
 		new ItemStack[] {SlimefunItems.HEAVY_CREAM, getItem("CORN"), new ItemStack(Material.BOWL), null, null, null, null, null, null},
 		2)
 		.register();
-		new CustomFood(category_food, new CustomItem(getSkull(Material.GRILLED_PORK, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTdiYTIyZDVkZjIxZTgyMWE2ZGU0YjhjOWQzNzNhM2FhMTg3ZDhhZTc0ZjI4OGE4MmQyYjYxZjI3MmU1In19fQ=="), "&rBacon", "", "&7&oRestores &b&o" + "1.5" + " &7&oHunger"), "BACON",
-		new ItemStack[] {new ItemStack(Material.GRILLED_PORK), null, null, null, null, null, null, null, null},
+		new CustomFood(category_food, new CustomItem(getSkull(Material.PORKCHOP, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTdiYTIyZDVkZjIxZTgyMWE2ZGU0YjhjOWQzNzNhM2FhMTg3ZDhhZTc0ZjI4OGE4MmQyYjYxZjI3MmU1In19fQ=="), "&rBacon", "", "&7&oRestores &b&o" + "1.5" + " &7&oHunger"), "BACON",
+		new ItemStack[] {new ItemStack(Material.PORKCHOP), null, null, null, null, null, null, null, null},
 		3)
 		.register();
 
@@ -370,7 +370,7 @@ public class ExoticGarden extends JavaPlugin {
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.BREAD, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTE0MjE2ZDEwNzE0MDgyYmJlM2Y0MTI0MjNlNmIxOTIzMjM1MmY0ZDY0ZjlhY2EzOTEzY2I0NjMxOGQzZWQifX19"), "&rBLT", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "BLT",
-		new ItemStack[] {new ItemStack(Material.BREAD), new ItemStack(Material.GRILLED_PORK), getItem("TOMATO"), getItem("LETTUCE"), null, null, null, null, null},
+		new ItemStack[] {new ItemStack(Material.BREAD), new ItemStack(Material.PORKCHOP), getItem("TOMATO"), getItem("LETTUCE"), null, null, null, null, null},
 		18)
 		.register();
 
@@ -405,7 +405,7 @@ public class ExoticGarden extends JavaPlugin {
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.PUMPKIN_PIE, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjkxMzY1MTRmMzQyZTdjNTIwOGExNDIyNTA2YTg2NjE1OGVmODRkMmIyNDkyMjAxMzllOGJmNjAzMmUxOTMifX19"), "&rCarrot Cake", "", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"), "CARROT_CAKE",
-		new ItemStack[] {new ItemStack(Material.CARROT_ITEM), SlimefunItems.WHEAT_FLOUR, new ItemStack(Material.SUGAR), new ItemStack(Material.EGG), null, null, null, null, null},
+		new ItemStack[] {new ItemStack(Material.CARROT), SlimefunItems.WHEAT_FLOUR, new ItemStack(Material.SUGAR), new ItemStack(Material.EGG), null, null, null, null, null},
 		12)
 		.register();
 
@@ -435,7 +435,7 @@ public class ExoticGarden extends JavaPlugin {
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.BREAD, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOThjZWQ3NGEyMjAyMWE1MzVmNmJjZTIxYzhjNjMyYjI3M2RjMmQ5NTUyYjcxYTM4ZDU3MjY5YjM1MzhjZiJ9fX0="), "&rFish Taco", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "FISH_TACO",
-		new ItemStack[] {getItem("CORNMEAL"), new ItemStack(Material.COOKED_FISH), getItem("LETTUCE"), getItem("TOMATO"), getItem("CHEESE"), null, null, null, null},
+		new ItemStack[] {getItem("CORNMEAL"), new ItemStack(Material.COOKED_COD), getItem("LETTUCE"), getItem("TOMATO"), getItem("CHEESE"), null, null, null, null},
 		18)
 		.register();
 
@@ -454,33 +454,33 @@ public class ExoticGarden extends JavaPlugin {
 		13)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.POTATO_ITEM, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTYzYjhhZWFmMWRmMTE0ODhlZmM5YmQzMDNjMjMzYTg3Y2NiYTNiMzNmN2ZiYTljMmZlY2FlZTk1NjdmMDUzIn19fQ=="), "&rFries", "", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"), "FRIES",
-		new ItemStack[] {new ItemStack(Material.POTATO_ITEM), getItem("SALT"), null, null, null, null, null, null, null},
+		new CustomFood(category_food, new CustomItem(getSkull(Material.POTATO, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTYzYjhhZWFmMWRmMTE0ODhlZmM5YmQzMDNjMjMzYTg3Y2NiYTNiMzNmN2ZiYTljMmZlY2FlZTk1NjdmMDUzIn19fQ=="), "&rFries", "", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"), "FRIES",
+		new ItemStack[] {new ItemStack(Material.POTATO), getItem("SALT"), null, null, null, null, null, null, null},
 		12)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.POTATO_ITEM, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTQ5N2IxNDdjZmFlNTIyMDU1OTdmNzJlM2M0ZWY1MjUxMmU5Njc3MDIwZTRiNGZhNzUxMmMzYzZhY2RkOGMxIn19fQ=="), "&rPopcorn", "", "&7&oRestores &b&o" + "4.0" + " &7&oHunger"), "POPCORN",
+		new CustomFood(category_food, new CustomItem(getSkull(Material.POTATO, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTQ5N2IxNDdjZmFlNTIyMDU1OTdmNzJlM2M0ZWY1MjUxMmU5Njc3MDIwZTRiNGZhNzUxMmMzYzZhY2RkOGMxIn19fQ=="), "&rPopcorn", "", "&7&oRestores &b&o" + "4.0" + " &7&oHunger"), "POPCORN",
 		new ItemStack[] {getItem("CORN"), getItem("BUTTER"), null, null, null, null, null, null, null},
 		8)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.POTATO_ITEM, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTQ5N2IxNDdjZmFlNTIyMDU1OTdmNzJlM2M0ZWY1MjUxMmU5Njc3MDIwZTRiNGZhNzUxMmMzYzZhY2RkOGMxIn19fQ=="), "&rPopcorn &7(Sweet)", "", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"), "SWEET_POPCORN",
+		new CustomFood(category_food, new CustomItem(getSkull(Material.POTATO, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTQ5N2IxNDdjZmFlNTIyMDU1OTdmNzJlM2M0ZWY1MjUxMmU5Njc3MDIwZTRiNGZhNzUxMmMzYzZhY2RkOGMxIn19fQ=="), "&rPopcorn &7(Sweet)", "", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"), "SWEET_POPCORN",
 		new ItemStack[] {getItem("CORN"), getItem("BUTTER"), new ItemStack(Material.SUGAR), null, null, null, null, null, null},
 		12)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.POTATO_ITEM, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTQ5N2IxNDdjZmFlNTIyMDU1OTdmNzJlM2M0ZWY1MjUxMmU5Njc3MDIwZTRiNGZhNzUxMmMzYzZhY2RkOGMxIn19fQ=="), "&rPopcorn &7(Salty)", "", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"), "SALTY_POPCORN",
+		new CustomFood(category_food, new CustomItem(getSkull(Material.POTATO, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTQ5N2IxNDdjZmFlNTIyMDU1OTdmNzJlM2M0ZWY1MjUxMmU5Njc3MDIwZTRiNGZhNzUxMmMzYzZhY2RkOGMxIn19fQ=="), "&rPopcorn &7(Salty)", "", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"), "SALTY_POPCORN",
 		new ItemStack[] {getItem("CORN"), getItem("BUTTER"), getItem("SALT"), null, null, null, null, null, null},
 		12)
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.PUMPKIN_PIE, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxOGM2YjBhMjlmYzFmZTc5MWM4OTc3NGQ4MjhmZjYzZDJhOWZhNmM4MzM3M2VmM2FhNDdiZjNlYjc5In19fQ=="), "&rShepard's Pie", "", "&7&oRestores &b&o" + "8.0" + " &7&oHunger"), "SHEPARDS_PIE",
-		new ItemStack[] {getItem("CABBAGE"), new ItemStack(Material.CARROT_ITEM), SlimefunItems.WHEAT_FLOUR, new ItemStack(Material.COOKED_BEEF), getItem("TOMATO"), null, null, null, null},
+		new ItemStack[] {getItem("CABBAGE"), new ItemStack(Material.CARROT), SlimefunItems.WHEAT_FLOUR, new ItemStack(Material.COOKED_BEEF), getItem("TOMATO"), null, null, null, null},
 		16)
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.PUMPKIN_PIE, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxOGM2YjBhMjlmYzFmZTc5MWM4OTc3NGQ4MjhmZjYzZDJhOWZhNmM4MzM3M2VmM2FhNDdiZjNlYjc5In19fQ=="), "&rChicken Pot Pie", "", "&7&oRestores &b&o" + "8.5" + " &7&oHunger"), "CHICKEN_POT_PIE",
-		new ItemStack[] {new ItemStack(Material.COOKED_CHICKEN), new ItemStack(Material.CARROT_ITEM), SlimefunItems.WHEAT_FLOUR, new ItemStack(Material.POTATO_ITEM), null, null, null, null, null},
+		new ItemStack[] {new ItemStack(Material.COOKED_CHICKEN), new ItemStack(Material.CARROT), SlimefunItems.WHEAT_FLOUR, new ItemStack(Material.POTATO), null, null, null, null, null},
 		17)
 		.register();
 
@@ -515,7 +515,7 @@ public class ExoticGarden extends JavaPlugin {
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.BREAD, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzNmMmQ3ZDdhOGIxYjk2OTE0Mjg4MWViNWE4N2U3MzdiNWY3NWZiODA4YjlhMTU3YWRkZGIyYzZhZWMzODIifX19"), "&rHot Dog", "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"), "HOT_DOG",
-		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRILLED_PORK), null, null, new ItemStack(Material.BREAD), null},
+		new ItemStack[] {null, null, null, null, new ItemStack(Material.PORKCHOP), null, null, new ItemStack(Material.BREAD), null},
 		10)
 		.register();
 
@@ -530,7 +530,7 @@ public class ExoticGarden extends JavaPlugin {
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.BREAD, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzNmMmQ3ZDdhOGIxYjk2OTE0Mjg4MWViNWE4N2U3MzdiNWY3NWZiODA4YjlhMTU3YWRkZGIyYzZhZWMzODIifX19"), "&rBBQ Double Bacon wrapped Hot Dog in a Tortilla with Cheese", "&7&o\"When I chef\" - @Eyamaz", "", "&7&oRestores &b&o" + "10.0" + " &7&oHunger"), "BBQ_DOUBLE_BACON_WRAPPED_HOT_DOG_IN_A_TORTILLA_WITH_CHEESE",
-		new ItemStack[] {getItem("BACON"), getItem("BBQ_SAUCE"), getItem("BACON"), getItem("BACON"), new ItemStack(Material.GRILLED_PORK), getItem("BACON"), getItem("CORNMEAL"), getItem("CHEESE"), getItem("CORNMEAL")},
+		new ItemStack[] {getItem("BACON"), getItem("BBQ_SAUCE"), getItem("BACON"), getItem("BACON"), new ItemStack(Material.PORKCHOP), getItem("BACON"), getItem("CORNMEAL"), getItem("CHEESE"), getItem("CORNMEAL")},
 		20)
 		.register();
 
@@ -549,7 +549,7 @@ public class ExoticGarden extends JavaPlugin {
 		14)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.NETHER_STALK, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQ0ZWQ3YzczYWMyODUzZGZjYWE5Y2E3ODlmYjE4ZGExZDQ3YjE3YWQ2OGIyZGE3NDhkYmQxMWRlMWE0OWVmIn19fQ=="), "&cChocolate Strawberry", "", "&7&oRestores &b&o" + "2.5" + " &7&oHunger"), "CHOCOLATE_STRAWBERRY",
+		new CustomFood(category_food, new CustomItem(getSkull(Material.NETHER_WART, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQ0ZWQ3YzczYWMyODUzZGZjYWE5Y2E3ODlmYjE4ZGExZDQ3YjE3YWQ2OGIyZGE3NDhkYmQxMWRlMWE0OWVmIn19fQ=="), "&cChocolate Strawberry", "", "&7&oRestores &b&o" + "2.5" + " &7&oHunger"), "CHOCOLATE_STRAWBERRY",
 		new ItemStack[] {getItem("CHOCOLATE_BAR"), getItem("STRAWBERRY"), null, null, null, null, null, null, null},
 		5)
 		.register();
@@ -588,7 +588,7 @@ public class ExoticGarden extends JavaPlugin {
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.BREAD, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmFlZTg0ZDE5Yzg1YWZmNzk2Yzg4YWJkYTIxZWM0YzkyYzY1NWUyZDY3YjcyZTVlNzdiNWFhNWU5OWVkIn19fQ=="), "&rGrilled Sandwich", "", "&7&oRestores &b&o" + "5.5" + " &7&oHunger"), "GRILLED_SANDWICH",
-		new ItemStack[] {new ItemStack(Material.BREAD), new ItemStack(Material.GRILLED_PORK), getItem("CHEESE"), null, null, null, null, null, null},
+		new ItemStack[] {new ItemStack(Material.BREAD), new ItemStack(Material.PORKCHOP), getItem("CHEESE"), null, null, null, null, null, null},
 		11)
 		.register();
 
@@ -597,8 +597,8 @@ public class ExoticGarden extends JavaPlugin {
 		17)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOW_BALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTUzNjZjYTE3OTc0ODkyZTRmZDRjN2I5YjE4ZmViMTFmMDViYTJlYzQ3YWE1MDM1YzgxYTk1MzNiMjgifX19"), "&rIce Cream", "", "&7&oRestores &b&o" + "8.0" + " &7&oHunger"), "ICE_CREAM",
-		new ItemStack[] {getItem("HEAVY_CREAM"), getItem("ICE_CUBE"), new ItemStack(Material.SUGAR), new MaterialData(Material.INK_SACK, (byte) 3).toItemStack(1), getItem("STRAWBERRY"), null, null, null, null},
+		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOWBALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTUzNjZjYTE3OTc0ODkyZTRmZDRjN2I5YjE4ZmViMTFmMDViYTJlYzQ3YWE1MDM1YzgxYTk1MzNiMjgifX19"), "&rIce Cream", "", "&7&oRestores &b&o" + "8.0" + " &7&oHunger"), "ICE_CREAM",
+		new ItemStack[] {getItem("HEAVY_CREAM"), getItem("ICE_CUBE"), new ItemStack(Material.SUGAR), new MaterialData(Material.INK_SAC, (byte) 3).toItemStack(1), getItem("STRAWBERRY"), null, null, null, null},
 		16)
 		.register();
 
@@ -610,22 +610,22 @@ public class ExoticGarden extends JavaPlugin {
 		new ItemStack[] {getItem("PINEAPPLE_JUICE"), getItem("ICE_CUBE"), null, null, null, null, null, null, null})
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOW_BALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu", "", "&7&oRestores &b&o" + "8.0" + " &7&oHunger"), "TIRAMISU",
-		new ItemStack[] {getItem("HEAVY_CREAM"), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new MaterialData(Material.INK_SACK, (byte) 3).toItemStack(1), new ItemStack(Material.EGG), null, null, null, null},
+		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOWBALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu", "", "&7&oRestores &b&o" + "8.0" + " &7&oHunger"), "TIRAMISU",
+		new ItemStack[] {getItem("HEAVY_CREAM"), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new MaterialData(Material.INK_SAC, (byte) 3).toItemStack(1), new ItemStack(Material.EGG), null, null, null, null},
 		16)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOW_BALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu with Strawberries", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "TIRAMISU_WITH_STRAWBERRIES",
+		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOWBALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu with Strawberries", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "TIRAMISU_WITH_STRAWBERRIES",
 		new ItemStack[] {getItem("HEAVY_CREAM"), getItem("STRAWBERRY"), null, null, null, null, null, null, null},
 		18)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOW_BALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu with Raspberries", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "TIRAMISU_WITH_RASPBERRIES",
+		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOWBALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu with Raspberries", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "TIRAMISU_WITH_RASPBERRIES",
 		new ItemStack[] {getItem("HEAVY_CREAM"), getItem("RASPBERRY"), null, null, null, null, null, null, null},
 		18)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOW_BALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu with Blackberries", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "TIRAMISU_WITH_BLACKBERRIES",
+		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOWBALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu with Blackberries", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "TIRAMISU_WITH_BLACKBERRIES",
 		new ItemStack[] {getItem("HEAVY_CREAM"), getItem("BLACKBERRY"), null, null, null, null, null, null, null},
 		18)
 		.register();
@@ -653,14 +653,14 @@ public class ExoticGarden extends JavaPlugin {
 		Tree tree = new Tree(id, fruitName, texture, soil);
 		trees.add(tree);
 
-		items.put(id + "_SAPLING", new CustomItem(Material.SAPLING, color + name + " Sapling", 0));
+		items.put(id + "_SAPLING", new CustomItem(Material.OAK_SAPLING, color + name + " Sapling", 0));
 
-		new SlimefunItem(category_main, new CustomItem(Material.SAPLING, color + name + " Sapling", 0), id + "_SAPLING", new RecipeType(new CustomItem(Material.LONG_GRASS, "&7Breaking Grass", 1)),
-		new ItemStack[] {null, null, null, null, new CustomItem(Material.LONG_GRASS, 1), null, null, null, null})
+		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Sapling", 0), id + "_SAPLING", new RecipeType(new CustomItem(Material.TALL_GRASS, "&7Breaking Grass", 1)),
+		new ItemStack[] {null, null, null, null, new CustomItem(Material.TALL_GRASS, 1), null, null, null, null})
 		.register();
 
 		try {
-			new EGPlant(category_main, new CustomItem(getSkull(material, texture), color + StringUtils.format(fruitName)), fruitName, new RecipeType(new CustomItem(Material.LEAVES, "&7Obtained by harvesting the specific Tree", 0)), true,
+			new EGPlant(category_main, new CustomItem(getSkull(material, texture), color + StringUtils.format(fruitName)), fruitName, new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Tree", 0)), true,
 			new ItemStack[] {null, null, null, null, getItem(id + "_SAPLING"), null, null, null, null})
 			.register();
 		} catch (Exception e1) {
@@ -692,13 +692,13 @@ public class ExoticGarden extends JavaPlugin {
 		Berry berry = new Berry(name.toUpperCase(), type, data);
 		berries.add(berry);
 
-		items.put(name.toUpperCase() + "_BUSH", new CustomItem(Material.SAPLING, color + name + " Bush", 0));
+		items.put(name.toUpperCase() + "_BUSH", new CustomItem(Material.OAK_SAPLING, color + name + " Bush", 0));
 
-		new SlimefunItem(category_main, new CustomItem(Material.SAPLING, color + name + " Bush", 0), name.toUpperCase() + "_BUSH", new RecipeType(new CustomItem(Material.LONG_GRASS, "&7Breaking Grass", 1)),
-		new ItemStack[] {null, null, null, null, new CustomItem(Material.LONG_GRASS, 1), null, null, null, null})
+		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Bush", 0), name.toUpperCase() + "_BUSH", new RecipeType(new CustomItem(Material.TALL_GRASS, "&7Breaking Grass", 1)),
+		new ItemStack[] {null, null, null, null, new CustomItem(Material.TALL_GRASS, 1), null, null, null, null})
 		.register();
 
-		new EGPlant(category_main, new CustomItem(getSkull(Material.NETHER_STALK, data.getTexture()), color + name), name.toUpperCase(), new RecipeType(new CustomItem(Material.LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
+		new EGPlant(category_main, new CustomItem(getSkull(Material.NETHER_WART, data.getTexture()), color + name), name.toUpperCase(), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
 		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase() + "_BUSH"), null, null, null, null})
 		.register();
 
@@ -748,13 +748,13 @@ public class ExoticGarden extends JavaPlugin {
 		Berry berry = new Berry(name.toUpperCase().replace(" ", "_"), type, data);
 		berries.add(berry);
 
-		items.put(name.toUpperCase() + "_BUSH", new CustomItem(Material.SAPLING, color + name + " Plant", 0));
+		items.put(name.toUpperCase() + "_BUSH", new CustomItem(Material.OAK_SAPLING, color + name + " Plant", 0));
 
-		new SlimefunItem(category_main, new CustomItem(Material.SAPLING, color + name + " Plant", 0), name.toUpperCase().replace(" ", "_") + "_BUSH", new RecipeType(new CustomItem(Material.LONG_GRASS, "&7Breaking Grass", 1)),
-		new ItemStack[] {null, null, null, null, new CustomItem(Material.LONG_GRASS, 1), null, null, null, null})
+		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Plant", 0), name.toUpperCase().replace(" ", "_") + "_BUSH", new RecipeType(new CustomItem(Material.TALL_GRASS, "&7Breaking Grass", 1)),
+		new ItemStack[] {null, null, null, null, new CustomItem(Material.TALL_GRASS, 1), null, null, null, null})
 		.register();
 
-		new EGPlant(category_main, new CustomItem(getSkull(material, data.getTexture()), color + name), name.toUpperCase().replace(" ", "_"), new RecipeType(new CustomItem(Material.LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
+		new EGPlant(category_main, new CustomItem(getSkull(material, data.getTexture()), color + name), name.toUpperCase().replace(" ", "_"), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
 		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase().replace(" ", "_") + "_BUSH"), null, null, null, null})
 		.register();
 	}
@@ -765,7 +765,7 @@ public class ExoticGarden extends JavaPlugin {
 		Berry berry = new Berry(essence, name.toUpperCase() + "_ESSENCE", PlantType.ORE_PLANT, new PlantData(skull));
 		berries.add(berry);
 
-		new SlimefunItem(category_magic, new CustomItem(Material.SAPLING, "&r" + name + " Plant", 0), name.toUpperCase().replace(" ", "_") + "_PLANT", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new SlimefunItem(category_magic, new CustomItem(Material.OAK_SAPLING, "&r" + name + " Plant", 0), name.toUpperCase().replace(" ", "_") + "_PLANT", RecipeType.ENHANCED_CRAFTING_TABLE,
 		recipe)
 		.register();
 
@@ -800,24 +800,22 @@ public class ExoticGarden extends JavaPlugin {
 							if (BlockStorage.check(block.getRelative(BlockFace.DOWN)) == null) {
 								plant = block;
 								BlockStorage.retrieve(block.getRelative(BlockFace.UP));
-								block.getWorld().playEffect(block.getRelative(BlockFace.UP).getLocation(), Effect.STEP_SOUND, Material.LEAVES);
+								block.getWorld().playEffect(block.getRelative(BlockFace.UP).getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
 								block.getRelative(BlockFace.UP).setType(Material.AIR);;
 							}
 							else {
 								plant = block.getRelative(BlockFace.DOWN);
 								BlockStorage.retrieve(block);
-								block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.LEAVES);
+								block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
 								block.setType(Material.AIR);;
 							}
-							plant.setType(Material.SAPLING);
-							plant.setData((byte) 0);
+							plant.setType(Material.OAK_SAPLING);
 							itemstack = berry.getItem();
 							BlockStorage.store(plant, getItem(berry.toBush()));
 							break;
 						}
 						default: {
-							block.setType(Material.SAPLING);
-							block.setData((byte) 0);
+							block.setType(Material.OAK_SAPLING);
 							itemstack = berry.getItem();
 							BlockStorage.store(block, getItem(berry.toBush()));
 							break;
