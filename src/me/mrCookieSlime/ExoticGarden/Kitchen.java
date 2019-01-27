@@ -34,7 +34,7 @@ public class Kitchen {
 	public static void registerKitchen(ExoticGarden plugin) {
 
 		new SlimefunMachine(Categories.MACHINES_1, ExoticGarden.KITCHEN, "KITCHEN",
-		new ItemStack[] {new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)", 1), new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)", 1), new ItemStack(Material.BRICK), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.CRAFTING_TABLE)},
+		new ItemStack[] {new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)", 1), new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)", 1), new ItemStack(Material.BRICKS), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.CRAFTING_TABLE)},
 		new ItemStack[0], Material.IRON_TRAPDOOR)
 		.register(true, new MultiBlockInteractionHandler() {
 
