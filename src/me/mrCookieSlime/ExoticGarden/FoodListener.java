@@ -34,12 +34,12 @@ public class FoodListener implements Listener {
 					case DISPENSER:
 					case NOTE_BLOCK:
 					case CHEST:
-					case WORKBENCH:
+					case CRAFTING_TABLE:
 					case FURNACE:
-					case BURNING_FURNACE:
-					case TRAP_DOOR:
-					case FENCE_GATE:
-					case ENCHANTMENT_TABLE:
+					case LEGACY_BURNING_FURNACE:
+					case OAK_TRAPDOOR:
+					case OAK_FENCE_GATE:
+					case ENCHANTING_TABLE:
 					case BREWING_STAND:
 					case ANVIL:
 					case TRAPPED_CHEST:
@@ -56,9 +56,9 @@ public class FoodListener implements Listener {
 					case JUNGLE_DOOR:
 					case ACACIA_DOOR:
 					case DARK_OAK_DOOR:
-					case WOOD_DOOR:
+					case OAK_DOOR:
 					case IRON_DOOR:
-					case BED_BLOCK: 
+					case RED_BED:
 						return;
 					default:
 				}
@@ -99,14 +99,14 @@ public class FoodListener implements Listener {
 	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
 	public void onPlace(BlockPlaceEvent e) {
 		SlimefunItem item = SlimefunItem.getByItem(e.getItemInHand());
-		if (item != null && (item instanceof EGPlant) && e.getItemInHand().getType() == Material.SKULL_ITEM) e.setCancelled(true);
+		if (item != null && (item instanceof EGPlant) && e.getItemInHand().getType() == Material.PLAYER_HEAD) e.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onEquip(InventoryClickEvent e) {
 		if (e.getSlotType() != SlotType.ARMOR) return;
 		SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
-		if (item != null && (item instanceof EGPlant) && e.getCursor().getType() == Material.SKULL_ITEM) e.setCancelled(true);
+		if (item != null && (item instanceof EGPlant) && e.getCursor().getType() == Material.PLAYER_HEAD) e.setCancelled(true);
 	}
 
 }
