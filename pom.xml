@@ -62,18 +62,18 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.12-R0.1-SNAPSHOT</version>
+            <version>1.13-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
 	        <groupId>com.github.TheBusyBiscuit</groupId>
 	        <artifactId>CS-CoreLib</artifactId>
-	        <version>v1.5.18</version>
+	        <version>a450ddc526</version>
 	    </dependency>
         <dependency>
 	        <groupId>com.github.TheBusyBiscuit</groupId>
 	        <artifactId>Slimefun4</artifactId>
-	        <version>v4.1.15</version>
+	        <version>89a8b6b528</version>
 	    </dependency>
     </dependencies>
 </project>
