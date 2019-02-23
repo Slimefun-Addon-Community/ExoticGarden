@@ -21,10 +21,10 @@
             <id>spigot-repo</id> 
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url> 
         </repository>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
+	<repository>
+	    <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+	</repository>
     </repositories>
     <build>
     <!--Maintain existing structure (as much as possible)-->
