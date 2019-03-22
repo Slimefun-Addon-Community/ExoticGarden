@@ -9,6 +9,7 @@ import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
@@ -187,7 +188,7 @@ public class PlantsListener implements Listener {
 						for (int i = 0; i < 5; i++) {
 							for (int j = 0; j < 5; j++) {
 								for (int k = 0; k < 6; k++) {
-									if ((current.getRelative(i, k, j).getType().isSolid() || current.getRelative(i, k, j).getType().toString().endsWith("LEAVES")) || !current.getRelative(i, -1, j).getType().isSolid()) flat = false;
+									if ((current.getRelative(i, k, j).getType().isSolid() || Tag.LEAVES.isTagged(current.getRelative(i, k, j).getType())) || !current.getRelative(i, -1, j).getType().isSolid()) flat = false;
 								}
 							}
 						}
@@ -205,7 +206,7 @@ public class PlantsListener implements Listener {
 	public void onHarvest(BlockBreakEvent e) {
 		if (CSCoreLib.getLib().getProtectionManager().canBuild(e.getPlayer().getUniqueId(), e.getBlock())) {
 			if (e.getBlock().getType().equals(Material.PLAYER_HEAD)) dropFruitFromTree(e.getBlock());
-			if (e.getBlock().getType().toString().endsWith("LEAVES")) dropFruitFromTree(e.getBlock());
+			if (Tag.LEAVES.isTagged(e.getBlock().getType())) dropFruitFromTree(e.getBlock());
 			if (e.getBlock().getType() == Material.GRASS) {
 				if (ExoticGarden.items.keySet().size() > 0 && e.getPlayer().getGameMode() != GameMode.CREATIVE)
 					if (CSCoreLib.randomizer().nextInt(100) < 6) e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.items.get(ExoticGarden.items.keySet().toArray(new String[ExoticGarden.items.keySet().size()])[CSCoreLib.randomizer().nextInt(ExoticGarden.items.keySet().size())]));

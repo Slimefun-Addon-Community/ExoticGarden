@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Skull;
+import org.bukkit.block.data.Rotatable;
 import org.bukkit.inventory.InventoryHolder;
 
 import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
@@ -127,22 +128,21 @@ public class Schematic {
 								if (blocks[index] != 0) {
 									block.setType(parseId(blocks[index], blockData[index]));
 								}
-								if (parseId(blocks[index], blockData[index]) == Material.OAK_LEAVES  || parseId(blocks[index], blockData[index]) == Material.BIRCH_LEAVES) {
+								if (org.bukkit.Tag.LEAVES.isTagged(parseId(blocks[index], blockData[index]))) {
 									if (CSCoreLib.randomizer().nextInt(100) < 25) BlockStorage.store(block, tree.getItem());
 								}
 								else if (parseId(blocks[index], blockData[index]) == Material.PLAYER_HEAD && block.getState() instanceof Skull) {
-									Skull s = (Skull) block.getState();
+									Rotatable s = (Rotatable) block.getBlockData();
 									s.setRotation(bf[new Random().nextInt(bf.length)]);
-									s.setRawData((byte) 1);
-									s.update();
+									block.setBlockData(s);
 
 									try {
-										CustomSkull.setSkull(s.getBlock(), tree.getTexture());
+										CustomSkull.setSkull(block, tree.getTexture());
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
 
-									BlockStorage.store(s.getBlock(), tree.getFruit());
+									BlockStorage.store(block, tree.getFruit());
 								}
 							}
 						}
