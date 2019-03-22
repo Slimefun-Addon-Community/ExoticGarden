@@ -10,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Skull;
+import org.bukkit.block.data.Rotatable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -41,26 +41,24 @@ public class PlantsListener implements Listener {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onGrow(StructureGrowEvent e) {
 		SlimefunItem item = BlockStorage.check(e.getLocation().getBlock());
 		if (item != null) {
 			e.setCancelled(true);
 			if (!e.getLocation().getChunk().isLoaded()) e.getLocation().getWorld().loadChunk(e.getLocation().getChunk());
-			for (Tree tree: ExoticGarden.trees) {
+			for (Tree tree : ExoticGarden.trees) {
 				if (item.getID().equalsIgnoreCase(tree.getSapling())) {
 					BlockStorage.retrieve(e.getLocation().getBlock());
 					Schematic.pasteSchematic(e.getLocation(), tree);
-					break;
+					return;
 				}
 			}
-			for (Berry berry: ExoticGarden.berries) {
+			for (Berry berry : ExoticGarden.berries) {
 				if (item.getID().equalsIgnoreCase(berry.toBush())) {
 					switch(berry.getType()) {
 						case BUSH: {
 							e.getLocation().getBlock().setType(Material.OAK_LEAVES);
-							//e.getLocation().getBlock().setData(berry.getData().toByte());
 							break;
 						}
 						case ORE_PLANT:
@@ -69,9 +67,19 @@ public class PlantsListener implements Listener {
 							if (item != null) return;
 							switch(e.getLocation().getBlock().getRelative(BlockFace.UP).getType()) {
 								case AIR:
+								case CAVE_AIR:
 								case OAK_SAPLING:
+								case SPRUCE_SAPLING:
+								case BIRCH_SAPLING:
+								case JUNGLE_SAPLING:
+								case ACACIA_SAPLING:
+								case DARK_OAK_SAPLING:
 								case OAK_LEAVES:
+								case SPRUCE_LEAVES:
 								case BIRCH_LEAVES:
+								case JUNGLE_LEAVES:
+								case ACACIA_LEAVES:
+								case DARK_OAK_LEAVES:
 								case SNOW:
 									break;
 								default:
@@ -80,13 +88,10 @@ public class PlantsListener implements Listener {
 
 							BlockStorage.store(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getItem());
 							e.getLocation().getBlock().setType(Material.OAK_LEAVES);
-							//e.getLocation().getBlock().setData((byte) 0x4);
 							e.getLocation().getBlock().getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
-							Skull s = (Skull) e.getLocation().getBlock().getRelative(BlockFace.UP).getState();
+							Rotatable s = (Rotatable) e.getLocation().getBlock().getRelative(BlockFace.UP).getBlockData();
 							s.setRotation(bf[new Random().nextInt(bf.length)]);
-							s.setRawData((byte) 1);
-							s.update();
-
+							e.getLocation().getBlock().getRelative(BlockFace.UP).setBlockData(s);
 							try {
 								CustomSkull.setSkull(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getData().getTexture());
 							} catch (Exception e1) {
@@ -96,11 +101,9 @@ public class PlantsListener implements Listener {
 						}
 						default: {
 							e.getLocation().getBlock().setType(Material.PLAYER_HEAD);
-							Skull s = (Skull) e.getLocation().getBlock().getState();
+							Rotatable s = (Rotatable) e.getLocation().getBlock().getBlockData();
 							s.setRotation(bf[new Random().nextInt(bf.length)]);
-							s.setRawData((byte) 1);
-							s.update();
-
+							e.getLocation().getBlock().setBlockData(s);
 							try {
 								CustomSkull.setSkull(e.getLocation().getBlock(), berry.getData().getTexture());
 							} catch (Exception e1) {
@@ -117,7 +120,6 @@ public class PlantsListener implements Listener {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onGenerate(ChunkPopulateEvent e) {
 		if (!cfg.getStringList("world-blacklist").contains(e.getWorld().getName())) {
@@ -134,15 +136,13 @@ public class PlantsListener implements Listener {
 						switch(berry.getType()) {
 							case BUSH: {
 								current.setType(Material.OAK_LEAVES);
-								//current.setData(berry.getData().toByte());
 								break;
 							}
 							case FRUIT: {
 								current.setType(Material.PLAYER_HEAD);
-								Skull s = (Skull) current.getState();
+								Rotatable s = (Rotatable) current.getBlockData();
 								s.setRotation(bf[new Random().nextInt(bf.length)]);
-								s.setRawData((byte) 1);
-								s.update();
+								current.setBlockData(s);
 
 								try {
 									CustomSkull.setSkull(current, berry.getData().getTexture());
@@ -155,13 +155,10 @@ public class PlantsListener implements Listener {
 							case DOUBLE_PLANT: {
 								BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
 								current.setType(Material.OAK_LEAVES);
-								//current.setData((byte) 0x4);
 								current.getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
-								Skull s = (Skull) current.getRelative(BlockFace.UP).getState();
+								Rotatable s = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
 								s.setRotation(bf[new Random().nextInt(bf.length)]);
-								s.setRawData((byte) 1);
-								s.update();
-
+								current.getRelative(BlockFace.UP).setBlockData(s);
 								try {
 									CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getData().getTexture());
 								} catch (Exception e1) {
@@ -189,7 +186,7 @@ public class PlantsListener implements Listener {
 						for (int i = 0; i < 5; i++) {
 							for (int j = 0; j < 5; j++) {
 								for (int k = 0; k < 6; k++) {
-									if ((current.getRelative(i, k, j).getType().isSolid() || current.getRelative(i, k, j).getType().toString().contains("LEAVES")) || !current.getRelative(i, -1, j).getType().isSolid()) flat = false;
+									if ((current.getRelative(i, k, j).getType().isSolid() || current.getRelative(i, k, j).getType().toString().endsWith("LEAVES")) || !current.getRelative(i, -1, j).getType().isSolid()) flat = false;
 								}
 							}
 						}
@@ -207,7 +204,7 @@ public class PlantsListener implements Listener {
 	public void onHarvest(BlockBreakEvent e) {
 		if (CSCoreLib.getLib().getProtectionManager().canBuild(e.getPlayer().getUniqueId(), e.getBlock())) {
 			if (e.getBlock().getType().equals(Material.PLAYER_HEAD)) dropFruitFromTree(e.getBlock());
-			if (e.getBlock().getType().equals(Material.OAK_LEAVES) || e.getBlock().getType().equals(Material.BIRCH_LEAVES)) dropFruitFromTree(e.getBlock());
+			if (e.getBlock().getType().toString().endsWith("LEAVES")) dropFruitFromTree(e.getBlock());
 			if (e.getBlock().getType() == Material.TALL_GRASS) {
 				if (ExoticGarden.items.keySet().size() > 0)
 					if (CSCoreLib.randomizer().nextInt(100) < 6) e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.items.get(ExoticGarden.items.keySet().toArray(new String[ExoticGarden.items.keySet().size()])[CSCoreLib.randomizer().nextInt(ExoticGarden.items.keySet().size())]));

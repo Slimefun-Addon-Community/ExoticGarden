@@ -68,12 +68,12 @@
         <dependency>
 	        <groupId>com.github.TheBusyBiscuit</groupId>
 	        <artifactId>CS-CoreLib</artifactId>
-	        <version>a450ddc526</version>
+	        <version>2e140f829f</version>
 	    </dependency>
         <dependency>
 	        <groupId>com.github.TheBusyBiscuit</groupId>
 	        <artifactId>Slimefun4</artifactId>
-	        <version>89a8b6b528</version>
+	        <version>3619c4bc9e</version>
 	    </dependency>
     </dependencies>
 </project>

@@ -37,107 +37,69 @@ public class Kitchen {
 		new ItemStack[] {new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)", 1), new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)", 1), new ItemStack(Material.BRICKS), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.CRAFTING_TABLE)},
 		new ItemStack[0], Material.IRON_TRAPDOOR)
 		.register(true, new MultiBlockInteractionHandler() {
-
 			@Override
 			public boolean onInteract(Player p, MultiBlock mb, Block b) {
-
 				SlimefunMachine machine = (SlimefunMachine) SlimefunItem.getByID("KITCHEN");
-
 				if (mb.isMultiBlock(machine)) {
-					if (CSCoreLib.getLib().getProtectionManager().canAccessChest(p.getUniqueId(), b, true)) {
-						if (Slimefun.hasUnlocked(p, machine.getItem(), true)) {
-							Block raw_disp = b.getRelative(BlockFace.DOWN);
-							Dispenser disp = (Dispenser) raw_disp.getState();
+					if (CSCoreLib.getLib().getProtectionManager().canAccessChest(p.getUniqueId(), b, true) && Slimefun.hasUnlocked(p, machine.getItem(), true)) {
+						Block raw_disp = b.getRelative(BlockFace.DOWN);
 
-							final FurnaceInventory resinv;
-							Furnace resf; 
+						Furnace resf = locateFurnace(raw_disp); 
+						final FurnaceInventory resinv = resf.getInventory();
 
-							if (raw_disp.getRelative(BlockFace.EAST).getType() == Material.FURNACE) {
-								resf = (Furnace) raw_disp.getRelative(BlockFace.EAST).getState();
-								resinv = resf.getInventory();
-							} else if (raw_disp.getRelative(BlockFace.WEST).getType() == Material.FURNACE) {
-								resf = (Furnace) raw_disp.getRelative(BlockFace.WEST).getState();
-								resinv = resf.getInventory();
-							} else if (raw_disp.getRelative(BlockFace.NORTH).getType() == Material.FURNACE) {
-								resf = (Furnace) raw_disp.getRelative(BlockFace.NORTH).getState();
-								resinv = resf.getInventory();
-							} else  {
-								resf = (Furnace) raw_disp.getRelative(BlockFace.SOUTH).getState();
-								resinv = resf.getInventory();
-							}
+						final Inventory inv = ((Dispenser) raw_disp.getState()).getInventory();
+						List<ItemStack[]> inputs = RecipeType.getRecipeInputList(machine);
 
-							final Inventory inv = disp.getInventory();
-							List<ItemStack[]> inputs = RecipeType.getRecipeInputList(machine);
-
-							for (int i = 0; i < inputs.size(); i++) {
-								boolean craft = true;
-								for (int j = 0; j < inv.getContents().length; j++) {
-									if (!SlimefunManager.isItemSimiliar(inv.getContents()[j], inputs.get(i)[j], true)) {
-										craft = false;
-										break;
-									}
+						for (int i = 0; i < inputs.size(); i++) {
+							boolean craft = true;
+							for (int j = 0; j < inv.getContents().length; j++) {
+								if (!SlimefunManager.isItemSimiliar(inv.getContents()[j], inputs.get(i)[j], true)) {
+									craft = false;
+									break;
 								}
-								if (craft) {
-									final ItemStack adding = RecipeType.getRecipeOutputList(machine, inputs.get(i));
-									if (Slimefun.hasUnlocked(p, adding, true)) {
-										boolean fits_size = true;
-										boolean is_same_r = true;
+							}
+							if (craft) {
+								final ItemStack adding = RecipeType.getRecipeOutputList(machine, inputs.get(i));
+								if (Slimefun.hasUnlocked(p, adding, true)) {
+									boolean fits_size = true;
+									boolean is_same_r = true;
 
-										if (resinv.getResult() != null) {
-											fits_size = resinv.getResult().getAmount() + adding.getAmount() <= 64;
-											ItemStack currentResult = new ItemStack(resinv.getResult());
-											currentResult.setAmount(1);
-											ItemStack newResult = new ItemStack(adding);
-											newResult.setAmount(1);
-											is_same_r = currentResult.equals(newResult);
-										}
+									if (resinv.getResult() != null) {
+										fits_size = resinv.getResult().getAmount() + adding.getAmount() <= 64;
+										ItemStack currentResult = new ItemStack(resinv.getResult());
+										currentResult.setAmount(1);
+										ItemStack newResult = new ItemStack(adding);
+										newResult.setAmount(1);
+										is_same_r = currentResult.equals(newResult);
+									}
 
-										if (is_same_r && fits_size) {
-											for (int j = 0; j < 9; j++) {
-												if (inv.getContents()[j] != null) {
-													if (inv.getContents()[j].getType() != Material.AIR) {
-														if (inv.getContents()[j].getType().toString().endsWith("_BUCKET")) inv.setItem(j, new ItemStack(Material.BUCKET));
-														else if (inv.getContents()[j].getAmount() > 1) inv.setItem(j, new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1));
-														else inv.setItem(j, null);
-													}
+									if (is_same_r && fits_size) {
+										for (int j = 0; j < 9; j++) {
+											if (inv.getContents()[j] != null) {
+												if (inv.getContents()[j].getType() != Material.AIR) {
+													if (inv.getContents()[j].getType().toString().endsWith("_BUCKET")) inv.setItem(j, new ItemStack(Material.BUCKET));
+													else if (inv.getContents()[j].getAmount() > 1) inv.setItem(j, new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1));
+													else inv.setItem(j, null);
 												}
 											}
-
+										}
+										for (int j = 1; j < 7; j++) {
 											Bukkit.getScheduler().runTaskLater(plugin, () -> {
 												p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-												Bukkit.getScheduler().runTaskLater(plugin, () -> {
-													p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-													Bukkit.getScheduler().runTaskLater(plugin, () -> {
-														p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-														Bukkit.getScheduler().runTaskLater(plugin, () -> {
-															p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-															Bukkit.getScheduler().runTaskLater(plugin, () -> {
-																p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-																Bukkit.getScheduler().runTaskLater(plugin, () -> {
-																	p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-																	Bukkit.getScheduler().runTaskLater(plugin, () -> {
-																		if (resinv.getResult() != null) {
-																			ItemStack s = new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount());
-																			resinv.setResult(s);
-																		}
-																		else resinv.setResult(adding);
-																		p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F);
-																	}, 30L);
-																}, 5L);
-															}, 5L);
-														}, 5L);
-													}, 5L);
-												}, 5L);
-											}, 5L);
-
+											}, j*5L);
 										}
-										else Messages.local.sendTranslation(p, "machines.full-inventory", true);
+										Bukkit.getScheduler().runTaskLater(plugin, () -> {
+											if (resinv.getResult() != null) resinv.setResult(new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount()));
+											else resinv.setResult(adding);
+											p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F);
+										}, 7*30L);
 									}
-									return true;
+									else Messages.local.sendTranslation(p, "machines.full-inventory", true);
 								}
+								return true;
 							}
-							Messages.local.sendTranslation(p, "machines.pattern-not-found", true);
 						}
+						Messages.local.sendTranslation(p, "machines.pattern-not-found", true);
 					}
 					return true;
 				}
@@ -146,6 +108,18 @@ public class Kitchen {
 		});
 
 	    Slimefun.registerResearch(new Research(600, "Kitchen", 30), ExoticGarden.KITCHEN);
+	}
+
+	private static Furnace locateFurnace(Block b) {
+		if (b.getRelative(BlockFace.EAST).getType() == Material.FURNACE) {
+			return (Furnace) b.getRelative(BlockFace.EAST).getState();
+		} else if (b.getRelative(BlockFace.WEST).getType() == Material.FURNACE) {
+			return (Furnace) b.getRelative(BlockFace.WEST).getState();
+		} else if (b.getRelative(BlockFace.NORTH).getType() == Material.FURNACE) {
+			return (Furnace) b.getRelative(BlockFace.NORTH).getState();
+		} else {
+			return (Furnace) b.getRelative(BlockFace.SOUTH).getState();
+		}
 	}
 
 }
