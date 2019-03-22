@@ -221,6 +221,15 @@ public class PlantsListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onDecay(LeavesDecayEvent e) {
+		SlimefunItem sfItem = BlockStorage.check(e.getBlock());
+		if (sfItem != null) {
+			for (Berry berry : ExoticGarden.berries) {
+				if (sfItem.getID().equalsIgnoreCase(berry.getID())) {
+					e.setCancelled(true);
+					return;
+				}
+			}
+		}
 		dropFruitFromTree(e.getBlock());
 		ItemStack item = BlockStorage.retrieve(e.getBlock());
 		if (item != null) {
