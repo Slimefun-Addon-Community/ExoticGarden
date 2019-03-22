@@ -102,7 +102,6 @@ public class Schematic {
 		return height;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void pasteSchematic(Location loc, Tree tree) {
 		Schematic schematic = null;
 		try {
@@ -122,7 +121,7 @@ public class Schematic {
 				for (int z = 0; z < length; ++z) {
 					int index = y * width * length + z * width + x;
 					Block block = new Location(loc.getWorld(), x + loc.getX() - length / 2, y + loc.getY(), z + loc.getZ() - width / 2).getBlock();
-					if (block.getType().equals(null) || block.getType().equals(Material.AIR) || block.getType().isTransparent()) {
+					if (block.getType().equals(null) || block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR) {
 						if (parseId(blocks[index], blockData[index]) != null) {
 							if (!(block.getState() instanceof InventoryHolder)) {
 								if (blocks[index] != 0) {
