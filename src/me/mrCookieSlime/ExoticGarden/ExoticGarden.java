@@ -166,8 +166,8 @@ public class ExoticGarden extends JavaPlugin {
 				}
 			});
 
-			new SlimefunItem(category_main, grass_seeds, "GRASS_SEEDS", new RecipeType(new CustomItem(Material.TALL_GRASS, "&7Breaking Grass", 1)),
-			new ItemStack[] {null, null, null, null, new CustomItem(Material.TALL_GRASS, 1), null, null, null, null})
+			new SlimefunItem(category_main, grass_seeds, "GRASS_SEEDS", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass", 1)),
+			new ItemStack[] {null, null, null, null, new CustomItem(Material.GRASS, 1), null, null, null, null})
 			.register(false, new ItemInteractionHandler() {
 				@Override
 				public boolean onRightClick(ItemUseEvent arg0, Player arg1, ItemStack arg2) {
@@ -200,8 +200,8 @@ public class ExoticGarden extends JavaPlugin {
 			Iterator<String> iterator = items.keySet().iterator();
 			while (iterator.hasNext()) {
 				String key = iterator.next();
-				cfg.setDefaultValue("long-grass-drops." + key, true);
-				if (!cfg.getBoolean("long-grass-drops." + key)) iterator.remove();
+				cfg.setDefaultValue("grass-drops." + key, true);
+				if (!cfg.getBoolean("grass-drops." + key)) iterator.remove();
 			}
 			cfg.save();
 		}
@@ -650,8 +650,8 @@ public class ExoticGarden extends JavaPlugin {
 
 		items.put(id + "_SAPLING", new CustomItem(Material.OAK_SAPLING, color + name + " Sapling", 0));
 
-		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Sapling", 0), id + "_SAPLING", new RecipeType(new CustomItem(Material.TALL_GRASS, "&7Breaking Grass", 1)),
-		new ItemStack[] {null, null, null, null, new CustomItem(Material.TALL_GRASS, 1), null, null, null, null})
+		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Sapling", 0), id + "_SAPLING", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass", 1)),
+		new ItemStack[] {null, null, null, null, new CustomItem(Material.GRASS, 1), null, null, null, null})
 		.register();
 
 		try {
@@ -689,8 +689,8 @@ public class ExoticGarden extends JavaPlugin {
 
 		items.put(name.toUpperCase() + "_BUSH", new CustomItem(Material.OAK_SAPLING, color + name + " Bush", 0));
 
-		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Bush", 0), name.toUpperCase() + "_BUSH", new RecipeType(new CustomItem(Material.TALL_GRASS, "&7Breaking Grass", 1)),
-		new ItemStack[] {null, null, null, null, new CustomItem(Material.TALL_GRASS, 1), null, null, null, null})
+		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Bush", 0), name.toUpperCase() + "_BUSH", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass", 1)),
+		new ItemStack[] {null, null, null, null, new CustomItem(Material.GRASS, 1), null, null, null, null})
 		.register();
 
 		new EGPlant(category_main, new CustomItem(getSkull(Material.NETHER_WART, data.getTexture()), color + name), name.toUpperCase(), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
@@ -740,8 +740,8 @@ public class ExoticGarden extends JavaPlugin {
 
 		items.put(name.toUpperCase() + "_BUSH", new CustomItem(Material.OAK_SAPLING, color + name + " Plant", 0));
 
-		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Plant", 0), name.toUpperCase().replace(" ", "_") + "_BUSH", new RecipeType(new CustomItem(Material.TALL_GRASS, "&7Breaking Grass", 1)),
-		new ItemStack[] {null, null, null, null, new CustomItem(Material.TALL_GRASS, 1), null, null, null, null})
+		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Plant", 0), name.toUpperCase().replace(" ", "_") + "_BUSH", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass", 1)),
+		new ItemStack[] {null, null, null, null, new CustomItem(Material.GRASS, 1), null, null, null, null})
 		.register();
 
 		new EGPlant(category_main, new CustomItem(getSkull(material, data.getTexture()), color + name), name.toUpperCase().replace(" ", "_"), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
