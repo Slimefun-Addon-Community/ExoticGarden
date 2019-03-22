@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Effect;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -206,7 +207,7 @@ public class PlantsListener implements Listener {
 			if (e.getBlock().getType().equals(Material.PLAYER_HEAD)) dropFruitFromTree(e.getBlock());
 			if (e.getBlock().getType().toString().endsWith("LEAVES")) dropFruitFromTree(e.getBlock());
 			if (e.getBlock().getType() == Material.GRASS) {
-				if (ExoticGarden.items.keySet().size() > 0)
+				if (ExoticGarden.items.keySet().size() > 0 && e.getPlayer().getGameMode() != GameMode.CREATIVE)
 					if (CSCoreLib.randomizer().nextInt(100) < 6) e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.items.get(ExoticGarden.items.keySet().toArray(new String[ExoticGarden.items.keySet().size()])[CSCoreLib.randomizer().nextInt(ExoticGarden.items.keySet().size())]));
 			} else {
 				ItemStack item = ExoticGarden.harvestPlant(e.getBlock());
