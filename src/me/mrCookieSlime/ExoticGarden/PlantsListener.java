@@ -133,7 +133,7 @@ public class PlantsListener implements Listener {
 					Block current = e.getWorld().getBlockAt(x, y, z);
 					if (!current.getType().isSolid() && current.getType() != Material.WATER && berry.isSoil(current.getRelative(BlockFace.DOWN).getType())) {
 						BlockStorage.store(current, berry.getItem());
-						switch(berry.getType()) {
+						switch (berry.getType()) {
 							case BUSH: {
 								current.setType(Material.OAK_LEAVES);
 								break;
