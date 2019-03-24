@@ -51,7 +51,7 @@ public class ExoticGarden extends JavaPlugin {
 
 	private static boolean skullitems;
 
-	public static ItemStack KITCHEN = new CustomItem(Material.CAULDRON, "&eKitchen", 0, new String[] {"", "&a&oYou can make a bunch of different yummies here"});
+	public static ItemStack KITCHEN = new CustomItem(Material.CAULDRON, "&eKitchen", 0, new String[] {"", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"});
 
 	@Override
 	public void onEnable() {

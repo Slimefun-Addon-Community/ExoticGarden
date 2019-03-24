@@ -29,7 +29,7 @@ import me.mrCookieSlime.Slimefun.api.Slimefun;
 
 public class Kitchen {
 
-	public static final RecipeType KITCHEN = new RecipeType(new CustomItem(Material.CAULDRON, "&eKitchen", 0, new String[] {"", "&a&oThis item should be made", "&a&oin the kitchen"}), "KITCHEN");
+	public static final RecipeType KITCHEN = new RecipeType(new CustomItem(Material.CAULDRON, "&eKitchen", "", "&a&oThis item should be made", "&a&oin the Kitchen"), "KITCHEN");
 
 	public static void registerKitchen(ExoticGarden plugin) {
 
@@ -89,10 +89,11 @@ public class Kitchen {
 											}, j*5L);
 										}
 										Bukkit.getScheduler().runTaskLater(plugin, () -> {
-											if (resinv.getResult() != null) resinv.setResult(new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount()));
-											else resinv.setResult(adding);
 											p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F);
-										}, 7*30L);
+										}, 55L);
+
+										if (resinv.getResult() != null) resinv.setResult(new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount()));
+										else resinv.setResult(adding);
 									}
 									else Messages.local.sendTranslation(p, "machines.full-inventory", true);
 								}
