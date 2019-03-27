@@ -1,5 +1,4 @@
-long-grass-drops:
-  WHEAT_SEEDS: true
+grass-drops: []
 world-blacklist:
 - world_nether
 - world_the_end
