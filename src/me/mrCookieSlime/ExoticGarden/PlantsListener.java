@@ -13,6 +13,7 @@ import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
+import org.bukkit.block.data.Waterlogged;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -183,7 +184,8 @@ public class PlantsListener implements Listener {
 				boolean flat = false;
 				for (y = e.getWorld().getMaxHeight(); y > 30; y--) {
 					Block current = e.getWorld().getBlockAt(x, y, z);
-					if (!current.getType().isSolid() && current.getType() != Material.WATER && tree.isSoil(current.getRelative(0, -1, 0).getType())) {
+					if (!current.getType().isSolid() && current.getType() != Material.WATER && current.getType() != Material.SEAGRASS && current.getType() != Material.TALL_SEAGRASS
+							&& !(current.getBlockData() instanceof Waterlogged && ((Waterlogged) current.getBlockData()).isWaterlogged()) && tree.isSoil(current.getRelative(0, -1, 0).getType())) {
 						flat = true;
 						for (int i = 0; i < 5; i++) {
 							for (int j = 0; j < 5; j++) {

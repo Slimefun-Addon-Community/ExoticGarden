@@ -10,7 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Skull;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -121,7 +120,7 @@ public class Schematic {
 				for (int z = 0; z < length; ++z) {
 					int index = y * width * length + z * width + x;
 					Block block = new Location(loc.getWorld(), x + loc.getX() - length / 2, y + loc.getY(), z + loc.getZ() - width / 2).getBlock();
-					if (block.getType().equals(null) || block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR || !block.getType().isSolid()) {
+					if (block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR || !block.getType().isSolid()) {
 						if (parseId(blocks[index], blockData[index]) != null) {
 							if (!(block.getState() instanceof InventoryHolder)) {
 								if (blocks[index] != 0) {
@@ -130,7 +129,7 @@ public class Schematic {
 								if (org.bukkit.Tag.LEAVES.isTagged(parseId(blocks[index], blockData[index]))) {
 									if (CSCoreLib.randomizer().nextInt(100) < 25) BlockStorage.store(block, tree.getItem());
 								}
-								else if (parseId(blocks[index], blockData[index]) == Material.PLAYER_HEAD && block.getState() instanceof Skull) {
+								else if (parseId(blocks[index], blockData[index]) == Material.PLAYER_HEAD) {
 									Rotatable s = (Rotatable) block.getBlockData();
 									s.setRotation(bf[new Random().nextInt(bf.length)]);
 									block.setBlockData(s);
@@ -152,7 +151,7 @@ public class Schematic {
 	}
 
 	public static Material parseId(short blockId, byte blockData) {
-		switch(blockId) {
+		switch (blockId) {
 			case 6:
 				if (blockData == 0) return Material.OAK_SAPLING;
 				if (blockData == 1) return Material.SPRUCE_SAPLING;
@@ -183,23 +182,23 @@ public class Schematic {
 				break;
 			case 144:
 				return Material.PLAYER_HEAD;
-
 		}
 		return null;
 	}
 
-	@SuppressWarnings("resource")
 	public static Schematic loadSchematic(File file) throws IOException {
 		FileInputStream stream = new FileInputStream(file);
 		NBTInputStream nbtStream = new NBTInputStream(stream);
 
 		CompoundTag schematicTag = (CompoundTag) nbtStream.readTag();
 		if (!schematicTag.getName().equals("Schematic")) {
+			nbtStream.close();
 			throw new IllegalArgumentException("Tag \"Schematic\" does not exist or is not first");
 		}
 
 		Map<String, Tag> schematic = schematicTag.getValue();
 		if (!schematic.containsKey("Blocks")) {
+			nbtStream.close();
 			throw new IllegalArgumentException("Schematic file is missing a \"Blocks\" tag");
 		}
 
@@ -232,6 +231,7 @@ public class Schematic {
 			}
 		}
 
+		nbtStream.close();
 		return new Schematic(file.getName().replace(".schematic", ""), blocks, blockData, width, length, height);
 	}
 
