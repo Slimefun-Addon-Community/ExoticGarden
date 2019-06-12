@@ -611,17 +611,17 @@ public class ExoticGarden extends JavaPlugin {
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOWBALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu with Strawberries", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "TIRAMISU_WITH_STRAWBERRIES",
-		new ItemStack[] {getItem("HEAVY_CREAM"), getItem("STRAWBERRY"), null, null, null, null, null, null, null},
+		new ItemStack[] {getItem("HEAVY_CREAM"), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new ItemStack(Material.COCOA_BEANS), new ItemStack(Material.EGG), getItem("STRAWBERRY"), null, null, null},
 		18)
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOWBALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu with Raspberries", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "TIRAMISU_WITH_RASPBERRIES",
-		new ItemStack[] {getItem("HEAVY_CREAM"), getItem("RASPBERRY"), null, null, null, null, null, null, null},
+		new ItemStack[] {getItem("HEAVY_CREAM"), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new ItemStack(Material.COCOA_BEANS), new ItemStack(Material.EGG), getItem("RASPBERRY"), null, null, null},
 		18)
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.SNOWBALL, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTY5MDkxZDI4ODAyMmM3YjBlYjZkM2UzZjQ0YjBmZWE3ZjJjMDY5ZjQ5NzQ5MWExZGNhYjU4N2ViMWQ1NmQ0In19fQ=="), "&rTiramisu with Blackberries", "", "&7&oRestores &b&o" + "9.0" + " &7&oHunger"), "TIRAMISU_WITH_BLACKBERRIES",
-		new ItemStack[] {getItem("HEAVY_CREAM"), getItem("BLACKBERRY"), null, null, null, null, null, null, null},
+		new ItemStack[] {getItem("HEAVY_CREAM"), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new ItemStack(Material.COCOA_BEANS), new ItemStack(Material.EGG), getItem("BLACKBERRY"), null, null, null},
 		18)
 		.register();
 
