@@ -10,6 +10,7 @@ import java.util.Map;
 import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -51,7 +52,7 @@ public class ExoticGarden extends JavaPlugin {
 
 	private static boolean skullitems;
 
-	public static ItemStack KITCHEN = new CustomItem(Material.CAULDRON, "&eKitchen", 0, new String[] {"", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"});
+	public static ItemStack KITCHEN = new CustomItem(Material.CAULDRON, "&eKitchen", new String[] {"", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"});
 
 	@Override
 	public void onEnable() {
@@ -153,12 +154,12 @@ public class ExoticGarden extends JavaPlugin {
 			new ItemStack[] {new ItemStack(Material.STICK), new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null});
 			crook.register(false, new BlockBreakHandler() {
 				@Override
-				public boolean onBlockBreak(BlockBreakEvent arg0, ItemStack arg1, int arg2, List<ItemStack> arg3) {
-					if (SlimefunManager.isItemSimiliar(arg1, crook.getItem(), true)) {
-						PlayerInventory.damageItemInHand(arg0.getPlayer());
-						if ((arg0.getBlock().getType().toString().endsWith("LEAVES")) && CSCoreLib.randomizer().nextInt(100) < 25) {
-							ItemStack sapling = new ItemStack(arg0.getBlock().getType());
-							arg3.add(sapling);
+				public boolean onBlockBreak(BlockBreakEvent e, ItemStack i, int fortune, List<ItemStack> drops) {
+					if (SlimefunManager.isItemSimiliar(i, crook.getItem(), true)) {
+						PlayerInventory.damageItemInHand(e.getPlayer());
+						if (Tag.LEAVES.isTagged(e.getBlock().getType()) && CSCoreLib.randomizer().nextInt(100) < 25) {
+							ItemStack sapling = new ItemStack(e.getBlock().getType());
+							drops.add(sapling);
 						}
 						return true;
 					}
@@ -166,16 +167,19 @@ public class ExoticGarden extends JavaPlugin {
 				}
 			});
 
-			new SlimefunItem(category_main, grass_seeds, "GRASS_SEEDS", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass", 1)),
-			new ItemStack[] {null, null, null, null, new CustomItem(Material.GRASS, 1), null, null, null, null})
+			new SlimefunItem(category_main, grass_seeds, "GRASS_SEEDS", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
+			new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 			.register(false, new ItemInteractionHandler() {
 				@Override
-				public boolean onRightClick(ItemUseEvent arg0, Player arg1, ItemStack arg2) {
-					if (SlimefunManager.isItemSimiliar(arg2, grass_seeds, true)) {
-						if (arg0.getClickedBlock() != null && arg0.getClickedBlock().getType() == Material.DIRT) {
-							PlayerInventory.consumeItemInHand(arg1);
-							arg0.getClickedBlock().setType(Material.GRASS);
-							arg0.getClickedBlock().getWorld().playEffect(arg0.getClickedBlock().getLocation(), Effect.STEP_SOUND, Material.GRASS);
+				public boolean onRightClick(ItemUseEvent e, Player p, ItemStack i) {
+					if (SlimefunManager.isItemSimiliar(i, grass_seeds, true)) {
+						Block b = e.getClickedBlock();
+						if (b != null && b.getType() == Material.DIRT) {
+							PlayerInventory.consumeItemInHand(p);
+							b.setType(Material.GRASS_BLOCK);
+							if (b.getRelative(BlockFace.UP).getType() == Material.AIR || b.getRelative(BlockFace.UP).getType() == Material.CAVE_AIR)
+								b.getRelative(BlockFace.UP).setType(Material.GRASS);
+							b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, Material.GRASS);
 						}
 						return true;
 					}
@@ -270,7 +274,7 @@ public class ExoticGarden extends JavaPlugin {
 		3)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&rPotato Salad", 0, new String[] {"", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"}), "POTATO_SALAD",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&rPotato Salad", new String[] {"", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"}), "POTATO_SALAD",
 		new ItemStack[] {new ItemStack(Material.BAKED_POTATO), getItem("MAYO"), new ItemStack(Material.BOWL), null, null, null, null, null, null},
 		6)
 		.register();
@@ -285,22 +289,22 @@ public class ExoticGarden extends JavaPlugin {
 		11)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&rEgg Salad", 0, new String[] {"", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"}), "EGG_SALAD",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&rEgg Salad", new String[] {"", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"}), "EGG_SALAD",
 		new ItemStack[] {new ItemStack(Material.EGG), getItem("MAYO"), new ItemStack(Material.BOWL), null, null, null, null, null, null},
 		6)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&4Tomato Soup", 0, new String[] {"", "&7&oRestores &b&o" + "5.5" + " &7&oHunger"}), "TOMATO_SOUP",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&4Tomato Soup", new String[] {"", "&7&oRestores &b&o" + "5.5" + " &7&oHunger"}), "TOMATO_SOUP",
 		new ItemStack[] {new ItemStack(Material.BOWL), getItem("TOMATO"), null, null, null, null, null, null, null},
 		5)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&cStrawberry Salad", 0, new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}), "STRAWBERRY_SALAD",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&cStrawberry Salad", new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}), "STRAWBERRY_SALAD",
 		new ItemStack[] {new ItemStack(Material.BOWL), getItem("STRAWBERRY"), null, null, null, null, null, null, null},
 		4)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&cGrape Salad", 0, new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}), "GRAPE_SALAD",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&cGrape Salad", new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}), "GRAPE_SALAD",
 		new ItemStack[] {new ItemStack(Material.BOWL), getItem("GRAPE"), null, null, null, null, null, null, null},
 		4)
 		.register();
@@ -330,7 +334,7 @@ public class ExoticGarden extends JavaPlugin {
 		18)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.COOKIE, "&6Biscuit", 0, new String[] {"", "&7&oRestores &b&o" + "2.0" + " &7&oHunger"}), "BISCUIT",
+		new CustomFood(category_food, new CustomItem(Material.COOKIE, "&6Biscuit", new String[] {"", "&7&oRestores &b&o" + "2.0" + " &7&oHunger"}), "BISCUIT",
 		new ItemStack[] {SlimefunItems.WHEAT_FLOUR, SlimefunItems.BUTTER, null, null, null, null, null, null, null}, 
 		2)
 		.register();
@@ -345,12 +349,12 @@ public class ExoticGarden extends JavaPlugin {
 		18)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.GOLDEN_CARROT, "&6Corn on the Cob", 0, new String[] {"", "&7&oRestores &b&o" + "4.5" + " &7&oHunger"}), "CORN_ON_THE_COB",
+		new CustomFood(category_food, new CustomItem(Material.GOLDEN_CARROT, "&6Corn on the Cob", new String[] {"", "&7&oRestores &b&o" + "4.5" + " &7&oHunger"}), "CORN_ON_THE_COB",
 		new ItemStack[] {SlimefunItems.BUTTER, getItem("CORN"), null, null, null, null, null, null, null},
 		3)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&rCreamed Corn", 0, new String[] {"", "&7&oRestores &b&o" + "4.0" + " &7&oHunger"}), "CREAMED_CORN",
+		new CustomFood(category_food, new CustomItem(Material.MUSHROOM_STEW, "&rCreamed Corn", new String[] {"", "&7&oRestores &b&o" + "4.0" + " &7&oHunger"}), "CREAMED_CORN",
 		new ItemStack[] {SlimefunItems.HEAVY_CREAM, getItem("CORN"), new ItemStack(Material.BOWL), null, null, null, null, null, null},
 		2)
 		.register();
@@ -434,7 +438,7 @@ public class ExoticGarden extends JavaPlugin {
 		18)
 		.register();
 
-		new CustomFood(category_food, new CustomItem(Material.COOKIE, "&cJammy Dodger", 0, new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}), "JAMMY_DODGER",
+		new CustomFood(category_food, new CustomItem(Material.COOKIE, "&cJammy Dodger", new String[] {"", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"}), "JAMMY_DODGER",
 		new ItemStack[] {null, getItem("BISCUIT"), null, null, getItem("RASPBERRY_JUICE"), null, null, getItem("BISCUIT"), null}, 
 		8)
 		.register();
@@ -648,14 +652,14 @@ public class ExoticGarden extends JavaPlugin {
 		Tree tree = new Tree(id, fruitName, texture, soil);
 		trees.add(tree);
 
-		items.put(id + "_SAPLING", new CustomItem(Material.OAK_SAPLING, color + name + " Sapling", 0));
+		items.put(id + "_SAPLING", new CustomItem(Material.OAK_SAPLING, color + name + " Sapling"));
 
-		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Sapling", 0), id + "_SAPLING", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass", 1)),
-		new ItemStack[] {null, null, null, null, new CustomItem(Material.GRASS, 1), null, null, null, null})
+		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Sapling"), id + "_SAPLING", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
+		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register();
 
 		try {
-			new EGPlant(category_main, new CustomItem(getSkull(material, texture), color + StringUtils.format(fruitName)), fruitName, new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Tree", 0)), true,
+			new EGPlant(category_main, new CustomItem(getSkull(material, texture), color + StringUtils.format(fruitName)), fruitName, new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Tree")), true,
 			new ItemStack[] {null, null, null, null, getItem(id + "_SAPLING"), null, null, null, null})
 			.register();
 		} catch (Exception e1) {
@@ -687,13 +691,13 @@ public class ExoticGarden extends JavaPlugin {
 		Berry berry = new Berry(name.toUpperCase(), type, data);
 		berries.add(berry);
 
-		items.put(name.toUpperCase() + "_BUSH", new CustomItem(Material.OAK_SAPLING, color + name + " Bush", 0));
+		items.put(name.toUpperCase() + "_BUSH", new CustomItem(Material.OAK_SAPLING, color + name + " Bush"));
 
-		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Bush", 0), name.toUpperCase() + "_BUSH", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass", 1)),
-		new ItemStack[] {null, null, null, null, new CustomItem(Material.GRASS, 1), null, null, null, null})
+		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Bush"), name.toUpperCase() + "_BUSH", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
+		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register();
 
-		new EGPlant(category_main, new CustomItem(getSkull(Material.NETHER_WART, data.getTexture()), color + name), name.toUpperCase(), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
+		new EGPlant(category_main, new CustomItem(getSkull(Material.NETHER_WART, data.getTexture()), color + name), name.toUpperCase(), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush")), true,
 		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase() + "_BUSH"), null, null, null, null})
 		.register();
 
@@ -738,13 +742,13 @@ public class ExoticGarden extends JavaPlugin {
 		Berry berry = new Berry(name.toUpperCase().replace(" ", "_"), type, data);
 		berries.add(berry);
 
-		items.put(name.toUpperCase() + "_BUSH", new CustomItem(Material.OAK_SAPLING, color + name + " Plant", 0));
+		items.put(name.toUpperCase() + "_BUSH", new CustomItem(Material.OAK_SAPLING, color + name + " Plant"));
 
-		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Plant", 0), name.toUpperCase().replace(" ", "_") + "_BUSH", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass", 1)),
-		new ItemStack[] {null, null, null, null, new CustomItem(Material.GRASS, 1), null, null, null, null})
+		new SlimefunItem(category_main, new CustomItem(Material.OAK_SAPLING, color + name + " Plant"), name.toUpperCase().replace(" ", "_") + "_BUSH", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
+		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register();
 
-		new EGPlant(category_main, new CustomItem(getSkull(material, data.getTexture()), color + name), name.toUpperCase().replace(" ", "_"), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush", 0)), true,
+		new EGPlant(category_main, new CustomItem(getSkull(material, data.getTexture()), color + name), name.toUpperCase().replace(" ", "_"), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush")), true,
 		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase().replace(" ", "_") + "_BUSH"), null, null, null, null})
 		.register();
 	}
@@ -755,7 +759,7 @@ public class ExoticGarden extends JavaPlugin {
 		Berry berry = new Berry(essence, name.toUpperCase() + "_ESSENCE", PlantType.ORE_PLANT, new PlantData(skull));
 		berries.add(berry);
 
-		new SlimefunItem(category_magic, new CustomItem(Material.OAK_SAPLING, "&r" + name + " Plant", 0), name.toUpperCase().replace(" ", "_") + "_PLANT", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new SlimefunItem(category_magic, new CustomItem(Material.OAK_SAPLING, "&r" + name + " Plant"), name.toUpperCase().replace(" ", "_") + "_PLANT", RecipeType.ENHANCED_CRAFTING_TABLE,
 		recipe)
 		.register();
 

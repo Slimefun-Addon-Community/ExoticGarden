@@ -36,10 +36,12 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 public class PlantsListener implements Listener {
 
+	ExoticGarden plugin;
 	Config cfg;
 	BlockFace[] bf = {BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
 
 	public PlantsListener(ExoticGarden plugin) {
+		this.plugin = plugin;
 		cfg = plugin.cfg;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
@@ -138,35 +140,38 @@ public class PlantsListener implements Listener {
 						BlockStorage.store(current, berry.getItem());
 						switch (berry.getType()) {
 							case BUSH: {
-								current.setType(Material.OAK_LEAVES);
+								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> current.setType(Material.OAK_LEAVES));
 								break;
 							}
 							case FRUIT: {
-								current.setType(Material.PLAYER_HEAD);
-								Rotatable s = (Rotatable) current.getBlockData();
-								s.setRotation(bf[new Random().nextInt(bf.length)]);
-								current.setBlockData(s);
-
-								try {
-									CustomSkull.setSkull(current, berry.getData().getTexture());
-								} catch (Exception e1) {
-									e1.printStackTrace();
-								}
+								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+									current.setType(Material.PLAYER_HEAD);
+									Rotatable s = (Rotatable) current.getBlockData();
+									s.setRotation(bf[new Random().nextInt(bf.length)]);
+									current.setBlockData(s);
+									try {
+										CustomSkull.setSkull(current, berry.getData().getTexture());
+									} catch (Exception e1) {
+										e1.printStackTrace();
+									}
+								});
 								break;
 							}
 							case ORE_PLANT:
 							case DOUBLE_PLANT: {
-								BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
-								current.setType(Material.OAK_LEAVES);
-								current.getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
-								Rotatable s = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
-								s.setRotation(bf[new Random().nextInt(bf.length)]);
-								current.getRelative(BlockFace.UP).setBlockData(s);
-								try {
-									CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getData().getTexture());
-								} catch (Exception e1) {
-									e1.printStackTrace();
-								}
+								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+									BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
+									current.setType(Material.OAK_LEAVES);
+									current.getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
+									Rotatable s = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
+									s.setRotation(bf[new Random().nextInt(bf.length)]);
+									current.getRelative(BlockFace.UP).setBlockData(s);
+									try {
+										CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getData().getTexture());
+									} catch (Exception e1) {
+										e1.printStackTrace();
+									}
+								});
 								break;
 							}
 							default:
@@ -178,28 +183,33 @@ public class PlantsListener implements Listener {
 			}
 			else if (CSCoreLib.randomizer().nextInt(100) < cfg.getInt("chances.TREE")) {
 				Tree tree = ExoticGarden.trees.get(CSCoreLib.randomizer().nextInt(ExoticGarden.trees.size()));
-				int x, z, y;
-				x = e.getChunk().getX() * 16 + CSCoreLib.randomizer().nextInt(16);
-				z = e.getChunk().getZ() * 16 + CSCoreLib.randomizer().nextInt(16);
-				boolean flat = false;
-				for (y = e.getWorld().getMaxHeight(); y > 30; y--) {
-					Block current = e.getWorld().getBlockAt(x, y, z);
-					if (!current.getType().isSolid() && current.getType() != Material.WATER && current.getType() != Material.SEAGRASS && current.getType() != Material.TALL_SEAGRASS
-							&& !(current.getBlockData() instanceof Waterlogged && ((Waterlogged) current.getBlockData()).isWaterlogged()) && tree.isSoil(current.getRelative(0, -1, 0).getType())) {
-						flat = true;
-						for (int i = 0; i < 5; i++) {
-							for (int j = 0; j < 5; j++) {
-								for (int k = 0; k < 6; k++) {
-									if ((current.getRelative(i, k, j).getType().isSolid() || Tag.LEAVES.isTagged(current.getRelative(i, k, j).getType())) || !current.getRelative(i, -1, j).getType().isSolid()) flat = false;
+				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+					int x, z, y;
+					x = e.getChunk().getX() * 16 + CSCoreLib.randomizer().nextInt(16);
+					z = e.getChunk().getZ() * 16 + CSCoreLib.randomizer().nextInt(16);
+					boolean flat = false;
+					for (y = e.getWorld().getMaxHeight(); y > 30; y--) {
+						Block current = e.getWorld().getBlockAt(x, y, z);
+						if (!current.getType().isSolid() && current.getType() != Material.WATER && current.getType() != Material.SEAGRASS && current.getType() != Material.TALL_SEAGRASS
+								&& !(current.getBlockData() instanceof Waterlogged && ((Waterlogged) current.getBlockData()).isWaterlogged()) && tree.isSoil(current.getRelative(0, -1, 0).getType())) {
+							flat = true;
+							a: for (int i = 0; i < 5; i++) {
+								for (int j = 0; j < 5; j++) {
+									for (int k = 0; k < 6; k++) {
+										if (current.getRelative(i, k, j).getType().isSolid() || Tag.LEAVES.isTagged(current.getRelative(i, k, j).getType()) || !current.getRelative(i, -1, j).getType().isSolid()) {
+											flat = false;
+											break a;
+										}
+									}
 								}
 							}
-						}
-						if (flat) {
-							Schematic.pasteSchematic(new Location(e.getWorld(), x, y, z), tree);
-							break;
+							if (flat) {
+								Schematic.pasteSchematic(new Location(e.getWorld(), x, y, z), tree);
+								break;
+							}
 						}
 					}
-				}
+				});
 			}
 		}
 	}

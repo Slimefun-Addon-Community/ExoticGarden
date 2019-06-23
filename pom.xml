@@ -6,28 +6,24 @@
 
     <groupId>me.mrCookieSlime</groupId>
     <artifactId>ExoticGarden</artifactId>
-    <version>1.7.0</version>
+    <version>1.7.1</version>
     <properties>
-	    <maven.compiler.source>1.8</maven.compiler.source>
-	    <maven.compiler.target>1.8</maven.compiler.target>
-	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <repositories>
-        <repository>
-            <id>paper-repo</id>
-            <url>https://repo.destroystokyo.com/repository/maven-public/</url>
-        </repository>
         <repository>
             <id>spigot-repo</id> 
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url> 
         </repository>
-	<repository>
-	    <id>jitpack.io</id>
+        <repository>
+            <id>jitpack.io</id>
             <url>https://jitpack.io</url>
-	</repository>
+        </repository>
     </repositories>
     <build>
-    <!--Maintain existing structure (as much as possible)-->
+        <!--Maintain existing structure (as much as possible)-->
         <sourceDirectory>${project.basedir}/src</sourceDirectory>
         <!--doesn't exist but here if you ever do make such a directory-->
         <testSourceDirectory>${project.basedir}/tests/java</testSourceDirectory>
@@ -39,8 +35,8 @@
         <finalName>${project.name} v${project.version}</finalName>
         <resources>
             <resource>
-            <!-- Use plugin.yml in the src directory-->
-            <!-- This can also automatically update plugin.yml version from pom, if you use ${project.version} as version number-->
+                <!-- Use plugin.yml in the src directory-->
+                <!-- This can also automatically update plugin.yml version from pom, if you use ${project.version} as version number-->
                 <directory>${basedir}/src</directory>
                 <filtering>true</filtering>
                 <includes>
@@ -62,18 +58,18 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.13-R0.1-SNAPSHOT</version>
+            <version>1.14.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-	        <groupId>com.github.TheBusyBiscuit</groupId>
-	        <artifactId>CS-CoreLib</artifactId>
-	        <version>1.6.1</version>
-	    </dependency>
+            <groupId>com.github.TheBusyBiscuit</groupId>
+            <artifactId>CS-CoreLib</artifactId>
+            <version>4d33f14f4e</version>
+        </dependency>
         <dependency>
-	        <groupId>com.github.TheBusyBiscuit</groupId>
-	        <artifactId>Slimefun4</artifactId>
-	        <version>3619c4bc9e</version>
-	    </dependency>
+            <groupId>com.github.TheBusyBiscuit</groupId>
+            <artifactId>Slimefun4</artifactId>
+            <version>8f173ea76c</version>
+        </dependency>
     </dependencies>
 </project>
