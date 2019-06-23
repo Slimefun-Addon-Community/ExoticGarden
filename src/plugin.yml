@@ -3,7 +3,7 @@ version: ${project.version}
 authors: [mrCookieSlime, Goldentoenail, Joapple, SoSeDiK]
 description: A Slimefun Addon that adds new Plants and dishes to the game
 website: http://TheBusyBiscuit.github.io/
-api-version: 1.13
+api-version: 1.14
 
 main: me.mrCookieSlime.ExoticGarden.ExoticGarden
 
