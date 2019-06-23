@@ -10,6 +10,7 @@ import java.util.Map;
 import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -153,12 +154,12 @@ public class ExoticGarden extends JavaPlugin {
 			new ItemStack[] {new ItemStack(Material.STICK), new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null});
 			crook.register(false, new BlockBreakHandler() {
 				@Override
-				public boolean onBlockBreak(BlockBreakEvent arg0, ItemStack arg1, int arg2, List<ItemStack> arg3) {
-					if (SlimefunManager.isItemSimiliar(arg1, crook.getItem(), true)) {
-						PlayerInventory.damageItemInHand(arg0.getPlayer());
-						if ((arg0.getBlock().getType().toString().endsWith("LEAVES")) && CSCoreLib.randomizer().nextInt(100) < 25) {
-							ItemStack sapling = new ItemStack(arg0.getBlock().getType());
-							arg3.add(sapling);
+				public boolean onBlockBreak(BlockBreakEvent e, ItemStack i, int fortune, List<ItemStack> drops) {
+					if (SlimefunManager.isItemSimiliar(i, crook.getItem(), true)) {
+						PlayerInventory.damageItemInHand(e.getPlayer());
+						if (Tag.LEAVES.isTagged(e.getBlock().getType()) && CSCoreLib.randomizer().nextInt(100) < 25) {
+							ItemStack sapling = new ItemStack(e.getBlock().getType());
+							drops.add(sapling);
 						}
 						return true;
 					}
@@ -170,12 +171,15 @@ public class ExoticGarden extends JavaPlugin {
 			new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 			.register(false, new ItemInteractionHandler() {
 				@Override
-				public boolean onRightClick(ItemUseEvent arg0, Player arg1, ItemStack arg2) {
-					if (SlimefunManager.isItemSimiliar(arg2, grass_seeds, true)) {
-						if (arg0.getClickedBlock() != null && arg0.getClickedBlock().getType() == Material.DIRT) {
-							PlayerInventory.consumeItemInHand(arg1);
-							arg0.getClickedBlock().setType(Material.GRASS);
-							arg0.getClickedBlock().getWorld().playEffect(arg0.getClickedBlock().getLocation(), Effect.STEP_SOUND, Material.GRASS);
+				public boolean onRightClick(ItemUseEvent e, Player p, ItemStack i) {
+					if (SlimefunManager.isItemSimiliar(i, grass_seeds, true)) {
+						Block b = e.getClickedBlock();
+						if (b != null && b.getType() == Material.DIRT) {
+							PlayerInventory.consumeItemInHand(p);
+							b.setType(Material.GRASS_BLOCK);
+							if (b.getRelative(BlockFace.UP).getType() == Material.AIR || b.getRelative(BlockFace.UP).getType() == Material.CAVE_AIR)
+								b.getRelative(BlockFace.UP).setType(Material.GRASS);
+							b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, Material.GRASS);
 						}
 						return true;
 					}
