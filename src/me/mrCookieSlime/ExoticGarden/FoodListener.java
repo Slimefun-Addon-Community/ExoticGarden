@@ -42,8 +42,10 @@ public class FoodListener implements Listener {
 				if (item != null && (item instanceof EGPlant) && ((EGPlant) item).isEdible()) {
 					((EGPlant) item).restoreHunger(e.getPlayer());
 					e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
+					final int slot = e.getPlayer().getInventory().getHeldItemSlot();
+					
 					Bukkit.getScheduler().runTaskLater(plugin, () -> {
-						e.getPlayer().getInventory().setItemInMainHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInMainHand(), 1));
+						e.getPlayer().getInventory().setItem(slot, InvUtils.decreaseItem(e.getPlayer().getInventory().getItem(slot), 1));
 					}, 0L);
 				}
 				break;
@@ -53,6 +55,7 @@ public class FoodListener implements Listener {
 				if (item != null && (item instanceof EGPlant) && ((EGPlant) item).isEdible()) {
 					((EGPlant) item).restoreHunger(e.getPlayer());
 					e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
+					
 					Bukkit.getScheduler().runTaskLater(plugin, () -> {
 						e.getPlayer().getInventory().setItemInOffHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInOffHand(), 1));
 					}, 0L);

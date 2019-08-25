@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import me.mrCookieSlime.Slimefun.api.Slimefun;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -21,6 +21,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import io.github.thebusybiscuit.cscorelib2.updater.BukkitUpdater;
+import io.github.thebusybiscuit.cscorelib2.updater.GitHubBuildsUpdater;
+import io.github.thebusybiscuit.cscorelib2.updater.Updater;
 import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
 import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -44,25 +47,41 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 public class ExoticGarden extends JavaPlugin {
 
-	static List<Berry> berries = new ArrayList<Berry>();
-	static List<Tree> trees = new ArrayList<Tree>();
-	static Map<String, ItemStack> items = new HashMap<String, ItemStack>();
+	static List<Berry> berries = new ArrayList<>();
+	static List<Tree> trees = new ArrayList<>();
+	static Map<String, ItemStack> items = new HashMap<>();
 	Category category_main, category_food, category_drinks, category_magic;
 	Config cfg;
 
 	private static boolean skullitems;
-
 	public static ItemStack KITCHEN = new CustomItem(Material.CAULDRON, "&eKitchen", new String[] {"", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"});
 
 	@Override
 	public void onEnable() {
 		if (!new File("plugins/ExoticGarden").exists()) new File("plugins/ExoticGarden").mkdirs();
     	if (!new File("plugins/ExoticGarden/schematics").exists()) new File("plugins/ExoticGarden/schematics").mkdirs();
-		PluginUtils utils = new PluginUtils(this);
+		
+    	PluginUtils utils = new PluginUtils(this);
 		utils.setupConfig();
 		cfg = utils.getConfig();
-		utils.setupMetrics();
-		utils.setupUpdater(88425, getFile());
+		
+		// Setting up bStats
+		new Metrics(this);
+
+		// Setting up the Auto-Updater
+		Updater updater;
+
+		if (!getDescription().getVersion().startsWith("DEV - ")) {
+			// We are using an official build, use the BukkitDev Updater
+			updater = new BukkitUpdater(this, getFile(), 88425);
+		}
+		else {
+			// If we are using a development build, we want to switch to our custom 
+			updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ExoticGarden/master");
+		}
+		
+		// Only run the Updater if it has not been disabled
+		if (cfg.getBoolean("options.auto-update")) updater.start();
 
 		skullitems = cfg.getBoolean("options.item-heads");
 
@@ -154,6 +173,7 @@ public class ExoticGarden extends JavaPlugin {
 		final SlimefunItem crook = new SlimefunItem(Categories.TOOLS, new CustomItem(Material.WOODEN_HOE, "&rCrook", "", "&7+ &b25% &7Sapling Drop Rate"), "CROOK", RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {new ItemStack(Material.STICK), new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null});
 		crook.register(false, new BlockBreakHandler() {
+			
 			@Override
 			public boolean onBlockBreak(BlockBreakEvent e, ItemStack i, int fortune, List<ItemStack> drops) {
 				if (SlimefunManager.isItemSimiliar(i, crook.getItem(), true)) {
@@ -166,11 +186,13 @@ public class ExoticGarden extends JavaPlugin {
 				}
 				return false;
 			}
+			
 		});
 
 		new SlimefunItem(category_main, grass_seeds, "GRASS_SEEDS", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register(false, new ItemInteractionHandler() {
+			
 			@Override
 			public boolean onRightClick(ItemUseEvent e, Player p, ItemStack i) {
 				if (SlimefunManager.isItemSimiliar(i, grass_seeds, true)) {
@@ -186,6 +208,7 @@ public class ExoticGarden extends JavaPlugin {
 				}
 				else return false;
 			}
+			
 		});
 
 		new PlantsListener(this);
