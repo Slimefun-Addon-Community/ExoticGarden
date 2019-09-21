@@ -10,14 +10,14 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.EquipmentSlot;
+
 import me.mrCookieSlime.CSCoreLibPlugin.events.ItemUseEvent;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.InvUtils;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class FoodListener implements Listener {
 
-	ExoticGarden plugin;
+	private ExoticGarden plugin;
 
 	public FoodListener(ExoticGarden plugin) {
 		this.plugin = plugin;
@@ -37,10 +37,10 @@ public class FoodListener implements Listener {
 		EquipmentSlot hand = e.getParentEvent().getHand();
 
 		switch (hand) {
-			case HAND: {
-				SlimefunItem item = SlimefunItem.getByItem(new CustomItem(e.getPlayer().getInventory().getItemInMainHand(), 1));
-				if (item != null && (item instanceof EGPlant) && ((EGPlant) item).isEdible()) {
-					((EGPlant) item).restoreHunger(e.getPlayer());
+			case HAND:
+				SlimefunItem main_hand = SlimefunItem.getByItem(e.getPlayer().getInventory().getItemInMainHand());
+				if (main_hand != null && (main_hand instanceof EGPlant) && ((EGPlant) main_hand).isEdible()) {
+					((EGPlant) main_hand).restoreHunger(e.getPlayer());
 					e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
 					final int slot = e.getPlayer().getInventory().getHeldItemSlot();
 					
@@ -49,11 +49,10 @@ public class FoodListener implements Listener {
 					}, 0L);
 				}
 				break;
-			}
-			case OFF_HAND: {
-				SlimefunItem item = SlimefunItem.getByItem(new CustomItem(e.getPlayer().getInventory().getItemInOffHand(), 1));
-				if (item != null && (item instanceof EGPlant) && ((EGPlant) item).isEdible()) {
-					((EGPlant) item).restoreHunger(e.getPlayer());
+			case OFF_HAND:
+				SlimefunItem off_hand = SlimefunItem.getByItem(e.getPlayer().getInventory().getItemInOffHand());
+				if (off_hand != null && (off_hand instanceof EGPlant) && ((EGPlant) off_hand).isEdible()) {
+					((EGPlant) off_hand).restoreHunger(e.getPlayer());
 					e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
 					
 					Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -61,7 +60,6 @@ public class FoodListener implements Listener {
 					}, 0L);
 				}
 				break;
-			}
 			default:
 				break;
 		}

@@ -2,8 +2,8 @@ package me.mrCookieSlime.ExoticGarden;
 
 public class PlantData {
 
-	byte data;
-	String texture;
+	private byte data;
+	private String texture;
 
 	public PlantData(byte data) {
 		this.data = data;

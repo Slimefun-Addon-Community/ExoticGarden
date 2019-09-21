@@ -280,7 +280,7 @@ public class PlantsListener implements Listener {
 		e.blockList().removeAll(explosionHandler(e.blockList()));
 	}
 
-	Set<Block> explosionHandler(List<Block> blockList) {
+	private Set<Block> explosionHandler(List<Block> blockList) {
 		Set<Block> blocksToRemove = new HashSet<>();
 		for (Block block : blockList) {
 			ItemStack item = ExoticGarden.harvestPlant(block);
@@ -295,12 +295,13 @@ public class PlantsListener implements Listener {
 	public void dropFruitFromTree(Block block) {
 		for (int x = -1; x < 2; x++) {
 			for (int y = -1; y < 2; y++) {
-				for (int z = -1; z < 2; z++) { //inspect a cube at the reference
+				for (int z = -1; z < 2; z++) { 
+					//inspect a cube at the reference
 					Block drop = block.getRelative(x, y, z);
 					SlimefunItem check = BlockStorage.check(drop);
 					if (check != null) {
 						for (Tree tree: ExoticGarden.getTrees()) {
-							if (check.getID().equalsIgnoreCase(tree.fruit)) {
+							if (check.getID().equalsIgnoreCase(tree.getFruitID())) {
 								BlockStorage.clearBlockInfo(drop);
 								ItemStack fruits = check.getItem();
 								drop.getWorld().playEffect(drop.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);

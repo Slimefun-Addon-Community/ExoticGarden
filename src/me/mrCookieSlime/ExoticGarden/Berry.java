@@ -10,10 +10,10 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class Berry {
 
-	ItemStack item;
-	String id;
-	PlantData data;
-	PlantType type;
+	private ItemStack item;
+	private String id;
+	private PlantData data;
+	private PlantType type;
 
 	public Berry(String id, PlantType type, PlantData data) {
 		this.id = id;
@@ -33,19 +33,6 @@ public class Berry {
 	 *
 	 * @return the identifier of this Berry
 	 *
-	 * @since 1.7.0
-	 * @deprecated As of 1.7.0, renamed to {@link #getID()} for better name convenience.
-	 */
-	@Deprecated
-	public String getName() {
-		return this.id;
-	}
-
-	/**
-	 * Returns the identifier of this Berry.
-	 *
-	 * @return the identifier of this Berry
-	 *
 	 * @since 1.7.0, rename of {@link #getName()}.
 	 */
 	public String getID() {
@@ -53,10 +40,7 @@ public class Berry {
 	}
 
 	public ItemStack getItem() {
-		switch(type) {
-			case ORE_PLANT: return item;
-			default: return SlimefunItem.getByID(id).getItem();
-		}
+		return type == PlantType.ORE_PLANT ? item: SlimefunItem.getByID(id).getItem();
 	}
 
 	public PlantData getData() {
@@ -68,10 +52,7 @@ public class Berry {
 	}
 
 	public String toBush() {
-		switch(type) {
-			case ORE_PLANT: return this.id.replace("_ESSENCE", "_PLANT");
-			default: return this.id + "_BUSH";
-		}
+		return type == PlantType.ORE_PLANT ? this.id.replace("_ESSENCE", "_PLANT"): this.id + "_BUSH";
 	}
 
 	public boolean isSoil(Material type) {

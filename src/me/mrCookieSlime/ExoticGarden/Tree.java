@@ -13,8 +13,11 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class Tree {
 
-	String sapling, schematic, texture, fruit;
-	List<Material> soils;
+	private String sapling;
+	private String schematic;
+	private String texture;
+	private String fruit;
+	private List<Material> soils;
 
 	public Tree(String name, String fruit, String texture, Material... soil) {
 		this.sapling = name + "_SAPLING";
@@ -38,6 +41,10 @@ public class Tree {
 
 	public ItemStack getFruit() {
 		return SlimefunItem.getByID(fruit).getItem();
+	}
+	
+	public String getFruitID() {
+		return fruit;
 	}
 
 	public String getSapling() {

@@ -9,7 +9,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.HandledBlock;
 
 public class EGPlant extends HandledBlock {
 
-	boolean edible;
+	private boolean edible;
 
 	public EGPlant(Category category, ItemStack item, String name, RecipeType recipeType, boolean edible, ItemStack[] recipe) {
 		super(category, item, name, recipeType, recipe);
