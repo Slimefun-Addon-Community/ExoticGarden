@@ -7,10 +7,10 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 
 public class CustomFood extends EGPlant {
 
-	float food;
+	private float food;
 
 	public CustomFood(Category category, ItemStack item, String name, ItemStack[] recipe, int food) {
-		super(category, item, name, Kitchen.KITCHEN, true, recipe);
+		super(category, item, name, ExoticGarden.getKitchen().asRecipeType(), true, recipe);
 		this.food = food;
 	}
 

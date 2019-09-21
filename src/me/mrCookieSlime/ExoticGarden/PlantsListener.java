@@ -1,8 +1,8 @@
 package me.mrCookieSlime.ExoticGarden;
 
-import java.util.Random;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.Effect;
@@ -27,19 +27,21 @@ import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.CSCoreLibPlugin.CSCoreLib;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
 import me.mrCookieSlime.ExoticGarden.Schematic.Schematic;
+import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
+import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 
 public class PlantsListener implements Listener {
 
-	ExoticGarden plugin;
-	Config cfg;
-	BlockFace[] bf = {BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
-
+	private ExoticGarden plugin;
+	private Config cfg;
+	private BlockFace[] bf = {BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
+	private Random random = new Random();
+	
 	public PlantsListener(ExoticGarden plugin) {
 		this.plugin = plugin;
 		cfg = plugin.cfg;
@@ -52,14 +54,14 @@ public class PlantsListener implements Listener {
 		if (item != null) {
 			e.setCancelled(true);
 			if (!e.getLocation().getChunk().isLoaded()) e.getLocation().getWorld().loadChunk(e.getLocation().getChunk());
-			for (Tree tree : ExoticGarden.trees) {
+			for (Tree tree : ExoticGarden.getTrees()) {
 				if (item.getID().equalsIgnoreCase(tree.getSapling())) {
 					BlockStorage.retrieve(e.getLocation().getBlock());
 					Schematic.pasteSchematic(e.getLocation(), tree);
 					return;
 				}
 			}
-			for (Berry berry : ExoticGarden.berries) {
+			for (Berry berry : ExoticGarden.getBerries()) {
 				if (item.getID().equalsIgnoreCase(berry.toBush())) {
 					switch(berry.getType()) {
 						case BUSH: {
@@ -128,13 +130,14 @@ public class PlantsListener implements Listener {
 	@EventHandler
 	public void onGenerate(ChunkPopulateEvent e) {
 		if (!cfg.getStringList("world-blacklist").contains(e.getWorld().getName())) {
-			if (CSCoreLib.randomizer().nextInt(100) < cfg.getInt("chances.BUSH")) {
-				Berry berry = ExoticGarden.berries.get(CSCoreLib.randomizer().nextInt(ExoticGarden.berries.size()));
+			if (random.nextInt(100) < cfg.getInt("chances.BUSH")) {
+				Berry berry = ExoticGarden.getBerries().get(random.nextInt(ExoticGarden.getBerries().size()));
 				if (berry.getType().equals(PlantType.ORE_PLANT)) return;
-				int x, z, y;
-				x = e.getChunk().getX() * 16 + CSCoreLib.randomizer().nextInt(16);
-				z = e.getChunk().getZ() * 16 + CSCoreLib.randomizer().nextInt(16);
-				for (y = e.getWorld().getMaxHeight(); y > 30; y--) {
+				
+				int x = e.getChunk().getX() * 16 + random.nextInt(16);
+				int z = e.getChunk().getZ() * 16 + random.nextInt(16);
+				
+				for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
 					Block current = e.getWorld().getBlockAt(x, y, z);
 					if (!current.getType().isSolid() && current.getType() != Material.WATER && berry.isSoil(current.getRelative(BlockFace.DOWN).getType())) {
 						BlockStorage.store(current, berry.getItem());
@@ -181,14 +184,14 @@ public class PlantsListener implements Listener {
 					}
 				}
 			}
-			else if (CSCoreLib.randomizer().nextInt(100) < cfg.getInt("chances.TREE")) {
-				Tree tree = ExoticGarden.trees.get(CSCoreLib.randomizer().nextInt(ExoticGarden.trees.size()));
+			else if (random.nextInt(100) < cfg.getInt("chances.TREE")) {
+				Tree tree = ExoticGarden.getTrees().get(random.nextInt(ExoticGarden.getTrees().size()));
 				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-					int x, z, y;
-					x = e.getChunk().getX() * 16 + CSCoreLib.randomizer().nextInt(16);
-					z = e.getChunk().getZ() * 16 + CSCoreLib.randomizer().nextInt(16);
+					int x = e.getChunk().getX() * 16 + random.nextInt(16);
+					int z = e.getChunk().getZ() * 16 + random.nextInt(16);
 					boolean flat = false;
-					for (y = e.getWorld().getMaxHeight(); y > 30; y--) {
+					
+					for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
 						Block current = e.getWorld().getBlockAt(x, y, z);
 						if (!current.getType().isSolid() && current.getType() != Material.WATER && current.getType() != Material.SEAGRASS && current.getType() != Material.TALL_SEAGRASS
 								&& !(current.getBlockData() instanceof Waterlogged && ((Waterlogged) current.getBlockData()).isWaterlogged()) && tree.isSoil(current.getRelative(0, -1, 0).getType())) {
@@ -216,13 +219,16 @@ public class PlantsListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onHarvest(BlockBreakEvent e) {
-		if (CSCoreLib.getLib().getProtectionManager().canBuild(e.getPlayer().getUniqueId(), e.getBlock())) {
+		if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), e.getBlock().getLocation(), ProtectableAction.BREAK_BLOCK)) {
 			if (e.getBlock().getType().equals(Material.PLAYER_HEAD)) dropFruitFromTree(e.getBlock());
 			if (Tag.LEAVES.isTagged(e.getBlock().getType())) dropFruitFromTree(e.getBlock());
 			if (e.getBlock().getType() == Material.GRASS) {
-				if (ExoticGarden.items.keySet().size() > 0 && e.getPlayer().getGameMode() != GameMode.CREATIVE)
-					if (CSCoreLib.randomizer().nextInt(100) < 6) e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.items.get(ExoticGarden.items.keySet().toArray(new String[ExoticGarden.items.keySet().size()])[CSCoreLib.randomizer().nextInt(ExoticGarden.items.keySet().size())]));
-			} else {
+				if (ExoticGarden.getItems().keySet().size() > 0 && e.getPlayer().getGameMode() != GameMode.CREATIVE)
+					if (random.nextInt(100) < 6) {
+						e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.getItems().get(ExoticGarden.getItems().keySet().toArray(new String[ExoticGarden.getItems().keySet().size()])[random.nextInt(ExoticGarden.getItems().keySet().size())]));
+					}
+			} 
+			else {
 				ItemStack item = ExoticGarden.harvestPlant(e.getBlock());
 				if (item != null) {
 					e.setCancelled(true);
@@ -236,7 +242,7 @@ public class PlantsListener implements Listener {
 	public void onDecay(LeavesDecayEvent e) {
 		String id = BlockStorage.checkID(e.getBlock());
 		if (id != null) {
-			for (Berry berry : ExoticGarden.berries) {
+			for (Berry berry : ExoticGarden.getBerries()) {
 				if (id.equalsIgnoreCase(berry.getID())) {
 					e.setCancelled(true);
 					return;
@@ -255,7 +261,7 @@ public class PlantsListener implements Listener {
 	@EventHandler
 	public void onInteract(PlayerInteractEvent e) {
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getPlayer().isSneaking()) return;
-		if (CSCoreLib.getLib().getProtectionManager().canBuild(e.getPlayer().getUniqueId(), e.getClickedBlock())) {
+		if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), e.getClickedBlock().getLocation(), ProtectableAction.BREAK_BLOCK)) {
 			ItemStack item = ExoticGarden.harvestPlant(e.getClickedBlock());
 			if (item != null ) {
 				e.getClickedBlock().getWorld().playEffect(e.getClickedBlock().getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
@@ -275,7 +281,7 @@ public class PlantsListener implements Listener {
 	}
 
 	Set<Block> explosionHandler(List<Block> blockList) {
-		Set<Block> blocksToRemove = new HashSet<Block>();
+		Set<Block> blocksToRemove = new HashSet<>();
 		for (Block block : blockList) {
 			ItemStack item = ExoticGarden.harvestPlant(block);
 			if (item != null) {
@@ -293,7 +299,7 @@ public class PlantsListener implements Listener {
 					Block drop = block.getRelative(x, y, z);
 					SlimefunItem check = BlockStorage.check(drop);
 					if (check != null) {
-						for (Tree tree: ExoticGarden.trees) {
+						for (Tree tree: ExoticGarden.getTrees()) {
 							if (check.getID().equalsIgnoreCase(tree.fruit)) {
 								BlockStorage.clearBlockInfo(drop);
 								ItemStack fruits = check.getItem();
