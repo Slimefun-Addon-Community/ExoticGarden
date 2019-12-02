@@ -823,7 +823,7 @@ public class ExoticGarden extends JavaPlugin {
 
 	public static Berry getBerry(Block block) {
 		SlimefunItem item = BlockStorage.check(block);
-		if (item != null && item instanceof HandledBlock) {
+		if (item instanceof HandledBlock) {
 			for (Berry berry : instance.berries) {
 				if (item.getID().equalsIgnoreCase(berry.getID())) return berry;
 			}
@@ -843,24 +843,26 @@ public class ExoticGarden extends JavaPlugin {
 							Block plant;
 							if (BlockStorage.check(block.getRelative(BlockFace.DOWN)) == null) {
 								plant = block;
-								BlockStorage.retrieve(block.getRelative(BlockFace.UP));
+								BlockStorage.clearBlockInfo(block.getRelative(BlockFace.UP));
 								block.getWorld().playEffect(block.getRelative(BlockFace.UP).getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
-								block.getRelative(BlockFace.UP).setType(Material.AIR);;
+								block.getRelative(BlockFace.UP).setType(Material.AIR);
 							}
 							else {
 								plant = block.getRelative(BlockFace.DOWN);
-								BlockStorage.retrieve(block);
+								BlockStorage.clearBlockInfo(block);
 								block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
-								block.setType(Material.AIR);;
+								block.setType(Material.AIR);
 							}
 							plant.setType(Material.OAK_SAPLING);
 							itemstack = berry.getItem();
+							BlockStorage._integrated_removeBlockInfo(block.getLocation(), false);
 							BlockStorage.store(plant, getItem(berry.toBush()));
 							break;
 						}
 						default: {
 							block.setType(Material.OAK_SAPLING);
 							itemstack = berry.getItem();
+							BlockStorage._integrated_removeBlockInfo(block.getLocation(), false);
 							BlockStorage.store(block, getItem(berry.toBush()));
 							break;
 						}
