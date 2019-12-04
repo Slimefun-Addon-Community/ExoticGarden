@@ -23,6 +23,7 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.String.StringUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
 import me.mrCookieSlime.ExoticGarden.items.Crook;
 import me.mrCookieSlime.ExoticGarden.items.GrassSeeds;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.Lists.Categories;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
@@ -38,7 +39,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.Updater;
 
 public class ExoticGarden extends JavaPlugin {
-	
+
 	public static ExoticGarden instance;
 	private static boolean skullitems;
 
@@ -47,22 +48,22 @@ public class ExoticGarden extends JavaPlugin {
 	private Map<String, ItemStack> items = new HashMap<>();
 
 	protected Config cfg;
-	
+
 	private Category category_main;
 	private Category category_food;
 	private Category category_drinks;
 	private Category category_magic;
 	private Kitchen kitchen;
 
-	
+
 	@Override
 	public void onEnable() {
 		if (!new File("plugins/ExoticGarden").exists()) new File("plugins/ExoticGarden").mkdirs();
     	if (!new File("plugins/ExoticGarden/schematics").exists()) new File("plugins/ExoticGarden/schematics").mkdirs();
-		
+
     	instance = this;
     	cfg = new Config(this);
-		
+
 		// Setting up bStats
 		new Metrics(this);
 
@@ -77,7 +78,7 @@ public class ExoticGarden extends JavaPlugin {
 			// If we are using a development build, we want to switch to our custom 
 			updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ExoticGarden/master");
 		}
-		
+
 		// Only run the Updater if it has not been disabled
 		if (cfg.getBoolean("options.auto-update")) updater.start();
 
@@ -140,7 +141,7 @@ public class ExoticGarden extends JavaPlugin {
 
 		registerMagicalPlant("Gold", SlimefunItems.GOLD_4K, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTRkZjg5MjI5M2E5MjM2ZjczZjQ4ZjllZmU5NzlmZTA3ZGJkOTFmN2I1ZDIzOWU0YWNmZDM5NGY2ZWNhIn19fQ==",
 		new ItemStack[] {null, SlimefunItems.GOLD_16K, null, SlimefunItems.GOLD_16K, getItem("IRON_PLANT"), SlimefunItems.GOLD_16K, null, SlimefunItems.GOLD_16K, null});
-		
+
 		registerMagicalPlant("Copper", new CustomItem(SlimefunItems.COPPER_DUST, 8),  "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTkyM2RiZmQ4ZjMxMTI2OTBiYjVhNjE2OGE4ZDNjYTVhYjllN2Q0M2IxZDExY2ZjYjY0M2RlN2RmZTIxIn19fQ==",
 		new ItemStack[] {null, SlimefunItems.COPPER_DUST, null, SlimefunItems.COPPER_DUST, getItem("GOLD_PLANT"), SlimefunItems.COPPER_DUST, null, SlimefunItems.COPPER_DUST, null});
 
@@ -173,13 +174,13 @@ public class ExoticGarden extends JavaPlugin {
 
 		ItemStack grass_seeds = new CustomItem(Material.PUMPKIN_SEEDS, "&rGrass Seeds", "", "&7&oCan be planted on Dirt");
 
-		new Crook(Categories.TOOLS, new CustomItem(Material.WOODEN_HOE, "&rCrook", "", "&7+ &b25% &7Sapling Drop Rate"), "CROOK", RecipeType.ENHANCED_CRAFTING_TABLE,
+		new Crook(Categories.TOOLS, new SlimefunItemStack("CROOK", new CustomItem(Material.WOODEN_HOE, "&rCrook", "", "&7+ &b25% &7Sapling Drop Rate")), RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {new ItemStack(Material.STICK), new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null})
-		.register(false);
+		.register();
 
-		new GrassSeeds(category_main, grass_seeds, "GRASS_SEEDS", new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
+		new GrassSeeds(category_main, new SlimefunItemStack("GRASS_SEEDS", grass_seeds), new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
-		.register(false);
+		.register();
 
 		new PlantsListener(this);
 		new FoodListener(this);
@@ -487,7 +488,7 @@ public class ExoticGarden extends JavaPlugin {
 		.register();
 
 		new CustomFood(category_food, new CustomItem(getSkull(Material.COOKIE, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWQwMGRmYjNhNTdjMDY4YTBjYzdiNjI0ZDhkODg1MjA3MDQzNWQyNjM0YzBlNWRhOWNiYmFiNDYxNzRhZjBkZiJ9fX0="), "&cJammy Dodger", "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"), "JAMMY_DODGER",
-		new ItemStack[] {null, getItem("BISCUIT"), null, null, getItem("RASPBERRY_JUICE"), null, null, getItem("BISCUIT"), null}, 
+		new ItemStack[] {null, getItem("BISCUIT"), null, null, getItem("RASPBERRY_JUICE"), null, null, getItem("BISCUIT"), null},
 		8)
 		.register();
 
@@ -777,7 +778,7 @@ public class ExoticGarden extends JavaPlugin {
 
 	private static ItemStack getItem(String id) {
 		SlimefunItem item = SlimefunItem.getByID(id);
-		return item != null ? item.getItem(): null;
+		return item != null ? item.getItem() : null;
 	}
 
 	public static ItemStack getSkull(Material material, String texture) {
@@ -855,7 +856,7 @@ public class ExoticGarden extends JavaPlugin {
 							}
 							plant.setType(Material.OAK_SAPLING);
 							itemstack = berry.getItem();
-							BlockStorage._integrated_removeBlockInfo(block.getLocation(), false);
+							BlockStorage._integrated_removeBlockInfo(plant.getLocation(), false);
 							BlockStorage.store(plant, getItem(berry.toBush()));
 							break;
 						}
@@ -872,15 +873,15 @@ public class ExoticGarden extends JavaPlugin {
 		}
 		return itemstack;
 	}
-	
+
 	public static Kitchen getKitchen() {
 		return instance.kitchen;
 	}
-	
+
 	public static List<Tree> getTrees() {
 		return instance.trees;
 	}
-	
+
 	public static List<Berry> getBerries() {
 		return instance.berries;
 	}

@@ -20,12 +20,12 @@ public class EGPlant extends HandledBlock {
 		return this.edible;
 	}
 
-	private static final int food = 2;
+	private static final int FOOD = 2;
 
 	public void restoreHunger(Player p) {
-		int level = p.getFoodLevel() + (int) food;
-		p.setFoodLevel(level > 20 ? 20: level);
-		p.setSaturation(food);
+		int level = p.getFoodLevel() + FOOD;
+		p.setFoodLevel(Math.min(level, 20));
+		p.setSaturation(FOOD);
 	}
 
 }

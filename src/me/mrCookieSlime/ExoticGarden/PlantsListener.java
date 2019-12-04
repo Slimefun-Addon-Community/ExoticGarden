@@ -72,7 +72,7 @@ public class PlantsListener implements Listener {
 						case DOUBLE_PLANT: {
 							item = BlockStorage.check(e.getLocation().getBlock().getRelative(BlockFace.UP));
 							if (item != null) return;
-							switch(e.getLocation().getBlock().getRelative(BlockFace.UP).getType()) {
+							switch (e.getLocation().getBlock().getRelative(BlockFace.UP).getType()) {
 								case AIR:
 								case CAVE_AIR:
 								case OAK_SAPLING:
@@ -190,7 +190,7 @@ public class PlantsListener implements Listener {
 				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 					int x = e.getChunk().getX() * 16 + random.nextInt(16);
 					int z = e.getChunk().getZ() * 16 + random.nextInt(16);
-					boolean flat = false;
+					boolean flat;
 					
 					for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
 						Block current = e.getWorld().getBlockAt(x, y, z);
@@ -226,7 +226,7 @@ public class PlantsListener implements Listener {
 			if (e.getBlock().getType() == Material.GRASS) {
 				if (ExoticGarden.getItems().keySet().size() > 0 && e.getPlayer().getGameMode() != GameMode.CREATIVE)
 					if (random.nextInt(100) < 6) {
-						e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.getItems().get(ExoticGarden.getItems().keySet().toArray(new String[ExoticGarden.getItems().keySet().size()])[random.nextInt(ExoticGarden.getItems().keySet().size())]));
+						e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.getItems().get(ExoticGarden.getItems().keySet().toArray(new String[0])[random.nextInt(ExoticGarden.getItems().keySet().size())]));
 					}
 			} 
 			else {

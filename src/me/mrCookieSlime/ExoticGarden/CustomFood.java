@@ -17,7 +17,7 @@ public class CustomFood extends EGPlant {
 	@Override
 	public void restoreHunger(Player p) {
 		int level = p.getFoodLevel() + (int) food;
-		p.setFoodLevel(level > 20 ? 20: level);
+		p.setFoodLevel(Math.min(level, 20));
 		p.setSaturation(food);
 	}
 

@@ -30,10 +30,10 @@ public class Kitchen extends MultiBlockMachine {
 	
 	public Kitchen(ExoticGarden plugin) {
 		super(
-			Categories.MACHINES_1, new CustomItem(Material.CAULDRON, "&eKitchen", new String[] {"", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"}), "KITCHEN",
+			Categories.MACHINES_1, new CustomItem(Material.CAULDRON, "&eKitchen", "", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"), "KITCHEN",
 			new ItemStack[] {new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new ItemStack(Material.BRICKS), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.CRAFTING_TABLE)},
-			new ItemStack[0], 
-			Material.IRON_TRAPDOOR
+			new ItemStack[0],
+			BlockFace.SELF
 		);
 		
 		this.plugin = plugin;
@@ -83,27 +83,26 @@ public class Kitchen extends MultiBlockMachine {
 						for (int j = 0; j < 9; j++) {
 							if (inv.getContents()[j] != null) {
 								if (inv.getContents()[j].getType() != Material.AIR) {
-									if (inv.getContents()[j].getType().toString().endsWith("_BUCKET")) inv.setItem(j, new ItemStack(Material.BUCKET));
-									else if (inv.getContents()[j].getAmount() > 1) inv.setItem(j, new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1));
-									else inv.setItem(j, null);
+									if (inv.getContents()[j].getType().toString().endsWith("_BUCKET"))
+										inv.setItem(j, new ItemStack(Material.BUCKET));
+									else if (inv.getContents()[j].getAmount() > 1)
+										inv.setItem(j, new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1));
+									else
+										inv.setItem(j, null);
 								}
 							}
 						}
-						for (int j = 1; j < 7; j++) {
-							Bukkit.getScheduler().runTaskLater(plugin, () -> {
-								p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-							}, j*5L);
-						}
-						Bukkit.getScheduler().runTaskLater(plugin, () -> {
-							p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F);
-						}, 55L);
+						for (int j = 1; j < 7; j++)
+							Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F), j*5L);
 
-						if (resinv.getResult() != null) resinv.setResult(new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount()));
-						else resinv.setResult(adding);
-					}
-					else {
-						SlimefunPlugin.getLocal().sendMessage(p, "machines.full-inventory", true);
-					}
+						Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F), 55L);
+
+						if (resinv.getResult() != null)
+							resinv.setResult(new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount()));
+						else
+							resinv.setResult(adding);
+
+					} else SlimefunPlugin.getLocal().sendMessage(p, "machines.full-inventory", true);
 				}
 				
 				return;

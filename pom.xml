@@ -65,16 +65,16 @@
   			<scope>provided</scope>
         </dependency>
         <dependency>
-	        <groupId>com.github.TheBusyBiscuit</groupId>
-	        <artifactId>CS-CoreLib</artifactId>
-	        <version>45909a0324</version>
-  			<scope>provided</scope>
-	    </dependency>
+            <groupId>com.github.TheBusyBiscuit</groupId>
+            <artifactId>CS-CoreLib</artifactId>
+            <version>199e1b1e06</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
-	    	<groupId>com.github.TheBusyBiscuit</groupId>
-	   		<artifactId>Slimefun4</artifactId>
-	   		<version>d18409bfc4</version>
-  			<scope>provided</scope>
-	    </dependency>
+            <groupId>com.github.TheBusyBiscuit</groupId>
+            <artifactId>Slimefun4</artifactId>
+            <version>da1dd294f6</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

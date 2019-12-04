@@ -40,7 +40,7 @@ public class Berry {
 	}
 
 	public ItemStack getItem() {
-		return type == PlantType.ORE_PLANT ? item: SlimefunItem.getByID(id).getItem();
+		return type == PlantType.ORE_PLANT ? item : SlimefunItem.getByID(id).getItem();
 	}
 
 	public PlantData getData() {
@@ -52,7 +52,7 @@ public class Berry {
 	}
 
 	public String toBush() {
-		return type == PlantType.ORE_PLANT ? this.id.replace("_ESSENCE", "_PLANT"): this.id + "_BUSH";
+		return type == PlantType.ORE_PLANT ? this.id.replace("_ESSENCE", "_PLANT") : this.id + "_BUSH";
 	}
 
 	public boolean isSoil(Material type) {
