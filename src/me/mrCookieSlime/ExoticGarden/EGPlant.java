@@ -3,6 +3,7 @@ package me.mrCookieSlime.ExoticGarden;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.HandledBlock;
@@ -11,8 +12,8 @@ public class EGPlant extends HandledBlock {
 
 	private boolean edible;
 
-	public EGPlant(Category category, ItemStack item, String name, RecipeType recipeType, boolean edible, ItemStack[] recipe) {
-		super(category, item, name, recipeType, recipe);
+	public EGPlant(Category category, SlimefunItemStack item, RecipeType recipeType, boolean edible, ItemStack[] recipe) {
+		super(category, item, recipeType, recipe);
 		this.edible = edible;
 	}
 
