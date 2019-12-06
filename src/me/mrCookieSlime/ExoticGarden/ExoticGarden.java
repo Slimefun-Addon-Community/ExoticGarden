@@ -177,8 +177,8 @@ public class ExoticGarden extends JavaPlugin {
 		new ItemStack[] {new ItemStack(Material.STICK), new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null})
 		.register();
 
-		ItemStack grass_seeds = new CustomItem(Material.PUMPKIN_SEEDS, "&rGrass Seeds", "", "&7&oCan be planted on Dirt");
-		new GrassSeeds(category_main, new SlimefunItemStack("GRASS_SEEDS", grass_seeds), new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
+		SlimefunItemStack grass_seeds = new SlimefunItemStack("GRASS_SEEDS", Material.PUMPKIN_SEEDS, "&rGrass Seeds", "", "&7&oCan be planted on Dirt");
+		new GrassSeeds(category_main, grass_seeds, new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register();
 
