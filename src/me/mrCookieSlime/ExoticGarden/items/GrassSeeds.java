@@ -1,6 +1,7 @@
 package me.mrCookieSlime.ExoticGarden.items;
 
 import org.bukkit.Effect;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -25,7 +26,8 @@ public class GrassSeeds extends SimpleSlimefunItem<ItemInteractionHandler> {
 			if (isItem(item)) {
 				Block b = e.getClickedBlock();
 				if (b != null && b.getType() == Material.DIRT) {
-					ItemUtils.consumeItem(p.getInventory().getItemInMainHand(), false);
+					if (p.getGameMode() != GameMode.CREATIVE)
+						ItemUtils.consumeItem(p.getInventory().getItemInMainHand(), false);
 					b.setType(Material.GRASS_BLOCK);
 					if (b.getRelative(BlockFace.UP).getType().isAir())
 						b.getRelative(BlockFace.UP).setType(Material.GRASS);
