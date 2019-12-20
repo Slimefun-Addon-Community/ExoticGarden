@@ -79,19 +79,15 @@ public class ExoticGarden extends JavaPlugin {
 		// Only run the Updater if it has not been disabled
 		if (cfg.getBoolean("options.auto-update")) updater.start();
 
-		try {
-			category_main = new Category(new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVhNWM0YTBhMTZkYWJjOWIxZWM3MmZjODNlMjNhYzE1ZDAxOTdkZTYxYjEzOGJhYmNhN2M4YTI5YzgyMCJ9fX0="), "&aExotic Garden - Plants and Fruits", "", "&a> Click to open"));
-			category_food = new Category(new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTE0MjE2ZDEwNzE0MDgyYmJlM2Y0MTI0MjNlNmIxOTIzMjM1MmY0ZDY0ZjlhY2EzOTEzY2I0NjMxOGQzZWQifX19"), "&aExotic Garden - Food", "", "&a> Click to open"));
-			category_drinks = new Category(new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmE4ZjFmNzBlODU4MjU2MDdkMjhlZGNlMWEyYWQ0NTA2ZTczMmI0YTUzNDVhNWVhNmU4MDdjNGIzMTNlODgifX19"), "&aExotic Garden - Drinks", "", "&a> Click to open"));
-			category_magic = new Category(new CustomItem(Material.BLAZE_POWDER, "&5Exotic Garden - Magical Plants", "", "&a> Click to open"));
+		category_main = new Category(new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVhNWM0YTBhMTZkYWJjOWIxZWM3MmZjODNlMjNhYzE1ZDAxOTdkZTYxYjEzOGJhYmNhN2M4YTI5YzgyMCJ9fX0="), "&aExotic Garden - Plants and Fruits", "", "&a> Click to open"));
+		category_food = new Category(new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTE0MjE2ZDEwNzE0MDgyYmJlM2Y0MTI0MjNlNmIxOTIzMjM1MmY0ZDY0ZjlhY2EzOTEzY2I0NjMxOGQzZWQifX19"), "&aExotic Garden - Food", "", "&a> Click to open"));
+		category_drinks = new Category(new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmE4ZjFmNzBlODU4MjU2MDdkMjhlZGNlMWEyYWQ0NTA2ZTczMmI0YTUzNDVhNWVhNmU4MDdjNGIzMTNlODgifX19"), "&aExotic Garden - Drinks", "", "&a> Click to open"));
+		category_magic = new Category(new CustomItem(Material.BLAZE_POWDER, "&5Exotic Garden - Magical Plants", "", "&a> Click to open"));
 
-			SlimefunItemStack iceCube = new SlimefunItemStack("ICE_CUBE", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTM0MGJlZjJjMmMzM2QxMTNiYWM0ZTZhMWE4NGQ1ZmZjZWNiYmZhYjZiMzJmYTdhN2Y3NjE5NTQ0MmJkMWEyIn19fQ==", "&bIce Cube");
-			new SlimefunItem(Categories.MISC, iceCube, RecipeType.GRIND_STONE,
-			new ItemStack[] {new ItemStack(Material.ICE), null, null, null, null, null, null, null, null}, new CustomItem(iceCube, 4))
-			.register();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		SlimefunItemStack iceCube = new SlimefunItemStack("ICE_CUBE", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTM0MGJlZjJjMmMzM2QxMTNiYWM0ZTZhMWE4NGQ1ZmZjZWNiYmZhYjZiMzJmYTdhN2Y3NjE5NTQ0MmJkMWEyIn19fQ==", "&bIce Cube");
+		new SlimefunItem(Categories.MISC, iceCube, RecipeType.GRIND_STONE,
+		new ItemStack[] {new ItemStack(Material.ICE), null, null, null, null, null, null, null, null}, new CustomItem(iceCube, 4))
+		.register();
 
 		kitchen = new Kitchen(this);
 
@@ -712,13 +708,9 @@ public class ExoticGarden extends JavaPlugin {
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register();
 
-		try {
-			new EGPlant(category_main, new SlimefunItemStack(id, texture, color + name), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Tree")), true,
-			new ItemStack[] {null, null, null, null, getItem(id + "_SAPLING"), null, null, null, null})
-			.register();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
+		new EGPlant(category_main, new SlimefunItemStack(id, texture, color + name), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Tree")), true,
+		new ItemStack[] {null, null, null, null, getItem(id + "_SAPLING"), null, null, null, null})
+		.register();
 
 		if (pcolor != null) {
 			new Juice(category_drinks, new SlimefunItemStack(juice.toUpperCase().replace(" ", "_"), new CustomPotion(color + juice, pcolor, new PotionEffect(PotionEffectType.SATURATION, 6, 0), "", "&7&oRestores &b&o" + "3.0" + " &7&oHunger")), RecipeType.JUICER,
@@ -727,14 +719,10 @@ public class ExoticGarden extends JavaPlugin {
 		}
 
 		if (pie) {
-			try {
-				new CustomFood(category_food, new SlimefunItemStack(id + "_PIE", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxOGM2YjBhMjlmYzFmZTc5MWM4OTc3NGQ4MjhmZjYzZDJhOWZhNmM4MzM3M2VmM2FhNDdiZjNlYjc5In19fQ==", color + name + " Pie", "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"),
-				new ItemStack[] {getItem(id), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new ItemStack(Material.MILK_BUCKET), SlimefunItems.WHEAT_FLOUR, null, null, null, null},
-				13)
-				.register();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			new CustomFood(category_food, new SlimefunItemStack(id + "_PIE", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxOGM2YjBhMjlmYzFmZTc5MWM4OTc3NGQ4MjhmZjYzZDJhOWZhNmM4MzM3M2VmM2FhNDdiZjNlYjc5In19fQ==", color + name + " Pie", "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"),
+			new ItemStack[] {getItem(id), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new ItemStack(Material.MILK_BUCKET), SlimefunItems.WHEAT_FLOUR, null, null, null, null},
+			13)
+			.register();
 		}
 
 		if (!new File("plugins/ExoticGarden/schematics", id + "_TREE.schematic").exists())
@@ -765,19 +753,15 @@ public class ExoticGarden extends JavaPlugin {
 		new ItemStack[] {getItem(name.toUpperCase() + "_JUICE"), getItem("ICE_CUBE"), null, null, null, null, null, null, null})
 		.register();
 
-		try {
-			new CustomFood(category_food, new SlimefunItemStack(name.toUpperCase() + "_JELLY_SANDWICH", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGM4YTkzOTA5M2FiMWNkZTY2NzdmYWY3NDgxZjMxMWU1ZjE3ZjYzZDU4ODI1ZjBlMGMxNzQ2MzFmYjA0MzkifX19", color + name + " Jelly Sandwich", "", "&7&oRestores &b&o" + "8.0" + " &7&oHunger"),
-			new ItemStack[] {null, new ItemStack(Material.BREAD), null, null, getItem(name.toUpperCase() + "_JUICE"), null, null, new ItemStack(Material.BREAD), null},
-			16)
-			.register();
+		new CustomFood(category_food, new SlimefunItemStack(name.toUpperCase() + "_JELLY_SANDWICH", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGM4YTkzOTA5M2FiMWNkZTY2NzdmYWY3NDgxZjMxMWU1ZjE3ZjYzZDU4ODI1ZjBlMGMxNzQ2MzFmYjA0MzkifX19", color + name + " Jelly Sandwich", "", "&7&oRestores &b&o" + "8.0" + " &7&oHunger"),
+		new ItemStack[] {null, new ItemStack(Material.BREAD), null, null, getItem(name.toUpperCase() + "_JUICE"), null, null, new ItemStack(Material.BREAD), null},
+		16)
+		.register();
 
-			new CustomFood(category_food, new SlimefunItemStack(name.toUpperCase() + "_PIE", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxOGM2YjBhMjlmYzFmZTc5MWM4OTc3NGQ4MjhmZjYzZDJhOWZhNmM4MzM3M2VmM2FhNDdiZjNlYjc5In19fQ==", color + name + " Pie", "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"),
-			new ItemStack[] {getItem(name.toUpperCase()), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new ItemStack(Material.MILK_BUCKET), SlimefunItems.WHEAT_FLOUR, null, null, null, null},
-			13)
-			.register();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		new CustomFood(category_food, new SlimefunItemStack(name.toUpperCase() + "_PIE", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxOGM2YjBhMjlmYzFmZTc5MWM4OTc3NGQ4MjhmZjYzZDJhOWZhNmM4MzM3M2VmM2FhNDdiZjNlYjc5In19fQ==", color + name + " Pie", "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"),
+		new ItemStack[] {getItem(name.toUpperCase()), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new ItemStack(Material.MILK_BUCKET), SlimefunItems.WHEAT_FLOUR, null, null, null, null},
+		13)
+		.register();
 	}
 
 	private static ItemStack getItem(String id) {
