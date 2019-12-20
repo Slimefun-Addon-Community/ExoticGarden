@@ -11,6 +11,7 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.ItemInteractionHandler;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
 public class GrassSeeds extends SimpleSlimefunItem<ItemInteractionHandler> {
 
@@ -24,18 +25,15 @@ public class GrassSeeds extends SimpleSlimefunItem<ItemInteractionHandler> {
 			if (isItem(item)) {
 				Block b = e.getClickedBlock();
 				if (b != null && b.getType() == Material.DIRT) {
-					ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
-					hand.setAmount(hand.getAmount() - 1);
+					ItemUtils.consumeItem(p.getInventory().getItemInMainHand(), false);
 					b.setType(Material.GRASS_BLOCK);
-					if (b.getRelative(BlockFace.UP).getType() == Material.AIR || b.getRelative(BlockFace.UP).getType() == Material.CAVE_AIR) {
+					if (b.getRelative(BlockFace.UP).getType().isAir())
 						b.getRelative(BlockFace.UP).setType(Material.GRASS);
-					}
-					
 					b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, Material.GRASS);
 				}
 				return true;
 			}
-			else return false;
+			return false;
 		};
 	}
 
