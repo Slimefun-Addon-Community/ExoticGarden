@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-
 import me.mrCookieSlime.Slimefun.Objects.Category;
 
 public class CustomFood extends EGPlant {
