@@ -10,6 +10,8 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.HandledBlock;
 
 public class EGPlant extends HandledBlock {
 
+	private static final int FOOD = 2;
+
 	private boolean edible;
 
 	public EGPlant(Category category, SlimefunItemStack item, RecipeType recipeType, boolean edible, ItemStack[] recipe) {
@@ -20,8 +22,6 @@ public class EGPlant extends HandledBlock {
 	public boolean isEdible() {
 		return this.edible;
 	}
-
-	private static final int FOOD = 2;
 
 	public void restoreHunger(Player p) {
 		int level = p.getFoodLevel() + FOOD;
