@@ -56,7 +56,7 @@ public class PlantsListener implements Listener {
 			if (!e.getLocation().getChunk().isLoaded()) e.getLocation().getWorld().loadChunk(e.getLocation().getChunk());
 			for (Tree tree : ExoticGarden.getTrees()) {
 				if (item.getID().equalsIgnoreCase(tree.getSapling())) {
-					BlockStorage.retrieve(e.getLocation().getBlock());
+					BlockStorage.clearBlockInfo(e.getLocation());
 					Schematic.pasteSchematic(e.getLocation(), tree);
 					return;
 				}
@@ -72,7 +72,7 @@ public class PlantsListener implements Listener {
 						case DOUBLE_PLANT: {
 							item = BlockStorage.check(e.getLocation().getBlock().getRelative(BlockFace.UP));
 							if (item != null) return;
-							switch(e.getLocation().getBlock().getRelative(BlockFace.UP).getType()) {
+							switch (e.getLocation().getBlock().getRelative(BlockFace.UP).getType()) {
 								case AIR:
 								case CAVE_AIR:
 								case OAK_SAPLING:
@@ -100,7 +100,7 @@ public class PlantsListener implements Listener {
 							s.setRotation(bf[new Random().nextInt(bf.length)]);
 							e.getLocation().getBlock().getRelative(BlockFace.UP).setBlockData(s);
 							try {
-								CustomSkull.setSkull(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getData().getTexture());
+								CustomSkull.setSkull(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getTexture());
 							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
@@ -112,13 +112,14 @@ public class PlantsListener implements Listener {
 							s.setRotation(bf[new Random().nextInt(bf.length)]);
 							e.getLocation().getBlock().setBlockData(s);
 							try {
-								CustomSkull.setSkull(e.getLocation().getBlock(), berry.getData().getTexture());
+								CustomSkull.setSkull(e.getLocation().getBlock(), berry.getTexture());
 							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
 							break;
 						}
 					}
+					BlockStorage._integrated_removeBlockInfo(e.getLocation(), false);
 					BlockStorage.store(e.getLocation().getBlock(), berry.getItem());
 					e.getWorld().playEffect(e.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
 					break;
@@ -153,7 +154,7 @@ public class PlantsListener implements Listener {
 									s.setRotation(bf[new Random().nextInt(bf.length)]);
 									current.setBlockData(s);
 									try {
-										CustomSkull.setSkull(current, berry.getData().getTexture());
+										CustomSkull.setSkull(current, berry.getTexture());
 									} catch (Exception e1) {
 										e1.printStackTrace();
 									}
@@ -170,7 +171,7 @@ public class PlantsListener implements Listener {
 									s.setRotation(bf[new Random().nextInt(bf.length)]);
 									current.getRelative(BlockFace.UP).setBlockData(s);
 									try {
-										CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getData().getTexture());
+										CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getTexture());
 									} catch (Exception e1) {
 										e1.printStackTrace();
 									}
@@ -189,7 +190,7 @@ public class PlantsListener implements Listener {
 				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 					int x = e.getChunk().getX() * 16 + random.nextInt(16);
 					int z = e.getChunk().getZ() * 16 + random.nextInt(16);
-					boolean flat = false;
+					boolean flat;
 					
 					for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
 						Block current = e.getWorld().getBlockAt(x, y, z);
@@ -225,7 +226,7 @@ public class PlantsListener implements Listener {
 			if (e.getBlock().getType() == Material.GRASS) {
 				if (ExoticGarden.getItems().keySet().size() > 0 && e.getPlayer().getGameMode() != GameMode.CREATIVE)
 					if (random.nextInt(100) < 6) {
-						e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.getItems().get(ExoticGarden.getItems().keySet().toArray(new String[ExoticGarden.getItems().keySet().size()])[random.nextInt(ExoticGarden.getItems().keySet().size())]));
+						e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), ExoticGarden.getItems().get(ExoticGarden.getItems().keySet().toArray(new String[0])[random.nextInt(ExoticGarden.getItems().keySet().size())]));
 					}
 			} 
 			else {

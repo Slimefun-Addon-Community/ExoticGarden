@@ -3,6 +3,7 @@ package me.mrCookieSlime.ExoticGarden;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -26,10 +27,11 @@ public class FoodListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onUse(final ItemUseEvent e) {
-		if (e.getPlayer().getFoodLevel() >= 20)
+		Player p = e.getPlayer();
+		if (p.getFoodLevel() >= 20)
 			return;
 
-		if (e.getClickedBlock() != null && !e.getPlayer().isSneaking()) {
+		if (e.getClickedBlock() != null && !p.isSneaking()) {
 			if (e.getClickedBlock().getType().isInteractable() || ExoticGarden.getBerry(e.getClickedBlock()) != null)
 				return;
 		}
@@ -38,26 +40,22 @@ public class FoodListener implements Listener {
 
 		switch (hand) {
 			case HAND:
-				SlimefunItem main_hand = SlimefunItem.getByItem(e.getPlayer().getInventory().getItemInMainHand());
-				if (main_hand != null && (main_hand instanceof EGPlant) && ((EGPlant) main_hand).isEdible()) {
-					((EGPlant) main_hand).restoreHunger(e.getPlayer());
-					e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
-					final int slot = e.getPlayer().getInventory().getHeldItemSlot();
+				SlimefunItem main_hand = SlimefunItem.getByItem(p.getInventory().getItemInMainHand());
+				if (main_hand instanceof EGPlant && ((EGPlant) main_hand).isEdible()) {
+					((EGPlant) main_hand).restoreHunger(p);
+					p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
+					final int slot = p.getInventory().getHeldItemSlot();
 					
-					Bukkit.getScheduler().runTaskLater(plugin, () -> {
-						e.getPlayer().getInventory().setItem(slot, InvUtils.decreaseItem(e.getPlayer().getInventory().getItem(slot), 1));
-					}, 0L);
+					Bukkit.getScheduler().runTaskLater(plugin, () -> p.getInventory().setItem(slot, InvUtils.decreaseItem(p.getInventory().getItem(slot), 1)), 0L);
 				}
 				break;
 			case OFF_HAND:
-				SlimefunItem off_hand = SlimefunItem.getByItem(e.getPlayer().getInventory().getItemInOffHand());
-				if (off_hand != null && (off_hand instanceof EGPlant) && ((EGPlant) off_hand).isEdible()) {
-					((EGPlant) off_hand).restoreHunger(e.getPlayer());
-					e.getPlayer().getWorld().playSound(e.getPlayer().getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
+				SlimefunItem off_hand = SlimefunItem.getByItem(p.getInventory().getItemInOffHand());
+				if (off_hand instanceof EGPlant && ((EGPlant) off_hand).isEdible()) {
+					((EGPlant) off_hand).restoreHunger(p);
+					p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
 					
-					Bukkit.getScheduler().runTaskLater(plugin, () -> {
-						e.getPlayer().getInventory().setItemInOffHand(InvUtils.decreaseItem(e.getPlayer().getInventory().getItemInOffHand(), 1));
-					}, 0L);
+					Bukkit.getScheduler().runTaskLater(plugin, () -> p.getInventory().setItemInOffHand(InvUtils.decreaseItem(p.getInventory().getItemInOffHand(), 1)), 0L);
 				}
 				break;
 			default:
@@ -67,15 +65,20 @@ public class FoodListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlace(BlockPlaceEvent e) {
-		SlimefunItem item = SlimefunItem.getByItem(e.getItemInHand());
-		if (item != null && (item instanceof EGPlant) && e.getItemInHand().getType() == Material.PLAYER_HEAD) e.setCancelled(true);
+		if (e.getItemInHand().getType() == Material.PLAYER_HEAD) {
+			SlimefunItem item = SlimefunItem.getByItem(e.getItemInHand());
+			if (item instanceof EGPlant)
+				e.setCancelled(true);
+		}
 	}
 
 	@EventHandler
 	public void onEquip(InventoryClickEvent e) {
-		if (e.getSlotType() != SlotType.ARMOR) return;
+		if (e.getSlotType() != SlotType.ARMOR || e.getCursor() == null || e.getCursor().getType() != Material.PLAYER_HEAD)
+			return;
 		SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
-		if (item != null && (item instanceof EGPlant) && e.getCursor().getType() == Material.PLAYER_HEAD) e.setCancelled(true);
+		if (item instanceof EGPlant)
+			e.setCancelled(true);
 	}
 
 }

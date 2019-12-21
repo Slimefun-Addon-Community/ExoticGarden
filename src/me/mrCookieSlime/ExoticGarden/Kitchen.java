@@ -14,7 +14,7 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
+import me.mrCookieSlime.CSCoreLibPlugin.cscorelib2.inventory.InvUtils;
 import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Lists.Categories;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -22,6 +22,8 @@ import me.mrCookieSlime.Slimefun.Objects.Research;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.multiblocks.MultiBlockMachine;
 import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 public class Kitchen extends MultiBlockMachine {
 	
@@ -30,10 +32,10 @@ public class Kitchen extends MultiBlockMachine {
 	
 	public Kitchen(ExoticGarden plugin) {
 		super(
-			Categories.MACHINES_1, new CustomItem(Material.CAULDRON, "&eKitchen", new String[] {"", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"}), "KITCHEN",
+			Categories.MACHINES_1, new SlimefunItemStack("KITCHEN", Material.CAULDRON, "&eKitchen", "", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"), "KITCHEN",
 			new ItemStack[] {new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new ItemStack(Material.BRICKS), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.CRAFTING_TABLE)},
-			new ItemStack[0], 
-			Material.IRON_TRAPDOOR
+			new ItemStack[0],
+			BlockFace.SELF
 		);
 		
 		this.plugin = plugin;
@@ -56,60 +58,38 @@ public class Kitchen extends MultiBlockMachine {
 		final Inventory inv = ((Dispenser) raw_disp.getState()).getInventory();
 		List<ItemStack[]> inputs = RecipeType.getRecipeInputList(this);
 
-		for (int i = 0; i < inputs.size(); i++) {
-			boolean craft = true;
-			for (int j = 0; j < inv.getContents().length; j++) {
-				if (!SlimefunManager.isItemSimiliar(inv.getContents()[j], inputs.get(i)[j], true)) {
-					craft = false;
-					break;
-				}
+		recipe: for (ItemStack[] input : inputs) {
+			for (int i = 0; i < inv.getContents().length; i++) {
+				if (!SlimefunManager.isItemSimilar(inv.getContents()[i], input[i], true))
+					continue recipe;
 			}
-			if (craft) {
-				final ItemStack adding = RecipeType.getRecipeOutputList(this, inputs.get(i));
-				if (Slimefun.hasUnlocked(p, adding, true)) {
-					boolean fits_size = true;
-					boolean is_same_r = true;
 
-					if (resinv.getResult() != null) {
-						fits_size = resinv.getResult().getAmount() + adding.getAmount() <= 64;
-						ItemStack currentResult = new ItemStack(resinv.getResult());
-						currentResult.setAmount(1);
-						ItemStack newResult = new ItemStack(adding);
-						newResult.setAmount(1);
-						is_same_r = currentResult.equals(newResult);
-					}
+			final ItemStack adding = RecipeType.getRecipeOutputList(this, input);
 
-					if (is_same_r && fits_size) {
-						for (int j = 0; j < 9; j++) {
-							if (inv.getContents()[j] != null) {
-								if (inv.getContents()[j].getType() != Material.AIR) {
-									if (inv.getContents()[j].getType().toString().endsWith("_BUCKET")) inv.setItem(j, new ItemStack(Material.BUCKET));
-									else if (inv.getContents()[j].getAmount() > 1) inv.setItem(j, new CustomItem(inv.getContents()[j], inv.getContents()[j].getAmount() - 1));
-									else inv.setItem(j, null);
-								}
-							}
-						}
-						for (int j = 1; j < 7; j++) {
-							Bukkit.getScheduler().runTaskLater(plugin, () -> {
-								p.getWorld().playSound(p.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F);
-							}, j*5L);
-						}
-						Bukkit.getScheduler().runTaskLater(plugin, () -> {
-							p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F);
-						}, 55L);
+			if (Slimefun.hasUnlocked(p, adding, true)) {
+				boolean canFit = resinv.getResult() == null || (resinv.getResult().getAmount() + adding.getAmount() <= 64 && SlimefunManager.isItemSimilar(resinv.getResult(), adding, true));
 
-						if (resinv.getResult() != null) resinv.setResult(new CustomItem(resinv.getResult(), resinv.getResult().getAmount() + adding.getAmount()));
-						else resinv.setResult(adding);
-					}
-					else {
-						SlimefunPlugin.getLocal().sendMessage(p, "machines.full-inventory", true);
-					}
+				if (!canFit) {
+					SlimefunPlugin.getLocal().sendMessage(p, "machines.full-inventory", true);
+					return;
 				}
-				
-				return;
+
+				for (int i = 0; i < inv.getContents().length; i++)
+					InvUtils.consumeItem(inv, i, true);
+
+				Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(resf.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F), 55L);
+				for (int i = 1; i < 7; i++)
+					Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(resf.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F), i * 5L);
+
+				if (resinv.getResult() == null)
+					resinv.setResult(adding);
+				else
+					resinv.getResult().setAmount(resinv.getResult().getAmount() + adding.getAmount());
 			}
+
+			return;
 		}
-		
+
 		SlimefunPlugin.getLocal().sendMessage(p, "machines.pattern-not-found", true);
 	}
 

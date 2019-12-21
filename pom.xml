@@ -6,7 +6,7 @@
 
     <groupId>me.mrCookieSlime</groupId>
     <artifactId>ExoticGarden</artifactId>
-    <version>1.7.1</version>
+    <version>1.7.2</version>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -61,20 +61,20 @@
         <dependency>
            	<groupId>org.bukkit</groupId>
            	<artifactId>bukkit</artifactId>
-            <version>1.14.4-R0.1-SNAPSHOT</version>
+            <version>1.15-R0.1-SNAPSHOT</version>
   			<scope>provided</scope>
         </dependency>
         <dependency>
-	        <groupId>com.github.TheBusyBiscuit</groupId>
-	        <artifactId>CS-CoreLib</artifactId>
-	        <version>45909a0324</version>
-  			<scope>provided</scope>
-	    </dependency>
+            <groupId>com.github.TheBusyBiscuit</groupId>
+            <artifactId>CS-CoreLib</artifactId>
+            <version>ec5b4c24e3</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
-	    	<groupId>com.github.TheBusyBiscuit</groupId>
-	   		<artifactId>Slimefun4</artifactId>
-	   		<version>d18409bfc4</version>
-  			<scope>provided</scope>
-	    </dependency>
+            <groupId>com.github.TheBusyBiscuit</groupId>
+            <artifactId>Slimefun4</artifactId>
+            <version>6ef858a6ee</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
