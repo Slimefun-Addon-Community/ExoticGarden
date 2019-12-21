@@ -12,19 +12,19 @@ public class Berry {
 
 	private ItemStack item;
 	private String id;
-	private PlantData data;
+	private String texture;
 	private PlantType type;
 
-	public Berry(String id, PlantType type, PlantData data) {
+	public Berry(String id, PlantType type, String texture) {
 		this.id = id;
-		this.data = data;
+		this.texture = texture;
 		this.type = type;
 	}
 
-	public Berry(ItemStack item, String id, PlantType type, PlantData data) {
+	public Berry(ItemStack item, String id, PlantType type, String texture) {
 		this.item = item;
 		this.id = id;
-		this.data = data;
+		this.texture = texture;
 		this.type = type;
 	}
 
@@ -43,8 +43,8 @@ public class Berry {
 		return type == PlantType.ORE_PLANT ? item : SlimefunItem.getByID(id).getItem();
 	}
 
-	public PlantData getData() {
-		return this.data;
+	public String getTexture() {
+		return this.texture;
 	}
 
 	public PlantType getType() {

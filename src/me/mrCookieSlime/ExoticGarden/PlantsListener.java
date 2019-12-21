@@ -100,7 +100,7 @@ public class PlantsListener implements Listener {
 							s.setRotation(bf[new Random().nextInt(bf.length)]);
 							e.getLocation().getBlock().getRelative(BlockFace.UP).setBlockData(s);
 							try {
-								CustomSkull.setSkull(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getData().getTexture());
+								CustomSkull.setSkull(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getTexture());
 							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
@@ -112,7 +112,7 @@ public class PlantsListener implements Listener {
 							s.setRotation(bf[new Random().nextInt(bf.length)]);
 							e.getLocation().getBlock().setBlockData(s);
 							try {
-								CustomSkull.setSkull(e.getLocation().getBlock(), berry.getData().getTexture());
+								CustomSkull.setSkull(e.getLocation().getBlock(), berry.getTexture());
 							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
@@ -154,7 +154,7 @@ public class PlantsListener implements Listener {
 									s.setRotation(bf[new Random().nextInt(bf.length)]);
 									current.setBlockData(s);
 									try {
-										CustomSkull.setSkull(current, berry.getData().getTexture());
+										CustomSkull.setSkull(current, berry.getTexture());
 									} catch (Exception e1) {
 										e1.printStackTrace();
 									}
@@ -171,7 +171,7 @@ public class PlantsListener implements Listener {
 									s.setRotation(bf[new Random().nextInt(bf.length)]);
 									current.getRelative(BlockFace.UP).setBlockData(s);
 									try {
-										CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getData().getTexture());
+										CustomSkull.setSkull(current.getRelative(BlockFace.UP), berry.getTexture());
 									} catch (Exception e1) {
 										e1.printStackTrace();
 									}
