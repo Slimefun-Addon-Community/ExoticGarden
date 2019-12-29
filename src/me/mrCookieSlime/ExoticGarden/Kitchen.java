@@ -50,24 +50,25 @@ public class Kitchen extends MultiBlockMachine {
 	
 	@Override
 	public void onInteract(Player p, Block b) {
-		Block raw_disp = b.getRelative(BlockFace.DOWN);
+		Block dispenser = b.getRelative(BlockFace.DOWN);
 
-		Furnace resf = locateFurnace(raw_disp); 
-		final FurnaceInventory resinv = resf.getInventory();
+		Furnace furnace = locateFurnace(dispenser); 
+		FurnaceInventory furnaceInventory = furnace.getInventory();
 
-		final Inventory inv = ((Dispenser) raw_disp.getState()).getInventory();
+		Inventory inv = ((Dispenser) dispenser.getState()).getInventory();
 		List<ItemStack[]> inputs = RecipeType.getRecipeInputList(this);
 
-		recipe: for (ItemStack[] input : inputs) {
+		recipe: 
+		for (ItemStack[] input : inputs) {
 			for (int i = 0; i < inv.getContents().length; i++) {
 				if (!SlimefunManager.isItemSimilar(inv.getContents()[i], input[i], true))
 					continue recipe;
 			}
-
-			final ItemStack adding = RecipeType.getRecipeOutputList(this, input);
+			
+			ItemStack adding = RecipeType.getRecipeOutputList(this, input);
 
 			if (Slimefun.hasUnlocked(p, adding, true)) {
-				boolean canFit = resinv.getResult() == null || (resinv.getResult().getAmount() + adding.getAmount() <= 64 && SlimefunManager.isItemSimilar(resinv.getResult(), adding, true));
+				boolean canFit = furnaceInventory.getResult() == null || (furnaceInventory.getResult().getAmount() + adding.getAmount() <= 64 && SlimefunManager.isItemSimilar(furnaceInventory.getResult(), adding, true));
 
 				if (!canFit) {
 					SlimefunPlugin.getLocal().sendMessage(p, "machines.full-inventory", true);
@@ -77,14 +78,14 @@ public class Kitchen extends MultiBlockMachine {
 				for (int i = 0; i < inv.getContents().length; i++)
 					InvUtils.consumeItem(inv, i, true);
 
-				Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(resf.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F), 55L);
+				Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(furnace.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F), 55L);
 				for (int i = 1; i < 7; i++)
-					Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(resf.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F), i * 5L);
+					Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(furnace.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F), i * 5L);
 
-				if (resinv.getResult() == null)
-					resinv.setResult(adding);
+				if (furnaceInventory.getResult() == null)
+					furnaceInventory.setResult(adding);
 				else
-					resinv.getResult().setAmount(resinv.getResult().getAmount() + adding.getAmount());
+					furnaceInventory.getResult().setAmount(furnaceInventory.getResult().getAmount() + adding.getAmount());
 			}
 
 			return;
@@ -96,11 +97,14 @@ public class Kitchen extends MultiBlockMachine {
 	private static Furnace locateFurnace(Block b) {
 		if (b.getRelative(BlockFace.EAST).getType() == Material.FURNACE) {
 			return (Furnace) b.getRelative(BlockFace.EAST).getState();
-		} else if (b.getRelative(BlockFace.WEST).getType() == Material.FURNACE) {
+		} 
+		else if (b.getRelative(BlockFace.WEST).getType() == Material.FURNACE) {
 			return (Furnace) b.getRelative(BlockFace.WEST).getState();
-		} else if (b.getRelative(BlockFace.NORTH).getType() == Material.FURNACE) {
+		} 
+		else if (b.getRelative(BlockFace.NORTH).getType() == Material.FURNACE) {
 			return (Furnace) b.getRelative(BlockFace.NORTH).getState();
-		} else {
+		} 
+		else {
 			return (Furnace) b.getRelative(BlockFace.SOUTH).getState();
 		}
 	}
