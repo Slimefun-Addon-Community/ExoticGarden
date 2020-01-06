@@ -12,7 +12,7 @@ public class EGPlant extends HandledBlock {
 
 	private static final int FOOD = 2;
 
-	private boolean edible;
+	private final boolean edible;
 
 	public EGPlant(Category category, SlimefunItemStack item, RecipeType recipeType, boolean edible, ItemStack[] recipe) {
 		super(category, item, recipeType, recipe);

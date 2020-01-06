@@ -10,15 +10,13 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class Berry {
 
-	private ItemStack item;
-	private String id;
-	private String texture;
-	private PlantType type;
+	private final ItemStack item;
+	private final String id;
+	private final String texture;
+	private final PlantType type;
 
 	public Berry(String id, PlantType type, String texture) {
-		this.id = id;
-		this.texture = texture;
-		this.type = type;
+		this(null, id, type, texture);
 	}
 
 	public Berry(ItemStack item, String id, PlantType type, String texture) {

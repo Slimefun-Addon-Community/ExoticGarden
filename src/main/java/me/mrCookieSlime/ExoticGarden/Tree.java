@@ -13,11 +13,11 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class Tree {
 
-	private String sapling;
-	private String schematic;
-	private String texture;
-	private String fruit;
-	private List<Material> soils;
+	private final String sapling;
+	private final String schematic;
+	private final String texture;
+	private final String fruit;
+	private final List<Material> soils;
 
 	public Tree(String fruit, String texture, Material... soil) {
 		this.sapling = fruit + "_SAPLING";

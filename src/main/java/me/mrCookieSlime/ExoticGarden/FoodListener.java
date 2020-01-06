@@ -26,7 +26,7 @@ public class FoodListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
-	public void onUse(final ItemUseEvent e) {
+	public void onUse(ItemUseEvent e) {
 		Player p = e.getPlayer();
 		if (p.getFoodLevel() >= 20)
 			return;
@@ -40,9 +40,9 @@ public class FoodListener implements Listener {
 
 		switch (hand) {
 			case HAND:
-				SlimefunItem main_hand = SlimefunItem.getByItem(p.getInventory().getItemInMainHand());
-				if (main_hand instanceof EGPlant && ((EGPlant) main_hand).isEdible()) {
-					((EGPlant) main_hand).restoreHunger(p);
+				SlimefunItem mainHand = SlimefunItem.getByItem(p.getInventory().getItemInMainHand());
+				if (mainHand instanceof EGPlant && ((EGPlant) mainHand).isEdible()) {
+					((EGPlant) mainHand).restoreHunger(p);
 					p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
 					final int slot = p.getInventory().getHeldItemSlot();
 					
@@ -50,9 +50,9 @@ public class FoodListener implements Listener {
 				}
 				break;
 			case OFF_HAND:
-				SlimefunItem off_hand = SlimefunItem.getByItem(p.getInventory().getItemInOffHand());
-				if (off_hand instanceof EGPlant && ((EGPlant) off_hand).isEdible()) {
-					((EGPlant) off_hand).restoreHunger(p);
+				SlimefunItem offHand = SlimefunItem.getByItem(p.getInventory().getItemInOffHand());
+				if (offHand instanceof EGPlant && ((EGPlant) offHand).isEdible()) {
+					((EGPlant) offHand).restoreHunger(p);
 					p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1F);
 					
 					Bukkit.getScheduler().runTaskLater(plugin, () -> p.getInventory().setItemInOffHand(InvUtils.decreaseItem(p.getInventory().getItemInOffHand(), 1)), 0L);
