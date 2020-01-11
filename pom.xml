@@ -36,6 +36,7 @@
   			<directory>${basedir}/src/main/resources</directory>
   			<filtering>true</filtering>
   			<includes>
+  				<include>schematics/*</include>
   				<include>*</include>
   			</includes>
   		</resource>
