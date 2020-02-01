@@ -55,6 +55,7 @@ public class PlantsListener implements Listener {
 		if (item != null) {
 			e.setCancelled(true);
 			if (!e.getLocation().getChunk().isLoaded()) e.getLocation().getWorld().loadChunk(e.getLocation().getChunk());
+			
 			for (Tree tree : ExoticGarden.getTrees()) {
 				if (item.getID().equalsIgnoreCase(tree.getSapling())) {
 					BlockStorage.clearBlockInfo(e.getLocation());
@@ -62,6 +63,7 @@ public class PlantsListener implements Listener {
 					return;
 				}
 			}
+			
 			for (Berry berry : ExoticGarden.getBerries()) {
 				if (item.getID().equalsIgnoreCase(berry.toBush())) {
 					switch(berry.getType()) {

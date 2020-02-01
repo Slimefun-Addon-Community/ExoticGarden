@@ -28,12 +28,11 @@ public class FoodListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onUse(ItemUseEvent e) {
 		Player p = e.getPlayer();
-		if (p.getFoodLevel() >= 20)
-			return;
+		
+		if (p.getFoodLevel() >= 20) return;
 
-		if (e.getClickedBlock() != null && !p.isSneaking()) {
-			if (e.getClickedBlock().getType().isInteractable() || ExoticGarden.getBerry(e.getClickedBlock()) != null)
-				return;
+		if (e.getClickedBlock() != null && !p.isSneaking() && (e.getClickedBlock().getType().isInteractable() || ExoticGarden.getBerry(e.getClickedBlock()) != null)) {
+			return;
 		}
 
 		EquipmentSlot hand = e.getParentEvent().getHand();
@@ -67,8 +66,8 @@ public class FoodListener implements Listener {
 	public void onPlace(BlockPlaceEvent e) {
 		if (e.getItemInHand().getType() == Material.PLAYER_HEAD) {
 			SlimefunItem item = SlimefunItem.getByItem(e.getItemInHand());
-			if (item instanceof EGPlant)
-				e.setCancelled(true);
+			
+			if (item instanceof EGPlant) e.setCancelled(true);
 		}
 	}
 
@@ -76,7 +75,9 @@ public class FoodListener implements Listener {
 	public void onEquip(InventoryClickEvent e) {
 		if (e.getSlotType() != SlotType.ARMOR || e.getCursor() == null || e.getCursor().getType() != Material.PLAYER_HEAD)
 			return;
+		
 		SlimefunItem item = SlimefunItem.getByItem(e.getCursor());
+		
 		if (item instanceof EGPlant)
 			e.setCancelled(true);
 	}
