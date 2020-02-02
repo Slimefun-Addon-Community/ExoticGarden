@@ -76,7 +76,11 @@ public class Kitchen extends MultiBlockMachine {
 				}
 
 				for (int i = 0; i < inv.getContents().length; i++) {
-					ItemUtils.consumeItem(inv.getItem(i), true);
+					ItemStack item = inv.getItem(i);
+					
+					if (item != null) {
+						ItemUtils.consumeItem(item, true);
+					}
 				}
 
 				Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(furnace.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F), 55L);
