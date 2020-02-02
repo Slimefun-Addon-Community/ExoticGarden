@@ -29,7 +29,7 @@ public class Tree {
 
 	public Schematic getSchematic() throws IOException {
 	    if (schematic == null) {
-	    	schematic = Schematic.loadSchematic(new File("plugins/ExoticGarden/schematics/" + schematic + ".schematic"));
+	    	schematic = Schematic.loadSchematic(new File("plugins/ExoticGarden/schematics/" + fruit + ".schematic"));
 	    }
 		
 		return schematic;
