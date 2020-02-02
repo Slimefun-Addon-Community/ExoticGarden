@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.bukkit.Color;
@@ -56,7 +57,8 @@ public class ExoticGarden extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		if (!new File("plugins/ExoticGarden").exists()) new File("plugins/ExoticGarden").mkdirs();
-    	if (!new File("plugins/ExoticGarden/schematics").exists()) new File("plugins/ExoticGarden/schematics").mkdirs();
+    	
+		if (!new File("plugins/ExoticGarden/schematics").exists()) new File("plugins/ExoticGarden/schematics").mkdirs();
 
     	instance = this;
     	cfg = new Config(this);
@@ -696,7 +698,7 @@ public class ExoticGarden extends JavaPlugin {
 	}
 
 	public void registerTree(String name, String texture, String color, Color pcolor, String juice, boolean pie, Material... soil) {
-		String id = name.toUpperCase().replace(" ", "_");
+		String id = name.toUpperCase(Locale.ROOT).replace(" ", "_");
 		Tree tree = new Tree(id, texture, soil);
 		trees.add(tree);
 
@@ -730,36 +732,37 @@ public class ExoticGarden extends JavaPlugin {
 	}
 
 	public void registerBerry(String name, String color, Color pcolor, PlantType type, String texture) {
-		Berry berry = new Berry(name.toUpperCase(), type, texture);
+		String upperCase = name.toUpperCase(Locale.ROOT);
+		Berry berry = new Berry(upperCase, type, texture);
 		berries.add(berry);
 
-		SlimefunItemStack sfi = new SlimefunItemStack(name.toUpperCase() + "_BUSH", Material.OAK_SAPLING, color + name + " Bush");
+		SlimefunItemStack sfi = new SlimefunItemStack(upperCase + "_BUSH", Material.OAK_SAPLING, color + name + " Bush");
 
-		items.put(name.toUpperCase() + "_BUSH", sfi);
+		items.put(upperCase + "_BUSH", sfi);
 
 		new SlimefunItem(mainCategory, sfi, new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register();
 
-		new EGPlant(mainCategory, new SlimefunItemStack(name.toUpperCase(), texture, color + name), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush")), true,
-		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase() + "_BUSH"), null, null, null, null})
+		new EGPlant(mainCategory, new SlimefunItemStack(upperCase, texture, color + name), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush")), true,
+		new ItemStack[] {null, null, null, null, getItem(upperCase + "_BUSH"), null, null, null, null})
 		.register();
 
-		new Juice(drinksCategory, new SlimefunItemStack(name.toUpperCase() + "_JUICE", new CustomPotion(color + name + " Juice", pcolor, new PotionEffect(PotionEffectType.SATURATION, 6, 0), "", "&7&oRestores &b&o" + "3.0" + " &7&oHunger")), RecipeType.JUICER,
-		new ItemStack[] {getItem(name.toUpperCase()), null, null, null, null, null, null, null, null})
+		new Juice(drinksCategory, new SlimefunItemStack(upperCase + "_JUICE", new CustomPotion(color + name + " Juice", pcolor, new PotionEffect(PotionEffectType.SATURATION, 6, 0), "", "&7&oRestores &b&o" + "3.0" + " &7&oHunger")), RecipeType.JUICER,
+		new ItemStack[] {getItem(upperCase), null, null, null, null, null, null, null, null})
 		.register();
 
-		new Juice(drinksCategory, new SlimefunItemStack(name.toUpperCase() + "_SMOOTHIE", new CustomPotion(color + name + " Smoothie", pcolor, new PotionEffect(PotionEffectType.SATURATION, 10, 0), "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger")), RecipeType.ENHANCED_CRAFTING_TABLE,
-		new ItemStack[] {getItem(name.toUpperCase() + "_JUICE"), getItem("ICE_CUBE"), null, null, null, null, null, null, null})
+		new Juice(drinksCategory, new SlimefunItemStack(upperCase + "_SMOOTHIE", new CustomPotion(color + name + " Smoothie", pcolor, new PotionEffect(PotionEffectType.SATURATION, 10, 0), "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger")), RecipeType.ENHANCED_CRAFTING_TABLE,
+		new ItemStack[] {getItem(upperCase + "_JUICE"), getItem("ICE_CUBE"), null, null, null, null, null, null, null})
 		.register();
 
-		new CustomFood(foodCategory, new SlimefunItemStack(name.toUpperCase() + "_JELLY_SANDWICH", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGM4YTkzOTA5M2FiMWNkZTY2NzdmYWY3NDgxZjMxMWU1ZjE3ZjYzZDU4ODI1ZjBlMGMxNzQ2MzFmYjA0MzkifX19", color + name + " Jelly Sandwich", "", "&7&oRestores &b&o" + "8.0" + " &7&oHunger"),
-		new ItemStack[] {null, new ItemStack(Material.BREAD), null, null, getItem(name.toUpperCase() + "_JUICE"), null, null, new ItemStack(Material.BREAD), null},
+		new CustomFood(foodCategory, new SlimefunItemStack(upperCase + "_JELLY_SANDWICH", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGM4YTkzOTA5M2FiMWNkZTY2NzdmYWY3NDgxZjMxMWU1ZjE3ZjYzZDU4ODI1ZjBlMGMxNzQ2MzFmYjA0MzkifX19", color + name + " Jelly Sandwich", "", "&7&oRestores &b&o" + "8.0" + " &7&oHunger"),
+		new ItemStack[] {null, new ItemStack(Material.BREAD), null, null, getItem(upperCase + "_JUICE"), null, null, new ItemStack(Material.BREAD), null},
 		16)
 		.register();
 
-		new CustomFood(foodCategory, new SlimefunItemStack(name.toUpperCase() + "_PIE", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxOGM2YjBhMjlmYzFmZTc5MWM4OTc3NGQ4MjhmZjYzZDJhOWZhNmM4MzM3M2VmM2FhNDdiZjNlYjc5In19fQ==", color + name + " Pie", "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"),
-		new ItemStack[] {getItem(name.toUpperCase()), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new ItemStack(Material.MILK_BUCKET), SlimefunItems.WHEAT_FLOUR, null, null, null, null},
+		new CustomFood(foodCategory, new SlimefunItemStack(upperCase + "_PIE", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzQxOGM2YjBhMjlmYzFmZTc5MWM4OTc3NGQ4MjhmZjYzZDJhOWZhNmM4MzM3M2VmM2FhNDdiZjNlYjc5In19fQ==", color + name + " Pie", "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"),
+		new ItemStack[] {getItem(upperCase), new ItemStack(Material.EGG), new ItemStack(Material.SUGAR), new ItemStack(Material.MILK_BUCKET), SlimefunItems.WHEAT_FLOUR, null, null, null, null},
 		13)
 		.register();
 	}
@@ -770,29 +773,31 @@ public class ExoticGarden extends JavaPlugin {
 	}
 
 	public void registerPlant(String name, String color, PlantType type, String texture) {
-		Berry berry = new Berry(name.toUpperCase().replace(" ", "_"), type, texture);
+		String upperCase = name.toUpperCase(Locale.ROOT);
+		Berry berry = new Berry(upperCase.replace(" ", "_"), type, texture);
 		berries.add(berry);
 
-		SlimefunItemStack sfi = new SlimefunItemStack(name.toUpperCase().replace(" ", "_") + "_BUSH", Material.OAK_SAPLING, color + name + " Plant");
+		SlimefunItemStack sfi = new SlimefunItemStack(upperCase.replace(" ", "_") + "_BUSH", Material.OAK_SAPLING, color + name + " Plant");
 
-		items.put(name.toUpperCase() + "_BUSH", sfi);
+		items.put(upperCase + "_BUSH", sfi);
 
 		new SlimefunItem(mainCategory, sfi, new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register();
 
-		new EGPlant(mainCategory, new SlimefunItemStack(name.toUpperCase().replace(" ", "_"), texture, color + name), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush")), true,
-		new ItemStack[] {null, null, null, null, getItem(name.toUpperCase().replace(" ", "_") + "_BUSH"), null, null, null, null})
+		new EGPlant(mainCategory, new SlimefunItemStack(upperCase.replace(" ", "_"), texture, color + name), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush")), true,
+		new ItemStack[] {null, null, null, null, getItem(upperCase.replace(" ", "_") + "_BUSH"), null, null, null, null})
 		.register();
 	}
 
 	public void registerMagicalPlant(String name, ItemStack item, String texture, ItemStack[] recipe) {
-		SlimefunItemStack essence = new SlimefunItemStack(name.toUpperCase().replace(" ", "_") + "_ESSENCE", Material.BLAZE_POWDER, "&rMagical Essence", "", "&7" + name);
+		String upperCase = name.toUpperCase(Locale.ROOT);
+		SlimefunItemStack essence = new SlimefunItemStack(upperCase.replace(" ", "_") + "_ESSENCE", Material.BLAZE_POWDER, "&rMagical Essence", "", "&7" + name);
 
-		Berry berry = new Berry(essence, name.toUpperCase() + "_ESSENCE", PlantType.ORE_PLANT, texture);
+		Berry berry = new Berry(essence, upperCase + "_ESSENCE", PlantType.ORE_PLANT, texture);
 		berries.add(berry);
 
-		new SlimefunItem(magicalCategory, new SlimefunItemStack(name.toUpperCase().replace(" ", "_") + "_PLANT", Material.OAK_SAPLING, "&r" + name + " Plant"), RecipeType.ENHANCED_CRAFTING_TABLE,
+		new SlimefunItem(magicalCategory, new SlimefunItemStack(upperCase.replace(" ", "_") + "_PLANT", Material.OAK_SAPLING, "&r" + name + " Plant"), RecipeType.ENHANCED_CRAFTING_TABLE,
 		recipe)
 		.register();
 
