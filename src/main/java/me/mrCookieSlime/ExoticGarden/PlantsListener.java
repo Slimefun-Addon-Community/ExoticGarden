@@ -28,7 +28,6 @@ import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
 import me.mrCookieSlime.ExoticGarden.Schematic.Schematic;
 import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -52,6 +51,7 @@ public class PlantsListener implements Listener {
 	@EventHandler
 	public void onGrow(StructureGrowEvent e) {
 		SlimefunItem item = BlockStorage.check(e.getLocation().getBlock());
+		
 		if (item != null) {
 			e.setCancelled(true);
 			if (!e.getLocation().getChunk().isLoaded()) e.getLocation().getWorld().loadChunk(e.getLocation().getChunk());
@@ -67,14 +67,14 @@ public class PlantsListener implements Listener {
 			for (Berry berry : ExoticGarden.getBerries()) {
 				if (item.getID().equalsIgnoreCase(berry.toBush())) {
 					switch(berry.getType()) {
-						case BUSH: {
+						case BUSH:
 							e.getLocation().getBlock().setType(Material.OAK_LEAVES);
 							break;
-						}
 						case ORE_PLANT:
-						case DOUBLE_PLANT: {
+						case DOUBLE_PLANT:
 							item = BlockStorage.check(e.getLocation().getBlock().getRelative(BlockFace.UP));
 							if (item != null) return;
+							
 							switch (e.getLocation().getBlock().getRelative(BlockFace.UP).getType()) {
 								case AIR:
 								case CAVE_AIR:
@@ -99,29 +99,22 @@ public class PlantsListener implements Listener {
 							BlockStorage.store(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getItem());
 							e.getLocation().getBlock().setType(Material.OAK_LEAVES);
 							e.getLocation().getBlock().getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
-							Rotatable s = (Rotatable) e.getLocation().getBlock().getRelative(BlockFace.UP).getBlockData();
-							s.setRotation(faces[new Random().nextInt(faces.length)]);
-							e.getLocation().getBlock().getRelative(BlockFace.UP).setBlockData(s);
-							try {
-								CustomSkull.setSkull(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getTexture());
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
+							Rotatable rotatable = (Rotatable) e.getLocation().getBlock().getRelative(BlockFace.UP).getBlockData();
+							rotatable.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
+							e.getLocation().getBlock().getRelative(BlockFace.UP).setBlockData(rotatable);
+							
+							SkullBlock.setFromBase64(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getTexture());
 							break;
-						}
-						default: {
+						default:
 							e.getLocation().getBlock().setType(Material.PLAYER_HEAD);
 							Rotatable s = (Rotatable) e.getLocation().getBlock().getBlockData();
 							s.setRotation(faces[new Random().nextInt(faces.length)]);
 							e.getLocation().getBlock().setBlockData(s);
-							try {
-								CustomSkull.setSkull(e.getLocation().getBlock(), berry.getTexture());
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
+							
+							SkullBlock.setFromBase64(e.getLocation().getBlock(), berry.getTexture());
 							break;
-						}
 					}
+					
 					BlockStorage._integrated_removeBlockInfo(e.getLocation(), false);
 					BlockStorage.store(e.getLocation().getBlock(), berry.getItem());
 					e.getWorld().playEffect(e.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);

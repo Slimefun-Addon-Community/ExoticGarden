@@ -14,7 +14,6 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.CSCoreLibPlugin.cscorelib2.inventory.InvUtils;
 import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Lists.Categories;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -23,6 +22,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.multiblocks.MultiBlockMach
 import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 public class Kitchen extends MultiBlockMachine {
@@ -75,17 +75,22 @@ public class Kitchen extends MultiBlockMachine {
 					return;
 				}
 
-				for (int i = 0; i < inv.getContents().length; i++)
-					InvUtils.consumeItem(inv, i, true);
+				for (int i = 0; i < inv.getContents().length; i++) {
+					ItemUtils.consumeItem(inv.getItem(i), true);
+				}
 
 				Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(furnace.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F), 55L);
-				for (int i = 1; i < 7; i++)
+				
+				for (int i = 1; i < 7; i++) {
 					Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(furnace.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F), i * 5L);
+				}
 
-				if (furnaceInventory.getResult() == null)
+				if (furnaceInventory.getResult() == null) {
 					furnaceInventory.setResult(adding);
-				else
+				}
+				else {
 					furnaceInventory.getResult().setAmount(furnaceInventory.getResult().getAmount() + adding.getAmount());
+				}
 			}
 
 			return;
