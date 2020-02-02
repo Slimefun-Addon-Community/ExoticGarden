@@ -1,12 +1,16 @@
 package me.mrCookieSlime.ExoticGarden;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.Color;
 import org.bukkit.Effect;
@@ -29,6 +33,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.HandledBlock;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.Juice;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
@@ -727,8 +732,24 @@ public class ExoticGarden extends JavaPlugin {
 			.register();
 		}
 
-		if (!new File("plugins/ExoticGarden/schematics", id + "_TREE.schematic").exists())
-			saveResource("schematics/" + id + "_TREE.schematic", false);
+		if (!new File("plugins/ExoticGarden/schematics", id + "_TREE.schematic").exists()) {
+			saveSchematic(id + "_TREE");
+		}
+	}
+
+	private void saveSchematic(String id) {
+		try (InputStream input = getClass().getResourceAsStream("schematics/" + id + ".schematic")) {
+			try (FileOutputStream output = new FileOutputStream(new File("plugins/ExoticGarden/schematics", id + "_TREE.schematic"))) {
+				byte[] buffer = new byte[1024];
+                int len;
+                
+                while ((len = input.read(buffer)) > 0) {
+                	output.write(buffer, 0, len);
+                }
+			}
+		} catch (IOException e) {
+			Slimefun.getLogger().log(Level.SEVERE, "Failed to load file: \"" + id + ".schematic\"", e);
+		}
 	}
 
 	public void registerBerry(String name, String color, Color pcolor, PlantType type, String texture) {
