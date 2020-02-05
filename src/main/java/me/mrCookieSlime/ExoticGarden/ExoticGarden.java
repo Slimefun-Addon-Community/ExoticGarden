@@ -833,7 +833,7 @@ public class ExoticGarden extends JavaPlugin {
 		plant.register();
 	}
 
-	private static Berry getBerry(Block block) {
+	protected static Berry getBerry(Block block) {
 		SlimefunItem item = BlockStorage.check(block);
 		
 		if (item instanceof HandledBlock) {
