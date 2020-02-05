@@ -47,6 +47,8 @@ public class ExoticGarden extends JavaPlugin {
 
 	public static ExoticGarden instance;
 
+	private final File schematicsFolder = new File(getDataFolder(), "schematics");
+
 	private List<Berry> berries = new ArrayList<>();
 	private List<Tree> trees = new ArrayList<>();
 	private Map<String, ItemStack> items = new HashMap<>();
@@ -61,9 +63,7 @@ public class ExoticGarden extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		if (!new File("plugins/ExoticGarden").exists()) new File("plugins/ExoticGarden").mkdirs();
-    	
-		if (!new File("plugins/ExoticGarden/schematics").exists()) new File("plugins/ExoticGarden/schematics").mkdirs();
+		if (!schematicsFolder.exists()) schematicsFolder.mkdirs();
 
     	instance = this;
     	cfg = new Config(this);
@@ -702,8 +702,8 @@ public class ExoticGarden extends JavaPlugin {
 		instance = null;
 	}
 
-	public void registerTree(String name, String texture, String color, Color pcolor, String juice, boolean pie, Material... soil) {
-		String id = name.toUpperCase(Locale.ROOT).replace(" ", "_");
+	private void registerTree(String name, String texture, String color, Color pcolor, String juice, boolean pie, Material... soil) {
+		String id = name.toUpperCase(Locale.ROOT).replace(' ', '_');
 		Tree tree = new Tree(id, texture, soil);
 		trees.add(tree);
 
@@ -732,14 +732,14 @@ public class ExoticGarden extends JavaPlugin {
 			.register();
 		}
 
-		if (!new File("plugins/ExoticGarden/schematics", id + "_TREE.schematic").exists()) {
+		if (!new File(schematicsFolder, id + "_TREE.schematic").exists()) {
 			saveSchematic(id + "_TREE");
 		}
 	}
 
 	private void saveSchematic(String id) {
-		try (InputStream input = getClass().getResourceAsStream("schematics/" + id + ".schematic")) {
-			try (FileOutputStream output = new FileOutputStream(new File("plugins/ExoticGarden/schematics", id + "_TREE.schematic"))) {
+		try (InputStream input = getClass().getResourceAsStream("/schematics/" + id + ".schematic")) {
+			try (FileOutputStream output = new FileOutputStream(new File(schematicsFolder, id + "_TREE.schematic"))) {
 				byte[] buffer = new byte[1024];
                 int len;
                 
@@ -752,7 +752,7 @@ public class ExoticGarden extends JavaPlugin {
 		}
 	}
 
-	public void registerBerry(String name, String color, Color pcolor, PlantType type, String texture) {
+	private void registerBerry(String name, String color, Color pcolor, PlantType type, String texture) {
 		String upperCase = name.toUpperCase(Locale.ROOT);
 		Berry berry = new Berry(upperCase, type, texture);
 		berries.add(berry);
@@ -793,12 +793,14 @@ public class ExoticGarden extends JavaPlugin {
 		return item != null ? item.getItem() : null;
 	}
 
-	public void registerPlant(String name, String color, PlantType type, String texture) {
+	private void registerPlant(String name, String color, PlantType type, String texture) {
 		String upperCase = name.toUpperCase(Locale.ROOT);
-		Berry berry = new Berry(upperCase.replace(" ", "_"), type, texture);
+		String enumStyle = upperCase.replace(' ', '_');
+
+		Berry berry = new Berry(enumStyle, type, texture);
 		berries.add(berry);
 
-		SlimefunItemStack sfi = new SlimefunItemStack(upperCase.replace(" ", "_") + "_BUSH", Material.OAK_SAPLING, color + name + " Plant");
+		SlimefunItemStack sfi = new SlimefunItemStack(enumStyle + "_BUSH", Material.OAK_SAPLING, color + name + " Plant");
 
 		items.put(upperCase + "_BUSH", sfi);
 
@@ -806,19 +808,21 @@ public class ExoticGarden extends JavaPlugin {
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register();
 
-		new EGPlant(mainCategory, new SlimefunItemStack(upperCase.replace(" ", "_"), texture, color + name), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush")), true,
-		new ItemStack[] {null, null, null, null, getItem(upperCase.replace(" ", "_") + "_BUSH"), null, null, null, null})
+		new EGPlant(mainCategory, new SlimefunItemStack(enumStyle, texture, color + name), new RecipeType(new CustomItem(Material.OAK_LEAVES, "&7Obtained by harvesting the specific Bush")), true,
+		new ItemStack[] {null, null, null, null, getItem(enumStyle + "_BUSH"), null, null, null, null})
 		.register();
 	}
 
-	public void registerMagicalPlant(String name, ItemStack item, String texture, ItemStack[] recipe) {
+	private void registerMagicalPlant(String name, ItemStack item, String texture, ItemStack[] recipe) {
 		String upperCase = name.toUpperCase(Locale.ROOT);
-		SlimefunItemStack essence = new SlimefunItemStack(upperCase.replace(" ", "_") + "_ESSENCE", Material.BLAZE_POWDER, "&rMagical Essence", "", "&7" + name);
+		String enumStyle = upperCase.replace(' ', '_');
+
+		SlimefunItemStack essence = new SlimefunItemStack(enumStyle + "_ESSENCE", Material.BLAZE_POWDER, "&rMagical Essence", "", "&7" + name);
 
 		Berry berry = new Berry(essence, upperCase + "_ESSENCE", PlantType.ORE_PLANT, texture);
 		berries.add(berry);
 
-		new SlimefunItem(magicalCategory, new SlimefunItemStack(upperCase.replace(" ", "_") + "_PLANT", Material.OAK_SAPLING, "&r" + name + " Plant"), RecipeType.ENHANCED_CRAFTING_TABLE,
+		new SlimefunItem(magicalCategory, new SlimefunItemStack(enumStyle + "_PLANT", Material.OAK_SAPLING, "&r" + name + " Plant"), RecipeType.ENHANCED_CRAFTING_TABLE,
 		recipe)
 		.register();
 
@@ -829,7 +833,7 @@ public class ExoticGarden extends JavaPlugin {
 		plant.register();
 	}
 
-	public static Berry getBerry(Block block) {
+	protected static Berry getBerry(Block block) {
 		SlimefunItem item = BlockStorage.check(block);
 		
 		if (item instanceof HandledBlock) {
@@ -841,7 +845,7 @@ public class ExoticGarden extends JavaPlugin {
 		return null;
 	}
 
-	public static ItemStack harvestPlant(Block block) {
+	protected static ItemStack harvestPlant(Block block) {
 		ItemStack itemstack = null;
 		SlimefunItem item = BlockStorage.check(block);
 		
