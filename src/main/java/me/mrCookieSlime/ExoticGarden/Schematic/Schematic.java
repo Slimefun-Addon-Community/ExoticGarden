@@ -51,15 +51,15 @@ public class Schematic {
 	private short[] blocks;
 	private byte[] data;
 	private short width;
-	private short lenght;
+	private short length;
 	private short height;
 	private String name;
 
-	public Schematic(String name, short[] blocks, byte[] data, short width, short lenght, short height) {
+	public Schematic(String name, short[] blocks, byte[] data, short width, short length, short height) {
 		this.blocks = blocks;
 		this.data = data;
 		this.width = width;
-		this.lenght = lenght;
+		this.length = length;
 		this.height = height;
 		this.name = name;
 	}
@@ -90,10 +90,10 @@ public class Schematic {
 	}
 
 	/**
-	* @return the lenght
+	* @return the length
 	*/
-	public short getLenght() {
-		return lenght;
+	public short getLength() {
+		return length;
 	}
 
 	/**
@@ -104,12 +104,13 @@ public class Schematic {
 	}
 
 	public static void pasteSchematic(Location loc, Tree tree) {
-		Schematic schematic = null;
-		
+		Schematic schematic;
+
 		try {
 			schematic = tree.getSchematic();
 		} catch (IOException e) {
-			ExoticGarden.instance.getLogger().log(Level.WARNING, "Could not paste Schematic for Tree: " + tree.getFruitID() + "_TREE (" + e.getClass().getSimpleName() + ")");
+			ExoticGarden.instance.getLogger().log(Level.WARNING, "Could not paste Schematic for Tree: "
+                + tree.getFruitID() + "_TREE (" + e.getClass().getSimpleName() + ')', e);
 			return;
 		}
 
@@ -117,7 +118,7 @@ public class Schematic {
 		short[] blocks = schematic.getBlocks();
 		byte[] blockData = schematic.getData();
 
-		short length = schematic.getLenght();
+		short length = schematic.getLength();
 		short width = schematic.getWidth();
 		short height = schematic.getHeight();
 
