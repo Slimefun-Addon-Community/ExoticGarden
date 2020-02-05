@@ -739,7 +739,7 @@ public class ExoticGarden extends JavaPlugin {
 
 	private void saveSchematic(String id) {
 		try (InputStream input = getClass().getResourceAsStream("/schematics/" + id + ".schematic")) {
-			try (FileOutputStream output = new FileOutputStream(new File(schematicsFolder, id + "_TREE.schematic"))) {
+			try (FileOutputStream output = new FileOutputStream(new File(schematicsFolder, id + ".schematic"))) {
 				byte[] buffer = new byte[1024];
                 int len;
                 
@@ -886,6 +886,14 @@ public class ExoticGarden extends JavaPlugin {
 		}
 		
 		return itemstack;
+	}
+
+	public static ExoticGarden getInstance() {
+		return instance;
+	}
+
+	public File getSchematicsFolder() {
+		return schematicsFolder;
 	}
 
 	public static Kitchen getKitchen() {
