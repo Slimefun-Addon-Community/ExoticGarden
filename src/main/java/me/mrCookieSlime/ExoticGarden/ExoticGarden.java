@@ -788,7 +788,7 @@ public class ExoticGarden extends JavaPlugin {
 		.register();
 	}
 
-	private static ItemStack getItem(String id) {
+	public static ItemStack getItem(String id) {
 		SlimefunItem item = SlimefunItem.getByID(id);
 		return item != null ? item.getItem() : null;
 	}
@@ -833,7 +833,7 @@ public class ExoticGarden extends JavaPlugin {
 		plant.register();
 	}
 
-	protected static Berry getBerry(Block block) {
+	public static Berry getBerry(Block block) {
 		SlimefunItem item = BlockStorage.check(block);
 		
 		if (item instanceof HandledBlock) {
@@ -845,7 +845,7 @@ public class ExoticGarden extends JavaPlugin {
 		return null;
 	}
 
-	protected static ItemStack harvestPlant(Block block) {
+	public static ItemStack harvestPlant(Block block) {
 		ItemStack itemstack = null;
 		SlimefunItem item = BlockStorage.check(block);
 		
