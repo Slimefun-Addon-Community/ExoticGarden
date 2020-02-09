@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -17,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
 import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Lists.Categories;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Research;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.multiblocks.MultiBlockMachine;
 import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
@@ -32,7 +32,7 @@ public class Kitchen extends MultiBlockMachine {
 	
 	public Kitchen(ExoticGarden plugin) {
 		super(
-			Categories.MACHINES_1, new SlimefunItemStack("KITCHEN", Material.CAULDRON, "&eKitchen", "", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"), "KITCHEN",
+			Categories.MACHINES_1, new SlimefunItemStack("KITCHEN", Material.CAULDRON, "&eKitchen", "", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"),
 			new ItemStack[] {new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new ItemStack(Material.BRICKS), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.CRAFTING_TABLE)},
 			new ItemStack[0],
 			BlockFace.SELF
@@ -41,7 +41,7 @@ public class Kitchen extends MultiBlockMachine {
 		this.plugin = plugin;
 		
 		register();
-		Slimefun.registerResearch(new Research(600, "Kitchen", 30), getItem());
+		Slimefun.registerResearch(new NamespacedKey(plugin, "kitchen"), 600, "Kitchen", 30, getItem());
 	}
 	
 	public RecipeType asRecipeType() {
