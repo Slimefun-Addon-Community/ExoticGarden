@@ -1,4 +1,6 @@
-package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
+package me.mrCookieSlime.ExoticGarden.schematics.org.jnbt;
+
+import java.nio.charset.Charset;
 
 /*
  * JNBT License
@@ -34,48 +36,37 @@ package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
  */
 
 /**
- * The <code>TAG_Byte_Array</code> tag.
+ * A class which holds constant values.
  * @author Graham Edgecombe
  *
  */
-public final class ByteArrayTag extends Tag {
+public final class NBTConstants {
 
 	/**
-	 * The value.
+	 * The character set used by NBT (UTF-8).
 	 */
-	private final byte[] value;
+	public static final Charset CHARSET = Charset.forName("UTF-8");
 
 	/**
-	 * Creates the tag.
-	 * @param name The name.
-	 * @param value The value.
+	 * Tag type constants.
 	 */
-	public ByteArrayTag(String name, byte[] value) {
-		super(name);
-		this.value = value;
-	}
+	public static final int TYPE_END = 0,
+		TYPE_BYTE = 1,
+		TYPE_SHORT = 2,
+		TYPE_INT = 3,
+		TYPE_LONG = 4,
+		TYPE_FLOAT = 5,
+		TYPE_DOUBLE = 6,
+		TYPE_BYTE_ARRAY = 7,
+		TYPE_STRING = 8,
+		TYPE_LIST = 9,
+		TYPE_COMPOUND = 10;
 
-	@Override
-	public byte[] getValue() {
-		return value;
-	}
+	/**
+	 * Default private constructor.
+	 */
+	private NBTConstants() {
 
-	@Override
-	public String toString() {
-		StringBuilder hex = new StringBuilder();
-		for(byte b : value) {
-			String hexDigits = Integer.toHexString(b).toUpperCase();
-			if(hexDigits.length() == 1) {
-				hex.append("0");
-			}
-			hex.append(hexDigits).append(" ");
-		}
-		String name = getName();
-		String append = "";
-		if(name != null && !name.equals("")) {
-			append = "(\"" + this.getName() + "\")";
-		}
-		return "TAG_Byte_Array" + append + ": " + hex.toString();
 	}
 
 }

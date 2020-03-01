@@ -1,4 +1,4 @@
-package me.mrCookieSlime.ExoticGarden.Schematic;
+package me.mrCookieSlime.ExoticGarden.schematics;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,11 +18,11 @@ import org.bukkit.inventory.InventoryHolder;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
 import me.mrCookieSlime.ExoticGarden.ExoticGarden;
 import me.mrCookieSlime.ExoticGarden.Tree;
-import me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt.ByteArrayTag;
-import me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt.CompoundTag;
-import me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt.NBTInputStream;
-import me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt.ShortTag;
-import me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt.Tag;
+import me.mrCookieSlime.ExoticGarden.schematics.org.jnbt.ByteArrayTag;
+import me.mrCookieSlime.ExoticGarden.schematics.org.jnbt.CompoundTag;
+import me.mrCookieSlime.ExoticGarden.schematics.org.jnbt.NBTInputStream;
+import me.mrCookieSlime.ExoticGarden.schematics.org.jnbt.ShortTag;
+import me.mrCookieSlime.ExoticGarden.schematics.org.jnbt.Tag;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /*

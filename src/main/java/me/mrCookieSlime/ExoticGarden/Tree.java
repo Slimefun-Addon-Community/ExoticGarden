@@ -8,7 +8,7 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.ExoticGarden.Schematic.Schematic;
+import me.mrCookieSlime.ExoticGarden.schematics.Schematic;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
 public class Tree {

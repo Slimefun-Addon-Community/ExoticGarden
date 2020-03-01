@@ -1,4 +1,4 @@
-package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
+package me.mrCookieSlime.ExoticGarden.schematics.org.jnbt;
 
 /*
  * JNBT License

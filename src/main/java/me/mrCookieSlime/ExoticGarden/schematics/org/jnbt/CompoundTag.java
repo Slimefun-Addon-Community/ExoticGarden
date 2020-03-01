@@ -1,4 +1,4 @@
-package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
+package me.mrCookieSlime.ExoticGarden.schematics.org.jnbt;
 
 /*
  * JNBT License
@@ -33,30 +33,33 @@ package me.mrCookieSlime.ExoticGarden.Schematic.org.jnbt;
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+import java.util.Collections;
+import java.util.Map;
+
 /**
- * The <code>TAG_Float</code> tag.
+ * The <code>TAG_Compound</code> tag.
  * @author Graham Edgecombe
  *
  */
-public final class FloatTag extends Tag {
+public final class CompoundTag extends Tag {
 
 	/**
 	 * The value.
 	 */
-	private final float value;
+	private final Map<String, Tag> value;
 
 	/**
 	 * Creates the tag.
 	 * @param name The name.
 	 * @param value The value.
 	 */
-	public FloatTag(String name, float value) {
+	public CompoundTag(String name, Map<String, Tag> value) {
 		super(name);
-		this.value = value;
+		this.value = Collections.unmodifiableMap(value);
 	}
 
 	@Override
-	public Float getValue() {
+	public Map<String, Tag> getValue() {
 		return value;
 	}
 
@@ -67,7 +70,13 @@ public final class FloatTag extends Tag {
 		if(name != null && !name.equals("")) {
 			append = "(\"" + this.getName() + "\")";
 		}
-		return "TAG_Float" + append + ": " + value;
+		StringBuilder bldr = new StringBuilder();
+		bldr.append("TAG_Compound" + append + ": " + value.size() + " entries\r\n{\r\n");
+		for(Map.Entry<String, Tag> entry : value.entrySet()) {
+			bldr.append("   " + entry.getValue().toString().replaceAll("\r\n", "\r\n   ") + "\r\n");
+		}
+		bldr.append("}");
+		return bldr.toString();
 	}
 
 }

@@ -39,13 +39,6 @@
   				<include>*</include>
   			</includes>
   		</resource>
-		<resource>
-			<directory>${basedir}/src/main/resources</directory>
-			<filtering>false</filtering>
-			<includes>
-				<include>schematics/*</include>
-			</includes>
-		</resource>
   	</resources>
   </build>
   
@@ -75,7 +68,7 @@
   	<dependency>
   		<groupId>com.github.TheBusyBiscuit</groupId>
   		<artifactId>Slimefun4</artifactId>
-  		<version>cb2e12946f</version>
+  		<version>7dc349a2bc</version>
   		<scope>provided</scope>
   		<exclusions>
   			<exclusion>
