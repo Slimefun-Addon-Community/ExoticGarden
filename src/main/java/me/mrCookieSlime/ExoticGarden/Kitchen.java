@@ -40,7 +40,6 @@ public class Kitchen extends MultiBlockMachine {
 		
 		this.plugin = plugin;
 		
-		register();
 		Slimefun.registerResearch(new NamespacedKey(plugin, "kitchen"), 600, "Kitchen", 30, getItem());
 	}
 	

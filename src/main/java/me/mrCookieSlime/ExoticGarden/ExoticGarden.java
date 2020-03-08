@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.implementation.items.food.Juice;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomPotion;
 import me.mrCookieSlime.ExoticGarden.items.Crook;
 import me.mrCookieSlime.ExoticGarden.items.GrassSeeds;
@@ -32,7 +33,6 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.HandledBlock;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.Juice;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
@@ -50,9 +50,9 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 
 	private final File schematicsFolder = new File(getDataFolder(), "schematics");
 
-	private List<Berry> berries = new ArrayList<>();
-	private List<Tree> trees = new ArrayList<>();
-	private Map<String, ItemStack> items = new HashMap<>();
+	private final List<Berry> berries = new ArrayList<>();
+	private final List<Tree> trees = new ArrayList<>();
+	private final Map<String, ItemStack> items = new HashMap<>();
 
 	protected Config cfg;
 
@@ -91,6 +91,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		.register(this);
 
 		kitchen = new Kitchen(this);
+		kitchen.register(this);
 
 		registerBerry("Grape", "&c", Color.RED, PlantType.BUSH, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmVlOTc2NDliZDk5OTk1NTQxM2ZjYmYwYjI2OWM5MWJlNDM0MmIxMGQwNzU1YmFkN2ExN2U5NWZjZWZkYWIwIn19fQ==");
 		registerBerry("Blueberry", "&9", Color.BLUE, PlantType.BUSH, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVhNWM0YTBhMTZkYWJjOWIxZWM3MmZjODNlMjNhYzE1ZDAxOTdkZTYxYjEzOGJhYmNhN2M4YTI5YzgyMCJ9fX0=");
