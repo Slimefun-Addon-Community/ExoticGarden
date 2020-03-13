@@ -140,9 +140,21 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		registerMagicalPlant("Gold", SlimefunItems.GOLD_4K, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTRkZjg5MjI5M2E5MjM2ZjczZjQ4ZjllZmU5NzlmZTA3ZGJkOTFmN2I1ZDIzOWU0YWNmZDM5NGY2ZWNhIn19fQ==",
 		new ItemStack[] {null, SlimefunItems.GOLD_16K, null, SlimefunItems.GOLD_16K, getItem("IRON_PLANT"), SlimefunItems.GOLD_16K, null, SlimefunItems.GOLD_16K, null});
 
-		registerMagicalPlant("Copper", new CustomItem(SlimefunItems.COPPER_DUST, 8),  "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTkyM2RiZmQ4ZjMxMTI2OTBiYjVhNjE2OGE4ZDNjYTVhYjllN2Q0M2IxZDExY2ZjYjY0M2RlN2RmZTIxIn19fQ==",
+		registerMagicalPlant("Copper", new CustomItem(SlimefunItems.COPPER_DUST, 8),  "eyJ0aW1lc3RhbXAiOjE1ODI2ODUzNTY5NDMsInByb2ZpbGVJZCI6ImIxZDI3NGViOGU0YjRmNzU4NDJkY2Y3MzU0ZTZlZTFhIiwicHJvZmlsZU5hbWUiOiJUaGF0UHJlc3RvbiIsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kNGZjNzJmM2Q1ZWU2NjI3OWE0NWFjOWM2M2FjOTg5NjkzMDYyMjdjM2Y0ODYyZTljN2MyYTQ1ODNjMDk3YjhhIn19fQ==",
 		new ItemStack[] {null, SlimefunItems.COPPER_DUST, null, SlimefunItems.COPPER_DUST, getItem("GOLD_PLANT"), SlimefunItems.COPPER_DUST, null, SlimefunItems.COPPER_DUST, null});
 
+		registerMagicalPlant("Aluminum", new CustomItem(SlimefunItems.ALUMINUM_DUST, 8),  "eyJ0aW1lc3RhbXAiOjE1ODI2ODUyNjY1ODYsInByb2ZpbGVJZCI6ImIxZDI3NGViOGU0YjRmNzU4NDJkY2Y3MzU0ZTZlZTFhIiwicHJvZmlsZU5hbWUiOiJUaGF0UHJlc3RvbiIsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9mNDQ1NTM0MWVhZmYzY2Y4ZmU2ZTQ2YmRmZWQ4ZjUwMWI0NjFmYjZmNmQyZmU1MzZiZTdkMmJkOTBkMjA4OGFhIn19fQ==",
+		new ItemStack[] {null, SlimefunItems.ALUMINUM_DUST, null, SlimefunItems.ALUMINUM_DUST, getItem("IRON_PLANT"), SlimefunItems.ALUMINUM_DUST, null, SlimefunItems.ALUMINUM_DUST, null});
+
+		registerMagicalPlant("Tin", new CustomItem(SlimefunItems.TIN_DUST, 8),  "eyJ0aW1lc3RhbXAiOjE1ODI2ODU0NjI4MDYsInByb2ZpbGVJZCI6ImIxZDI3NGViOGU0YjRmNzU4NDJkY2Y3MzU0ZTZlZTFhIiwicHJvZmlsZU5hbWUiOiJUaGF0UHJlc3RvbiIsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS82ZWZiNDNiYTJmZTY5NTkxODBlZTczMDdmM2YwNTQ3MTVhMzRjMGEwNzA3OWFiNzM3MTI1NDdmZmQ3NTNkZWRkIn19fQ==",
+		new ItemStack[] {null, SlimefunItems.TIN_DUST, null, SlimefunItems.TIN_DUST, getItem("IRON_PLANT"), SlimefunItems.TIN_DUST, null, SlimefunItems.TIN_DUST, null});
+		
+		registerMagicalPlant("Silver", new CustomItem(SlimefunItems.SILVER_DUST, 8),  "eyJ0aW1lc3RhbXAiOjE1ODI2ODUzOTk4NzAsInByb2ZpbGVJZCI6ImIxZDI3NGViOGU0YjRmNzU4NDJkY2Y3MzU0ZTZlZTFhIiwicHJvZmlsZU5hbWUiOiJUaGF0UHJlc3RvbiIsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8xZGQ5NjhiMTg1MWFhNzE2MGQxY2Q5ZGI3NTE2YThlMWJmN2I3NDA1ZTUyNDVjNTMzOGFhODk1ZmU1ODVmMjZjIn19fQ==",
+		new ItemStack[] {null, SlimefunItems.SILVER_DUST, null, SlimefunItems.SILVER_DUST, getItem("IRON_PLANT"), SlimefunItems.SILVER_DUST, null, SlimefunItems.SILVER_DUST, null});
+		
+		registerMagicalPlant("Lead", new CustomItem(SlimefunItems.LEAD_DUST, 8),  "eyJ0aW1lc3RhbXAiOjE1ODI2ODU0MzIyMjYsInByb2ZpbGVJZCI6ImIxZDI3NGViOGU0YjRmNzU4NDJkY2Y3MzU0ZTZlZTFhIiwicHJvZmlsZU5hbWUiOiJUaGF0UHJlc3RvbiIsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS85M2MzYzQxODAzOWM0YjI4YjBkYTc1YTZkOWIyMjcxMmM3MDE1NDMyZDRmNDIyNmQ2Y2MwYTc3ZDU0YjY0MTc4In19fQ==",
+		new ItemStack[] {null, SlimefunItems.LEAD_DUST, null, SlimefunItems.LEAD_DUST, getItem("IRON_PLANT"), SlimefunItems.LEAD_DUST, null, SlimefunItems.LEAD_DUST, null});
+		
 		registerMagicalPlant("Redstone", new ItemStack(Material.REDSTONE, 8), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZThkZWVlNTg2NmFiMTk5ZWRhMWJkZDc3MDdiZGI5ZWRkNjkzNDQ0ZjFlM2JkMzM2YmQyYzc2NzE1MWNmMiJ9fX0=",
 		new ItemStack[] {null, new ItemStack(Material.REDSTONE_BLOCK), null, new ItemStack(Material.REDSTONE_BLOCK), getItem("GOLD_PLANT"), new ItemStack(Material.REDSTONE_BLOCK), null, new ItemStack(Material.REDSTONE_BLOCK), null});
 
