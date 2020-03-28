@@ -15,11 +15,11 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Lists.Categories;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.multiblocks.MultiBlockMachine;
-import me.mrCookieSlime.Slimefun.Setup.SlimefunManager;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
@@ -60,14 +60,14 @@ public class Kitchen extends MultiBlockMachine {
 		recipe: 
 		for (ItemStack[] input : inputs) {
 			for (int i = 0; i < inv.getContents().length; i++) {
-				if (!SlimefunManager.isItemSimilar(inv.getContents()[i], input[i], true))
+				if (!SlimefunUtils.isItemSimilar(inv.getContents()[i], input[i], true))
 					continue recipe;
 			}
 			
 			ItemStack adding = RecipeType.getRecipeOutputList(this, input);
 
 			if (Slimefun.hasUnlocked(p, adding, true)) {
-				boolean canFit = furnaceInventory.getResult() == null || (furnaceInventory.getResult().getAmount() + adding.getAmount() <= 64 && SlimefunManager.isItemSimilar(furnaceInventory.getResult(), adding, true));
+				boolean canFit = furnaceInventory.getResult() == null || (furnaceInventory.getResult().getAmount() + adding.getAmount() <= 64 && SlimefunUtils.isItemSimilar(furnaceInventory.getResult(), adding, true));
 
 				if (!canFit) {
 					SlimefunPlugin.getLocal().sendMessage(p, "machines.full-inventory", true);

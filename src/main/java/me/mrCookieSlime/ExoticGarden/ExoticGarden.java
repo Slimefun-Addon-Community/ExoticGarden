@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 
 import org.bukkit.Color;
@@ -28,6 +29,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.food.Juice;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomPotion;
 import me.mrCookieSlime.ExoticGarden.items.Crook;
 import me.mrCookieSlime.ExoticGarden.items.GrassSeeds;
+import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Lists.Categories;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
@@ -79,6 +81,8 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 
 		// Only run the Updater if it has not been disabled
 		if (cfg.getBoolean("options.auto-update")) updater.start();
+		
+		SlimefunPlugin.getThirdPartySupportService().loadExoticGarden(this, b -> Optional.ofNullable(harvestPlant(b)));
 
 		mainCategory = new Category(new NamespacedKey(this, "plants_and_fruits"), new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVhNWM0YTBhMTZkYWJjOWIxZWM3MmZjODNlMjNhYzE1ZDAxOTdkZTYxYjEzOGJhYmNhN2M4YTI5YzgyMCJ9fX0="), "&aExotic Garden - Plants and Fruits"));
 		foodCategory = new Category(new NamespacedKey(this, "food"), new CustomItem(SkullItem.fromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTE0MjE2ZDEwNzE0MDgyYmJlM2Y0MTI0MjNlNmIxOTIzMjM1MmY0ZDY0ZjlhY2EzOTEzY2I0NjMxOGQzZWQifX19"), "&aExotic Garden - Food"));
@@ -187,7 +191,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		.register(this);
 
 		SlimefunItemStack grassSeeds = new SlimefunItemStack("GRASS_SEEDS", Material.PUMPKIN_SEEDS, "&rGrass Seeds", "", "&7&oCan be planted on Dirt");
-		new GrassSeeds(mainCategory, grassSeeds, new RecipeType(new CustomItem(Material.GRASS, "&7Breaking Grass")),
+		new GrassSeeds(mainCategory, grassSeeds, new RecipeType(new NamespacedKey(this, "breaking_grass"), new CustomItem(Material.GRASS, "&7Breaking Grass")),
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register(this);
 
