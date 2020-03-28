@@ -78,7 +78,7 @@ public class Kitchen extends MultiBlockMachine {
 					ItemStack item = inv.getItem(i);
 					
 					if (item != null) {
-						ItemUtils.consumeItem(item, true);
+						ItemUtils.consumeItem(item, item.getType() == Material.MILK_BUCKET);
 					}
 				}
 
