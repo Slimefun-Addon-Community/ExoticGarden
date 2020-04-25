@@ -1,6 +1,10 @@
 package io.github.thebusybiscuit.exoticgarden;
 
+import java.util.Optional;
+
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,7 +32,16 @@ public class EGPlant extends HandledBlock {
 
     public ItemUseHandler onRightClick() {
         return e -> {
-            e.cancel();
+            Optional<Block> block = e.getClickedBlock();
+
+            if (block.isPresent()) {
+                Material material = block.get().getType();
+
+                // Cancel the Block placement if the Player sneaks or the Block is not interactable
+                if (!material.isInteractable() || e.getPlayer().isSneaking()) {
+                    e.cancel();
+                }
+            }
 
             if (edible && e.getPlayer().getFoodLevel() < 20) {
                 restoreHunger(e.getPlayer());
