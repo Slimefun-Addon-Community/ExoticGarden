@@ -1,4 +1,4 @@
-package io.github.thebusybiscuit.exoticgarden;
+package io.github.thebusybiscuit.exoticgarden.items;
 
 import java.util.Optional;
 
@@ -15,11 +15,11 @@ import me.mrCookieSlime.Slimefun.Objects.handlers.ItemUseHandler;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
-public class EGPlant extends HandledBlock {
+public class ExoticGardenFruit extends HandledBlock {
 
     private final boolean edible;
 
-    public EGPlant(Category category, SlimefunItemStack item, RecipeType recipeType, boolean edible, ItemStack[] recipe) {
+    public ExoticGardenFruit(Category category, SlimefunItemStack item, RecipeType recipeType, boolean edible, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
         this.edible = edible;
     }
@@ -40,6 +40,9 @@ public class EGPlant extends HandledBlock {
                 // Cancel the Block placement if the Player sneaks or the Block is not interactable
                 if (!material.isInteractable() || e.getPlayer().isSneaking()) {
                     e.cancel();
+                }
+                else {
+                    return;
                 }
             }
 

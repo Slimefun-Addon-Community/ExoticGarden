@@ -1,11 +1,12 @@
-package io.github.thebusybiscuit.exoticgarden;
+package io.github.thebusybiscuit.exoticgarden.items;
 
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.exoticgarden.ExoticGardenRecipeTypes;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
-public class CustomFood extends EGPlant {
+public class CustomFood extends ExoticGardenFruit {
 
     private final int food;
 

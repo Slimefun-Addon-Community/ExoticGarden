@@ -72,46 +72,37 @@ public class PlantsListener implements Listener {
                         break;
                     case ORE_PLANT:
                     case DOUBLE_PLANT:
-                        item = BlockStorage.check(e.getLocation().getBlock().getRelative(BlockFace.UP));
+                        Block blockAbove = e.getLocation().getBlock().getRelative(BlockFace.UP);
+                        item = BlockStorage.check(blockAbove);
                         if (item != null) return;
 
-                        switch (e.getLocation().getBlock().getRelative(BlockFace.UP).getType()) {
-                        case AIR:
-                        case CAVE_AIR:
-                        case OAK_SAPLING:
-                        case SPRUCE_SAPLING:
-                        case BIRCH_SAPLING:
-                        case JUNGLE_SAPLING:
-                        case ACACIA_SAPLING:
-                        case DARK_OAK_SAPLING:
-                        case OAK_LEAVES:
-                        case SPRUCE_LEAVES:
-                        case BIRCH_LEAVES:
-                        case JUNGLE_LEAVES:
-                        case ACACIA_LEAVES:
-                        case DARK_OAK_LEAVES:
-                        case SNOW:
-                            break;
-                        default:
-                            return;
+                        if (!Tag.SAPLINGS.isTagged(blockAbove.getType()) && !Tag.LEAVES.isTagged(blockAbove.getType())) {
+                            switch (blockAbove.getType()) {
+                            case AIR:
+                            case CAVE_AIR:
+                            case SNOW:
+                                break;
+                            default:
+                                return;
+                            }
                         }
 
-                        BlockStorage.store(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getItem());
+                        BlockStorage.store(blockAbove, berry.getItem());
                         e.getLocation().getBlock().setType(Material.OAK_LEAVES);
-                        e.getLocation().getBlock().getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
-                        Rotatable rotatable = (Rotatable) e.getLocation().getBlock().getRelative(BlockFace.UP).getBlockData();
+                        blockAbove.setType(Material.PLAYER_HEAD);
+                        Rotatable rotatable = (Rotatable) blockAbove.getBlockData();
                         rotatable.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
-                        e.getLocation().getBlock().getRelative(BlockFace.UP).setBlockData(rotatable);
+                        blockAbove.setBlockData(rotatable);
 
-                        SkullBlock.setFromBase64(e.getLocation().getBlock().getRelative(BlockFace.UP), berry.getTexture());
+                        SkullBlock.setFromHash(blockAbove, berry.getTexture());
                         break;
                     default:
                         e.getLocation().getBlock().setType(Material.PLAYER_HEAD);
                         Rotatable s = (Rotatable) e.getLocation().getBlock().getBlockData();
-                        s.setRotation(faces[new Random().nextInt(faces.length)]);
+                        s.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
                         e.getLocation().getBlock().setBlockData(s);
 
-                        SkullBlock.setFromBase64(e.getLocation().getBlock(), berry.getTexture());
+                        SkullBlock.setFromHash(e.getLocation().getBlock(), berry.getTexture());
                         break;
                     }
 
@@ -151,7 +142,7 @@ public class PlantsListener implements Listener {
                                 s.setRotation(faces[random.nextInt(faces.length)]);
                                 current.setBlockData(s);
 
-                                SkullBlock.setFromBase64(current, berry.getTexture());
+                                SkullBlock.setFromHash(current, berry.getTexture());
                             });
                             break;
                         case ORE_PLANT:
@@ -163,7 +154,7 @@ public class PlantsListener implements Listener {
                                 Rotatable s = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
                                 s.setRotation(faces[random.nextInt(faces.length)]);
                                 current.getRelative(BlockFace.UP).setBlockData(s);
-                                SkullBlock.setFromBase64(current.getRelative(BlockFace.UP), berry.getTexture());
+                                SkullBlock.setFromHash(current.getRelative(BlockFace.UP), berry.getTexture());
                             });
                             break;
                         default:
@@ -238,6 +229,7 @@ public class PlantsListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDecay(LeavesDecayEvent e) {
         String id = BlockStorage.checkID(e.getBlock());
+
         if (id != null) {
             for (Berry berry : ExoticGarden.getBerries()) {
                 if (id.equalsIgnoreCase(berry.getID())) {
@@ -271,12 +263,12 @@ public class PlantsListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    void onBlockExplode(BlockExplodeEvent e) {
+    public void onBlockExplode(BlockExplodeEvent e) {
         e.blockList().removeAll(getAffectedBlocks(e.blockList()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    void onEntityExplode(EntityExplodeEvent e) {
+    public void onEntityExplode(EntityExplodeEvent e) {
         e.blockList().removeAll(getAffectedBlocks(e.blockList()));
     }
 

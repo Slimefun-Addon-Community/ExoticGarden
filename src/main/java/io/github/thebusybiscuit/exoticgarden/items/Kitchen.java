@@ -1,4 +1,4 @@
-package io.github.thebusybiscuit.exoticgarden;
+package io.github.thebusybiscuit.exoticgarden.items;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.exoticgarden.ExoticGarden;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
