@@ -134,7 +134,7 @@ public class Schematic {
                     int blockZ = z + loc.getBlockZ() - width / 2;
                     Block block = new Location(loc.getWorld(), blockX, blockY, blockZ).getBlock();
 
-                    if (!block.getType().isSolid() && !block.getType().isInteractable() && !MaterialCollections.getAllUnbreakableBlocks().contains(block.getType()) && (block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR)) {
+                    if ((!block.getType().isSolid() && !block.getType().isInteractable() && !MaterialCollections.getAllUnbreakableBlocks().contains(block.getType())) || block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR || org.bukkit.Tag.SAPLINGS.isTagged(block.getType())) {
                         Material material = parseId(blocks[index], blockData[index]);
 
                         if (material != null) {
