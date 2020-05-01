@@ -117,6 +117,10 @@ public class PlantsListener implements Listener {
 
     @EventHandler
     public void onGenerate(ChunkPopulateEvent e) {
+        if (!SlimefunPlugin.getWorldSettingsService().isWorldEnabled(e.getWorld())) {
+            return;
+        }
+
         if (!cfg.getStringList("world-blacklist").contains(e.getWorld().getName())) {
             Random random = ThreadLocalRandom.current();
 
@@ -228,6 +232,10 @@ public class PlantsListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDecay(LeavesDecayEvent e) {
+        if (!SlimefunPlugin.getWorldSettingsService().isWorldEnabled(e.getBlock().getWorld())) {
+            return;
+        }
+
         String id = BlockStorage.checkID(e.getBlock());
 
         if (id != null) {
