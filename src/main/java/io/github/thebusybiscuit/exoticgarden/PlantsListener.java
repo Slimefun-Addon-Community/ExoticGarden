@@ -42,6 +42,7 @@ public class PlantsListener implements Listener {
     private final ExoticGarden plugin;
     private final Config cfg;
     private final BlockFace[] faces = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
+    private final OnGrowRun onGrowRun = new OnGrowRun(faces);
 
     public PlantsListener(ExoticGarden plugin) {
         this.plugin = plugin;
@@ -51,69 +52,9 @@ public class PlantsListener implements Listener {
 
     @EventHandler
     public void onGrow(StructureGrowEvent e) {
-        SlimefunItem item = BlockStorage.check(e.getLocation().getBlock());
-
-        if (item != null) {
-            e.setCancelled(true);
-            if (!PaperLib.isChunkGenerated(e.getLocation())) {
-                PaperLib.getChunkAtAsync(e.getLocation());
-            }
-            for (Tree tree : ExoticGarden.getTrees()) {
-                if (item.getID().equalsIgnoreCase(tree.getSapling())) {
-                    BlockStorage.clearBlockInfo(e.getLocation());
-                    Schematic.pasteSchematic(e.getLocation(), tree);
-                    return;
-                }
-            }
-
-            for (Berry berry : ExoticGarden.getBerries()) {
-                if (item.getID().equalsIgnoreCase(berry.toBush())) {
-                    switch (berry.getType()) {
-                        case BUSH:
-                            e.getLocation().getBlock().setType(Material.OAK_LEAVES);
-                            break;
-                        case ORE_PLANT:
-                        case DOUBLE_PLANT:
-                            Block blockAbove = e.getLocation().getBlock().getRelative(BlockFace.UP);
-                            item = BlockStorage.check(blockAbove);
-                            if (item != null) return;
-
-                            if (!Tag.SAPLINGS.isTagged(blockAbove.getType()) && !Tag.LEAVES.isTagged(blockAbove.getType())) {
-                                switch (blockAbove.getType()) {
-                                    case AIR:
-                                    case CAVE_AIR:
-                                    case SNOW:
-                                        break;
-                                    default:
-                                        return;
-                                }
-                            }
-
-                            BlockStorage.store(blockAbove, berry.getItem());
-                            e.getLocation().getBlock().setType(Material.OAK_LEAVES);
-                            blockAbove.setType(Material.PLAYER_HEAD);
-                            Rotatable rotatable = (Rotatable) blockAbove.getBlockData();
-                            rotatable.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
-                            blockAbove.setBlockData(rotatable);
-
-                            SkullBlock.setFromHash(blockAbove, berry.getTexture());
-                            break;
-                        default:
-                            e.getLocation().getBlock().setType(Material.PLAYER_HEAD);
-                            Rotatable s = (Rotatable) e.getLocation().getBlock().getBlockData();
-                            s.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
-                            e.getLocation().getBlock().setBlockData(s);
-
-                            SkullBlock.setFromHash(e.getLocation().getBlock(), berry.getTexture());
-                            break;
-                    }
-
-                    BlockStorage._integrated_removeBlockInfo(e.getLocation(), false);
-                    BlockStorage.store(e.getLocation().getBlock(), berry.getItem());
-                    e.getWorld().playEffect(e.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
-                    break;
-                }
-            }
+        if (!PaperLib.isChunkGenerated(e.getLocation())) {
+            onGrowRun.set(e);
+            PaperLib.getChunkAtAsync(e.getLocation()).thenRun(onGrowRun);
         }
     }
 

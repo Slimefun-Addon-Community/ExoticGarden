@@ -69,7 +69,6 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 	private Category magicalCategory;
 	private Kitchen kitchen;
 
-	@SuppressWarnings("ResultOfMethodCallIgnored")
 	@Override
 	public void onEnable() {
 		if (!schematicsFolder.exists()) {
