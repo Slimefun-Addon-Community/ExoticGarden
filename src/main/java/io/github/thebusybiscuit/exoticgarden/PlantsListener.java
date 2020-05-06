@@ -1,6 +1,9 @@
 package io.github.thebusybiscuit.exoticgarden;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import io.papermc.lib.PaperLib;
@@ -52,7 +55,7 @@ public class PlantsListener implements Listener {
 
         if (item != null) {
             e.setCancelled(true);
-            if (!e.getLocation().getChunk().isLoaded()) {
+            if (!PaperLib.isChunkGenerated(e.getLocation())) {
                 PaperLib.getChunkAtAsync(e.getLocation());
             }
             for (Tree tree : ExoticGarden.getTrees()) {
@@ -125,6 +128,7 @@ public class PlantsListener implements Listener {
             if (random.nextInt(100) < cfg.getInt("chances.BUSH")) {
                 Berry berry = ExoticGarden.getBerries().get(random.nextInt(ExoticGarden.getBerries().size()));
                 if (berry.getType().equals(PlantType.ORE_PLANT)) return;
+
                 int x = e.getChunk().getX() * 16 + random.nextInt(16);
                 int z = e.getChunk().getZ() * 16 + random.nextInt(16);
 
@@ -257,7 +261,7 @@ public class PlantsListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getPlayer().isSneaking()) return;
-        if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), Objects.requireNonNull(e.getClickedBlock()).getLocation(), ProtectableAction.BREAK_BLOCK)) {
+        if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), e.getClickedBlock().getLocation(), ProtectableAction.BREAK_BLOCK)) {
             ItemStack item = ExoticGarden.harvestPlant(e.getClickedBlock());
 
             if (item != null) {

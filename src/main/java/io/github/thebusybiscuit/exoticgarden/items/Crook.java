@@ -40,7 +40,7 @@ public class Crook extends SimpleSlimefunItem<BlockBreakHandler> implements NotP
                     damageItem(e.getPlayer(), item);
 
                     if (Tag.LEAVES.isTagged(e.getBlock().getType()) && ThreadLocalRandom.current().nextInt(100) < CHANCE) {
-                        ItemStack sapling = new ItemStack(Objects.requireNonNull(Material.getMaterial(e.getBlock().getType().toString().replace("LEAVES", "SAPLING"))));
+                        ItemStack sapling = new ItemStack(Material.getMaterial(e.getBlock().getType().toString().replace("LEAVES", "SAPLING")));
                         drops.add(sapling);
                     }
 
