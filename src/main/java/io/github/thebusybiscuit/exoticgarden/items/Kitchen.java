@@ -28,7 +28,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 public class Kitchen extends MultiBlockMachine {
 	
-	private ExoticGarden plugin;
+	private final ExoticGarden plugin;
 	
 	public Kitchen(ExoticGarden plugin, Category category) {
 		super(
