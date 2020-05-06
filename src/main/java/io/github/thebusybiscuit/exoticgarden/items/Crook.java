@@ -1,7 +1,6 @@
 package io.github.thebusybiscuit.exoticgarden.items;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.bukkit.Material;
