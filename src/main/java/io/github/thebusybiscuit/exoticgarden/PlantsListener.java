@@ -4,10 +4,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 import io.papermc.lib.PaperLib;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Tag;
+import org.bukkit.GameMode;
+import org.bukkit.Effect;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
@@ -35,8 +40,8 @@ import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullBlock;
 
 public class PlantsListener implements Listener {
 
-    private final ExoticGarden plugin;
     private final Config cfg;
+    private final ExoticGarden plugin;
     private final BlockFace[] faces = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
     private final OnGrowRun onGrowRun = new OnGrowRun(faces);
 
@@ -53,7 +58,7 @@ public class PlantsListener implements Listener {
             PaperLib.getChunkAtAsync(e.getLocation()).thenRun(onGrowRun);
         } else {
             onGrowRun.set(e);
-            Bukkit.getScheduler().runTask(plugin, onGrowRun);
+            CompletableFuture.runAsync(onGrowRun);
         }
     }
 
@@ -78,21 +83,20 @@ public class PlantsListener implements Listener {
                         BlockStorage.store(current, berry.getItem());
                         switch (berry.getType()) {
                             case BUSH:
-                                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> current.setType(Material.OAK_LEAVES));
+                                CompletableFuture.runAsync(() -> current.setType(Material.OAK_LEAVES));
                                 break;
                             case FRUIT:
-                                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                                CompletableFuture.runAsync(() -> {
                                     current.setType(Material.PLAYER_HEAD);
                                     Rotatable s = (Rotatable) current.getBlockData();
                                     s.setRotation(faces[random.nextInt(faces.length)]);
                                     current.setBlockData(s);
-
                                     SkullBlock.setFromHash(current, berry.getTexture());
                                 });
                                 break;
                             case ORE_PLANT:
                             case DOUBLE_PLANT:
-                                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                                CompletableFuture.runAsync(() -> {
                                     BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
                                     current.setType(Material.OAK_LEAVES);
                                     current.getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
@@ -108,10 +112,8 @@ public class PlantsListener implements Listener {
                         break;
                     }
                 }
-            }
-            else if (random.nextInt(100) < cfg.getInt("chances.TREE")) {
+            } else if (random.nextInt(100) < cfg.getInt("chances.TREE")) {
                 Tree tree = ExoticGarden.getTrees().get(random.nextInt(ExoticGarden.getTrees().size()));
-
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                     int x = e.getChunk().getX() * 16 + random.nextInt(16);
                     int z = e.getChunk().getZ() * 16 + random.nextInt(16);
