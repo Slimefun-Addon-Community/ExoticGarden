@@ -41,12 +41,9 @@ import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullBlock;
 public class PlantsListener implements Listener {
 
     private final Config cfg;
-    private final ExoticGarden plugin;
     private final BlockFace[] faces = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
-    private final OnGrowRun onGrowRun = new OnGrowRun(faces);
 
     public PlantsListener(ExoticGarden plugin) {
-        this.plugin = plugin;
         cfg = plugin.cfg;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -54,11 +51,131 @@ public class PlantsListener implements Listener {
     @EventHandler
     public void onGrow(StructureGrowEvent e) {
         if (!PaperLib.isChunkGenerated(e.getLocation())) {
-            onGrowRun.set(e);
-            PaperLib.getChunkAtAsync(e.getLocation()).thenRun(onGrowRun);
+            PaperLib.getChunkAtAsync(e.getLocation()).thenRun(() -> {
+                SlimefunItem item = BlockStorage.check(e.getLocation().getBlock());
+
+                if (item != null) {
+                    e.setCancelled(true);
+                    for (Tree tree : ExoticGarden.getTrees()) {
+                        if (item.getID().equalsIgnoreCase(tree.getSapling())) {
+                            BlockStorage.clearBlockInfo(e.getLocation());
+                            Schematic.pasteSchematic(e.getLocation(), tree);
+                            return;
+                        }
+                    }
+
+                    for (Berry berry : ExoticGarden.getBerries()) {
+                        if (item.getID().equalsIgnoreCase(berry.toBush())) {
+                            switch (berry.getType()) {
+                                case BUSH:
+                                    e.getLocation().getBlock().setType(Material.OAK_LEAVES);
+                                    break;
+                                case ORE_PLANT:
+                                case DOUBLE_PLANT:
+                                    Block blockAbove = e.getLocation().getBlock().getRelative(BlockFace.UP);
+                                    item = BlockStorage.check(blockAbove);
+                                    if (item != null) return;
+
+                                    if (!Tag.SAPLINGS.isTagged(blockAbove.getType()) && !Tag.LEAVES.isTagged(blockAbove.getType())) {
+                                        switch (blockAbove.getType()) {
+                                            case AIR:
+                                            case CAVE_AIR:
+                                            case SNOW:
+                                                break;
+                                            default:
+                                                return;
+                                        }
+                                    }
+
+                                    BlockStorage.store(blockAbove, berry.getItem());
+                                    e.getLocation().getBlock().setType(Material.OAK_LEAVES);
+                                    blockAbove.setType(Material.PLAYER_HEAD);
+                                    Rotatable rotatable = (Rotatable) blockAbove.getBlockData();
+                                    rotatable.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
+                                    blockAbove.setBlockData(rotatable);
+
+                                    SkullBlock.setFromHash(blockAbove, berry.getTexture());
+                                    break;
+                                default:
+                                    e.getLocation().getBlock().setType(Material.PLAYER_HEAD);
+                                    Rotatable s = (Rotatable) e.getLocation().getBlock().getBlockData();
+                                    s.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
+                                    e.getLocation().getBlock().setBlockData(s);
+
+                                    SkullBlock.setFromHash(e.getLocation().getBlock(), berry.getTexture());
+                                    break;
+                            }
+
+                            BlockStorage._integrated_removeBlockInfo(e.getLocation(), false);
+                            BlockStorage.store(e.getLocation().getBlock(), berry.getItem());
+                            e.getWorld().playEffect(e.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
+                            break;
+                        }
+                    }
+                }
+            });
         } else {
-            onGrowRun.set(e);
-            CompletableFuture.runAsync(onGrowRun);
+            SlimefunItem item = BlockStorage.check(e.getLocation().getBlock());
+
+            if (item != null) {
+                e.setCancelled(true);
+                for (Tree tree : ExoticGarden.getTrees()) {
+                    if (item.getID().equalsIgnoreCase(tree.getSapling())) {
+                        BlockStorage.clearBlockInfo(e.getLocation());
+                        Schematic.pasteSchematic(e.getLocation(), tree);
+                        return;
+                    }
+                }
+
+                for (Berry berry : ExoticGarden.getBerries()) {
+                    if (item.getID().equalsIgnoreCase(berry.toBush())) {
+                        switch (berry.getType()) {
+                            case BUSH:
+                                e.getLocation().getBlock().setType(Material.OAK_LEAVES);
+                                break;
+                            case ORE_PLANT:
+                            case DOUBLE_PLANT:
+                                Block blockAbove = e.getLocation().getBlock().getRelative(BlockFace.UP);
+                                item = BlockStorage.check(blockAbove);
+                                if (item != null) return;
+
+                                if (!Tag.SAPLINGS.isTagged(blockAbove.getType()) && !Tag.LEAVES.isTagged(blockAbove.getType())) {
+                                    switch (blockAbove.getType()) {
+                                        case AIR:
+                                        case CAVE_AIR:
+                                        case SNOW:
+                                            break;
+                                        default:
+                                            return;
+                                    }
+                                }
+
+                                BlockStorage.store(blockAbove, berry.getItem());
+                                e.getLocation().getBlock().setType(Material.OAK_LEAVES);
+                                blockAbove.setType(Material.PLAYER_HEAD);
+                                Rotatable rotatable = (Rotatable) blockAbove.getBlockData();
+                                rotatable.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
+                                blockAbove.setBlockData(rotatable);
+
+                                SkullBlock.setFromHash(blockAbove, berry.getTexture());
+                                break;
+                            default:
+                                e.getLocation().getBlock().setType(Material.PLAYER_HEAD);
+                                Rotatable s = (Rotatable) e.getLocation().getBlock().getBlockData();
+                                s.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
+                                e.getLocation().getBlock().setBlockData(s);
+
+                                SkullBlock.setFromHash(e.getLocation().getBlock(), berry.getTexture());
+                                break;
+                        }
+
+                        BlockStorage._integrated_removeBlockInfo(e.getLocation(), false);
+                        BlockStorage.store(e.getLocation().getBlock(), berry.getItem());
+                        e.getWorld().playEffect(e.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -76,57 +193,96 @@ public class PlantsListener implements Listener {
 
                 int x = e.getChunk().getX() * 16 + random.nextInt(16);
                 int z = e.getChunk().getZ() * 16 + random.nextInt(16);
-
-                for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
-                    Block current = e.getWorld().getBlockAt(x, y, z);
-                    if (!current.getType().isSolid() && current.getType() != Material.WATER && berry.isSoil(current.getRelative(BlockFace.DOWN).getType())) {
-                        BlockStorage.store(current, berry.getItem());
-                        switch (berry.getType()) {
-                            case BUSH:
-                                CompletableFuture.runAsync(() -> current.setType(Material.OAK_LEAVES));
-                                break;
-                            case FRUIT:
-                                CompletableFuture.runAsync(() -> {
+                if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
+                    for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
+                        Block current = e.getWorld().getBlockAt(x, y, z);
+                        if (!current.getType().isSolid() && current.getType() != Material.WATER && berry.isSoil(current.getRelative(BlockFace.DOWN).getType())) {
+                            BlockStorage.store(current, berry.getItem());
+                            switch (berry.getType()) {
+                                case BUSH:
+                                    current.setType(Material.OAK_LEAVES);
+                                    break;
+                                case FRUIT:
                                     current.setType(Material.PLAYER_HEAD);
                                     Rotatable s = (Rotatable) current.getBlockData();
                                     s.setRotation(faces[random.nextInt(faces.length)]);
                                     current.setBlockData(s);
                                     SkullBlock.setFromHash(current, berry.getTexture());
-                                });
-                                break;
-                            case ORE_PLANT:
-                            case DOUBLE_PLANT:
-                                CompletableFuture.runAsync(() -> {
+                                    break;
+                                case ORE_PLANT:
+                                case DOUBLE_PLANT:
                                     BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
                                     current.setType(Material.OAK_LEAVES);
                                     current.getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
-                                    Rotatable s = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
-                                    s.setRotation(faces[random.nextInt(faces.length)]);
-                                    current.getRelative(BlockFace.UP).setBlockData(s);
+                                    Rotatable ss = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
+                                    ss.setRotation(faces[random.nextInt(faces.length)]);
+                                    current.getRelative(BlockFace.UP).setBlockData(ss);
                                     SkullBlock.setFromHash(current.getRelative(BlockFace.UP), berry.getTexture());
-                                });
-                                break;
-                            default:
-                                break;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
                         }
-                        break;
                     }
+                } else {
+                    PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> {
+                        for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
+                            Block current = e.getWorld().getBlockAt(x, y, z);
+                            if (!current.getType().isSolid() && current.getType() != Material.WATER && berry.isSoil(current.getRelative(BlockFace.DOWN).getType())) {
+                                BlockStorage.store(current, berry.getItem());
+                                switch (berry.getType()) {
+                                    case BUSH:
+                                        current.setType(Material.OAK_LEAVES);
+                                        break;
+                                    case FRUIT:
+                                        current.setType(Material.PLAYER_HEAD);
+                                        Rotatable s = (Rotatable) current.getBlockData();
+                                        s.setRotation(faces[random.nextInt(faces.length)]);
+                                        current.setBlockData(s);
+                                        SkullBlock.setFromHash(current, berry.getTexture());
+                                        break;
+                                    case ORE_PLANT:
+                                    case DOUBLE_PLANT:
+                                        BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
+                                        current.setType(Material.OAK_LEAVES);
+                                        current.getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
+                                        Rotatable ss = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
+                                        ss.setRotation(faces[random.nextInt(faces.length)]);
+                                        current.getRelative(BlockFace.UP).setBlockData(ss);
+                                        SkullBlock.setFromHash(current.getRelative(BlockFace.UP), berry.getTexture());
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
+                            }
+                        }
+                    });
                 }
             } else if (random.nextInt(100) < cfg.getInt("chances.TREE")) {
                 Tree tree = ExoticGarden.getTrees().get(random.nextInt(ExoticGarden.getTrees().size()));
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                    int x = e.getChunk().getX() * 16 + random.nextInt(16);
-                    int z = e.getChunk().getZ() * 16 + random.nextInt(16);
-
+                int x = e.getChunk().getX() * 16 + random.nextInt(16);
+                int z = e.getChunk().getZ() * 16 + random.nextInt(16);
+                if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
                     for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
                         Block current = e.getWorld().getBlockAt(x, y, z);
-
                         if (!current.getType().isSolid() && current.getType() != Material.WATER && current.getType() != Material.SEAGRASS && current.getType() != Material.TALL_SEAGRASS && !(current.getBlockData() instanceof Waterlogged && ((Waterlogged) current.getBlockData()).isWaterlogged()) && tree.isSoil(current.getRelative(0, -1, 0).getType()) && isFlat(current)) {
                             Schematic.pasteSchematic(new Location(e.getWorld(), x, y, z), tree);
                             break;
                         }
                     }
-                });
+                } else {
+                    PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> {
+                        for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
+                            Block current = e.getWorld().getBlockAt(x, y, z);
+                            if (!current.getType().isSolid() && current.getType() != Material.WATER && current.getType() != Material.SEAGRASS && current.getType() != Material.TALL_SEAGRASS && !(current.getBlockData() instanceof Waterlogged && ((Waterlogged) current.getBlockData()).isWaterlogged()) && tree.isSoil(current.getRelative(0, -1, 0).getType()) && isFlat(current)) {
+                                Schematic.pasteSchematic(new Location(e.getWorld(), x, y, z), tree);
+                                break;
+                            }
+                        }
+                    });
+                }
             }
         }
     }
