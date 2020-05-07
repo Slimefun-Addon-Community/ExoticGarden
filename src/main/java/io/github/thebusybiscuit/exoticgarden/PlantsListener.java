@@ -7,11 +7,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import io.papermc.lib.PaperLib;
-import org.bukkit.Effect;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
@@ -55,6 +51,9 @@ public class PlantsListener implements Listener {
         if (!PaperLib.isChunkGenerated(e.getLocation())) {
             onGrowRun.set(e);
             PaperLib.getChunkAtAsync(e.getLocation()).thenRun(onGrowRun);
+        } else {
+            onGrowRun.set(e);
+            Bukkit.getScheduler().runTask(plugin, onGrowRun);
         }
     }
 
