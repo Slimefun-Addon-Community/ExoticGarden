@@ -40,9 +40,11 @@ import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullBlock;
 public class PlantsListener implements Listener {
 
     private final Config cfg;
+    private final ExoticGarden plugin;
     private final BlockFace[] faces = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
 
     public PlantsListener(ExoticGarden plugin) {
+        this.plugin = plugin;
         cfg = plugin.cfg;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -160,13 +162,15 @@ public class PlantsListener implements Listener {
     }
 
     private void pasteTree(ChunkPopulateEvent e, int x, int z, Tree tree) {
-        for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
-            Block current = e.getWorld().getBlockAt(x, y, z);
-            if (!current.getType().isSolid() && current.getType() != Material.WATER && current.getType() != Material.SEAGRASS && current.getType() != Material.TALL_SEAGRASS && !(current.getBlockData() instanceof Waterlogged && ((Waterlogged) current.getBlockData()).isWaterlogged()) && tree.isSoil(current.getRelative(0, -1, 0).getType()) && isFlat(current)) {
-                Schematic.pasteSchematic(new Location(e.getWorld(), x, y, z), tree);
-                break;
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
+                Block current = e.getWorld().getBlockAt(x, y, z);
+                if (!current.getType().isSolid() && current.getType() != Material.WATER && current.getType() != Material.SEAGRASS && current.getType() != Material.TALL_SEAGRASS && !(current.getBlockData() instanceof Waterlogged && ((Waterlogged) current.getBlockData()).isWaterlogged()) && tree.isSoil(current.getRelative(0, -1, 0).getType()) && isFlat(current)) {
+                    Schematic.pasteSchematic(new Location(e.getWorld(), x, y, z), tree);
+                    break;
+                }
             }
-        }
+        });
     }
 
     private void blockSet(ChunkPopulateEvent e, int x, int z, Berry berry, Random random) {
@@ -176,24 +180,28 @@ public class PlantsListener implements Listener {
                 BlockStorage.store(current, berry.getItem());
                 switch (berry.getType()) {
                     case BUSH:
-                        current.setType(Material.OAK_LEAVES);
+                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> current.setType(Material.OAK_LEAVES));
                         break;
                     case FRUIT:
-                        current.setType(Material.PLAYER_HEAD);
-                        Rotatable s = (Rotatable) current.getBlockData();
-                        s.setRotation(faces[random.nextInt(faces.length)]);
-                        current.setBlockData(s);
-                        SkullBlock.setFromHash(current, berry.getTexture());
+                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                            current.setType(Material.PLAYER_HEAD);
+                            Rotatable s = (Rotatable) current.getBlockData();
+                            s.setRotation(faces[random.nextInt(faces.length)]);
+                            current.setBlockData(s);
+                            SkullBlock.setFromHash(current, berry.getTexture());
+                        });
                         break;
                     case ORE_PLANT:
                     case DOUBLE_PLANT:
-                        BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
-                        current.setType(Material.OAK_LEAVES);
-                        current.getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
-                        Rotatable ss = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
-                        ss.setRotation(faces[random.nextInt(faces.length)]);
-                        current.getRelative(BlockFace.UP).setBlockData(ss);
-                        SkullBlock.setFromHash(current.getRelative(BlockFace.UP), berry.getTexture());
+                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                            BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
+                            current.setType(Material.OAK_LEAVES);
+                            current.getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
+                            Rotatable ss = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
+                            ss.setRotation(faces[random.nextInt(faces.length)]);
+                            current.getRelative(BlockFace.UP).setBlockData(ss);
+                            SkullBlock.setFromHash(current.getRelative(BlockFace.UP), berry.getTexture());
+                        });
                         break;
                     default:
                         break;
