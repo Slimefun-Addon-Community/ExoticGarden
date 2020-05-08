@@ -68,22 +68,28 @@ public class PlantsListener implements Listener {
                 Berry berry = ExoticGarden.getBerries().get(random.nextInt(ExoticGarden.getBerries().size()));
                 if (berry.getType().equals(PlantType.ORE_PLANT)) return;
 
-                int x = e.getChunk().getX() * 16 + random.nextInt(16);
+                int x = (e.getChunk().getX() * 16 + random.nextInt(16));
                 int z = e.getChunk().getZ() * 16 + random.nextInt(16);
 
-                if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
-                    blockSet(e, x, z, berry, random);
-                } else {
-                    PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> blockSet(e, x, z, berry, random));
+                if ((x < 29999983 && x > -29999983) && (z < 29999983 && z > -29999983)) {
+                    if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
+                        blockSet(e, x, z, berry, random);
+                    } else {
+                        PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> blockSet(e, x, z, berry, random));
+                    }
                 }
             } else if (random.nextInt(100) < cfg.getInt("chances.TREE")) {
                 Tree tree = ExoticGarden.getTrees().get(random.nextInt(ExoticGarden.getTrees().size()));
+
                 int x = e.getChunk().getX() * 16 + random.nextInt(16);
                 int z = e.getChunk().getZ() * 16 + random.nextInt(16);
-                if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
-                    pasteTree(e, x, z, tree);
-                } else {
-                    PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> pasteTree(e, x, z, tree));
+
+                if ((x < 29999983 && x > -29999983) && (z < 29999983 && z > -29999983)) {
+                    if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
+                        pasteTree(e, x, z, tree);
+                    } else {
+                        PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> pasteTree(e, x, z, tree));
+                    }
                 }
             }
         }
