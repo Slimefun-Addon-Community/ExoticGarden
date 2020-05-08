@@ -51,10 +51,17 @@ public class PlantsListener implements Listener {
 
     @EventHandler
     public void onGrow(StructureGrowEvent e) {
-        if (PaperLib.isChunkGenerated(e.getLocation())) {
-            onGrowSf(e);
+        if (PaperLib.isPaper()) {
+            if (PaperLib.isChunkGenerated(e.getLocation())) {
+                onGrowSf(e);
+            } else {
+                PaperLib.getChunkAtAsync(e.getLocation()).thenRun(() -> onGrowSf(e));
+            }
         } else {
-            PaperLib.getChunkAtAsync(e.getLocation()).thenRun(() -> onGrowSf(e));
+            if (!e.getLocation().getChunk().isLoaded()) {
+                e.getLocation().getChunk().load();
+            }
+            onGrowSf(e);
         }
     }
 
@@ -74,10 +81,17 @@ public class PlantsListener implements Listener {
                 int z = e.getChunk().getZ() * 16 + random.nextInt(16);
 
                 if ((x < 29999983 && x > -29999983) && (z < 29999983 && z > -29999983)) {
-                    if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
-                        blockSet(e, x, z, berry, random);
+                    if (PaperLib.isPaper()) {
+                        if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
+                            blockSetPaper(e, x, z, berry, random);
+                        } else {
+                            PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> blockSetPaper(e, x, z, berry, random));
+                        }
                     } else {
-                        PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> blockSet(e, x, z, berry, random));
+                        if (!e.getChunk().isLoaded()) {
+                            e.getChunk().load();
+                        }
+                        blockSet(e, x, z, berry, random);
                     }
                 }
             } else if (random.nextInt(100) < cfg.getInt("chances.TREE")) {
@@ -87,10 +101,17 @@ public class PlantsListener implements Listener {
                 int z = e.getChunk().getZ() * 16 + random.nextInt(16);
 
                 if ((x < 29999983 && x > -29999983) && (z < 29999983 && z > -29999983)) {
-                    if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
-                        pasteTree(e, x, z, tree);
+                    if (PaperLib.isPaper()) {
+                        if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
+                            pasteTreePaper(e, x, z, tree);
+                        } else {
+                            PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> pasteTreePaper(e, x, z, tree));
+                        }
                     } else {
-                        PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> pasteTree(e, x, z, tree));
+                        if (!e.getChunk().isLoaded()) {
+                            e.getChunk().load();
+                        }
+                        pasteTree(e, x, z, tree);
                     }
                 }
             }
@@ -173,6 +194,16 @@ public class PlantsListener implements Listener {
         });
     }
 
+    private void pasteTreePaper(ChunkPopulateEvent e, int x, int z, Tree tree) {
+        for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
+            Block current = e.getWorld().getBlockAt(x, y, z);
+            if (!current.getType().isSolid() && current.getType() != Material.WATER && current.getType() != Material.SEAGRASS && current.getType() != Material.TALL_SEAGRASS && !(current.getBlockData() instanceof Waterlogged && ((Waterlogged) current.getBlockData()).isWaterlogged()) && tree.isSoil(current.getRelative(0, -1, 0).getType()) && isFlat(current)) {
+                Schematic.pasteSchematic(new Location(e.getWorld(), x, y, z), tree);
+                break;
+            }
+        }
+    }
+
     private void blockSet(ChunkPopulateEvent e, int x, int z, Berry berry, Random random) {
         for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
             Block current = e.getWorld().getBlockAt(x, y, z);
@@ -202,6 +233,40 @@ public class PlantsListener implements Listener {
                             current.getRelative(BlockFace.UP).setBlockData(ss);
                             SkullBlock.setFromHash(current.getRelative(BlockFace.UP), berry.getTexture());
                         });
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+        }
+    }
+
+    private void blockSetPaper(ChunkPopulateEvent e, int x, int z, Berry berry, Random random) {
+        for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
+            Block current = e.getWorld().getBlockAt(x, y, z);
+            if (!current.getType().isSolid() && current.getType() != Material.WATER && berry.isSoil(current.getRelative(BlockFace.DOWN).getType())) {
+                BlockStorage.store(current, berry.getItem());
+                switch (berry.getType()) {
+                    case BUSH:
+                        current.setType(Material.OAK_LEAVES);
+                        break;
+                    case FRUIT:
+                        current.setType(Material.PLAYER_HEAD);
+                        Rotatable s = (Rotatable) current.getBlockData();
+                        s.setRotation(faces[random.nextInt(faces.length)]);
+                        current.setBlockData(s);
+                        SkullBlock.setFromHash(current, berry.getTexture());
+                        break;
+                    case ORE_PLANT:
+                    case DOUBLE_PLANT:
+                        BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
+                        current.setType(Material.OAK_LEAVES);
+                        current.getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
+                        Rotatable ss = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
+                        ss.setRotation(faces[random.nextInt(faces.length)]);
+                        current.getRelative(BlockFace.UP).setBlockData(ss);
+                        SkullBlock.setFromHash(current.getRelative(BlockFace.UP), berry.getTexture());
                         break;
                     default:
                         break;
