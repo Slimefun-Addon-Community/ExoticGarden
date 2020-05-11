@@ -43,6 +43,8 @@ public class PlantsListener implements Listener {
     private final ExoticGarden plugin;
     private final BlockFace[] faces = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
 
+    private final int worldLimit = 29999983;
+
     public PlantsListener(ExoticGarden plugin) {
         this.plugin = plugin;
         cfg = plugin.cfg;
@@ -53,15 +55,15 @@ public class PlantsListener implements Listener {
     public void onGrow(StructureGrowEvent e) {
         if (PaperLib.isPaper()) {
             if (PaperLib.isChunkGenerated(e.getLocation())) {
-                onGrowSf(e);
+                growStructure(e);
             } else {
-                PaperLib.getChunkAtAsync(e.getLocation()).thenRun(() -> onGrowSf(e));
+                PaperLib.getChunkAtAsync(e.getLocation()).thenRun(() -> growStructure(e));
             }
         } else {
             if (!e.getLocation().getChunk().isLoaded()) {
                 e.getLocation().getChunk().load();
             }
-            onGrowSf(e);
+            growStructure(e);
         }
     }
 
@@ -80,15 +82,15 @@ public class PlantsListener implements Listener {
                 int x = (e.getChunk().getX() * 16 + random.nextInt(16));
                 int z = e.getChunk().getZ() * 16 + random.nextInt(16);
 
-                if ((x < 29999983 && x > -29999983) && (z < 29999983 && z > -29999983)) {
+                if ((x < worldLimit && x > -worldLimit) && (z < worldLimit && z > -worldLimit)) {
                     if (PaperLib.isPaper()) {
                         if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
-                            blockSet(e, x, z, berry, random, true);
+                            growBush(e, x, z, berry, random, true);
                         } else {
-                            PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> blockSet(e, x, z, berry, random, true));
+                            PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> growBush(e, x, z, berry, random, true));
                         }
                     } else {
-                        blockSet(e, x, z, berry, random, false);
+                        growBush(e, x, z, berry, random, false);
                     }
                 }
             } else if (random.nextInt(100) < cfg.getInt("chances.TREE")) {
@@ -97,7 +99,7 @@ public class PlantsListener implements Listener {
                 int x = e.getChunk().getX() * 16 + random.nextInt(16);
                 int z = e.getChunk().getZ() * 16 + random.nextInt(16);
 
-                if ((x < 29999983 && x > -29999983) && (z < 29999983 && z > -29999983)) {
+                if ((x < worldLimit && x > -worldLimit) && (z < worldLimit && z > -worldLimit)) {
                     if (PaperLib.isPaper()) {
                         if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
                             pasteTree(e, x, z, tree);
@@ -112,7 +114,7 @@ public class PlantsListener implements Listener {
         }
     }
 
-    private void onGrowSf(StructureGrowEvent e) {
+    private void growStructure(StructureGrowEvent e) {
         SlimefunItem item = BlockStorage.check(e.getLocation().getBlock());
 
         if (item != null) {
@@ -186,7 +188,7 @@ public class PlantsListener implements Listener {
         }
     }
 
-    private void blockSet(ChunkPopulateEvent e, int x, int z, Berry berry, Random random, boolean isPaper) {
+    private void growBush(ChunkPopulateEvent e, int x, int z, Berry berry, Random random, boolean isPaper) {
         for (int y = e.getWorld().getMaxHeight(); y > 30; y--) {
             Block current = e.getWorld().getBlockAt(x, y, z);
             if (!current.getType().isSolid() && current.getType() != Material.WATER && berry.isSoil(current.getRelative(BlockFace.DOWN).getType())) {
