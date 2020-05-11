@@ -202,7 +202,7 @@ public class Schematic {
     }
 
     public static Schematic loadSchematic(File file) throws IOException {
-        Map<String, Tag> schematic = null;
+        Map<String, Tag> schematic;
 
         try (NBTInputStream stream = new NBTInputStream(new FileInputStream(file))) {
             CompoundTag schematicTag = (CompoundTag) stream.readTag();

@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Effect;
@@ -71,6 +72,9 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 
 	@Override
 	public void onEnable() {
+
+		PaperLib.suggestPaper(this);
+
 		if (!schematicsFolder.exists()) {
 			schematicsFolder.mkdirs();
 		}
