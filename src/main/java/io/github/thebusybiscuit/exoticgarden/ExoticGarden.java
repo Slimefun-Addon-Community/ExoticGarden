@@ -772,7 +772,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		}
 	}
 
-	private void registerBerry(String name, ChatColor color, Color potionColor, PlantType type, String texture) {
+	public void registerBerry(String name, ChatColor color, Color potionColor, PlantType type, String texture) {
 		String upperCase = name.toUpperCase(Locale.ROOT);
 		Berry berry = new Berry(upperCase, type, texture);
 		berries.add(berry);
@@ -808,12 +808,12 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		.register(this);
 	}
 
-	private static ItemStack getItem(String id) {
+	public static ItemStack getItem(String id) {
 		SlimefunItem item = SlimefunItem.getByID(id);
 		return item != null ? item.getItem() : null;
 	}
 
-	private void registerPlant(String name, ChatColor color, PlantType type, String texture) {
+	public void registerPlant(String name, ChatColor color, PlantType type, String texture) {
 		String upperCase = name.toUpperCase(Locale.ROOT);
 		String enumStyle = upperCase.replace(' ', '_');
 
