@@ -1,6 +1,6 @@
 package io.github.thebusybiscuit.exoticgarden;
 
-enum PlantType {
+public enum PlantType {
 
 	BUSH,
 	FRUIT,
