@@ -27,9 +27,8 @@ import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 public class Kitchen extends MultiBlockMachine {
-	
+
 	private final ExoticGarden plugin;
-	
 	public Kitchen(ExoticGarden plugin, Category category) {
 		super(
 			category, new SlimefunItemStack("KITCHEN", Material.CAULDRON, "&eKitchen", "", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"),
