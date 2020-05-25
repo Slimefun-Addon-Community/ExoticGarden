@@ -84,17 +84,18 @@ public class PlantsListener implements Listener {
                 Berry berry = ExoticGarden.getBerries().get(random.nextInt(ExoticGarden.getBerries().size()));
                 if (berry.getType().equals(PlantType.ORE_PLANT)) return;
 
-                int x = (e.getChunk().getX() * 16 + random.nextInt(16));
-                int z = e.getChunk().getZ() * 16 + random.nextInt(16);
+                int chunkX = e.getChunk().getX();
+                int chunkZ = e.getChunk().getZ();
 
-
+                int x = chunkX * 16 + random.nextInt(16);
+                int z = chunkZ * 16 + random.nextInt(16);
 
                 if ((x < worldLimit && x > -worldLimit) && (z < worldLimit && z > -worldLimit)) {
                     if (PaperLib.isPaper()) {
-                        if (PaperLib.isChunkGenerated(world, x, z)) {
+                        if (PaperLib.isChunkGenerated(world, chunkX, chunkZ)) {
                             growBush(e, x, z, berry, random, true);
                         } else {
-                            PaperLib.getChunkAtAsync(world, x, z).thenRun(() -> growBush(e, x, z, berry, random, true));
+                            PaperLib.getChunkAtAsync(world, chunkX, chunkZ).thenRun(() -> growBush(e, x, z, berry, random, true));
                         }
                     } else {
                         growBush(e, x, z, berry, random, false);
@@ -103,15 +104,18 @@ public class PlantsListener implements Listener {
             } else if (random.nextInt(100) < cfg.getInt("chances.TREE")) {
                 Tree tree = ExoticGarden.getTrees().get(random.nextInt(ExoticGarden.getTrees().size()));
 
-                int x = e.getChunk().getX() * 16 + random.nextInt(16);
-                int z = e.getChunk().getZ() * 16 + random.nextInt(16);
+                int chunkX = e.getChunk().getX();
+                int chunkZ = e.getChunk().getZ();
+
+                int x = chunkX * 16 + random.nextInt(16);
+                int z = chunkZ * 16 + random.nextInt(16);
 
                 if ((x < worldLimit && x > -worldLimit) && (z < worldLimit && z > -worldLimit)) {
                     if (PaperLib.isPaper()) {
-                        if (PaperLib.isChunkGenerated(world, x, z)) {
+                        if (PaperLib.isChunkGenerated(world, chunkX, chunkZ)) {
                             pasteTree(e, x, z, tree);
                         } else {
-                            PaperLib.getChunkAtAsync(world, x, z).thenRun(() -> pasteTree(e, x, z, tree));
+                            PaperLib.getChunkAtAsync(world, chunkX, chunkZ).thenRun(() -> pasteTree(e, x, z, tree));
                         }
                     } else {
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> pasteTree(e, x, z, tree));
