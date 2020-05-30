@@ -108,10 +108,6 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		kitchenResearch.addItems(kitchen);
 		kitchenResearch.register();
         
-        Research kitchenResearch = new Research(new NamespacedKey(this, "kitchen"), 600, "Kitchen", 30);
-        kitchenResearch.addItems(kitchen);
-        kitchenResearch.register();
-        
 		SlimefunItemStack iceCube = new SlimefunItemStack("ICE_CUBE", "9340bef2c2c33d113bac4e6a1a84d5ffcecbbfab6b32fa7a7f76195442bd1a2", "&bIce Cube");
 		new SlimefunItem(miscCategory, iceCube, RecipeType.GRIND_STONE,
 		new ItemStack[] {new ItemStack(Material.ICE), null, null, null, null, null, null, null, null}, new CustomItem(iceCube, 4))
