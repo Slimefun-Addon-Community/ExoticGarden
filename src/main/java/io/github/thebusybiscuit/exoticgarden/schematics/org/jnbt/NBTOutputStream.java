@@ -245,7 +245,6 @@ public final class NBTOutputStream implements Closeable {
 	 * @param tag The tag.
 	 * @throws IOException if an I/O error occurs.
 	 */
-	@SuppressWarnings({"JavaDoc", "EmptyMethod"})
 	private void writeEndTagPayload(EndTag tag) {
 		/* empty */
 	}

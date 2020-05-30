@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -27,38 +26,31 @@ import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 public class Kitchen extends MultiBlockMachine {
-	
-	private final ExoticGarden plugin;
-	
+
+	private ExoticGarden plugin;
+
 	public Kitchen(ExoticGarden plugin, Category category) {
-		super(
-			category, new SlimefunItemStack("KITCHEN", Material.CAULDRON, "&eKitchen", "", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"),
-			new ItemStack[] {new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new ItemStack(Material.BRICKS), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.CRAFTING_TABLE)},
-			new ItemStack[0],
-			BlockFace.SELF
-		);
-		
+		super(category, new SlimefunItemStack("KITCHEN", Material.CAULDRON, "&eKitchen", "", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"), new ItemStack[] { new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new ItemStack(Material.BRICKS), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.CRAFTING_TABLE) }, new ItemStack[0], BlockFace.SELF);
+
 		this.plugin = plugin;
-		Slimefun.registerResearch(new NamespacedKey(plugin, "kitchen"), 600, "Kitchen", 30, getItem());
 	}
-	
+
 	@Override
 	public void onInteract(Player p, Block b) {
 		Block dispenser = b.getRelative(BlockFace.DOWN);
 
-		Furnace furnace = locateFurnace(dispenser); 
+		Furnace furnace = locateFurnace(dispenser);
 		FurnaceInventory furnaceInventory = furnace.getInventory();
 
 		Inventory inv = ((Dispenser) dispenser.getState()).getInventory();
 		List<ItemStack[]> inputs = RecipeType.getRecipeInputList(this);
 
-		recipe: 
+		recipe:
 		for (ItemStack[] input : inputs) {
 			for (int i = 0; i < inv.getContents().length; i++) {
-				if (!SlimefunUtils.isItemSimilar(inv.getContents()[i], input[i], true))
-					continue recipe;
+				if (!SlimefunUtils.isItemSimilar(inv.getContents()[i], input[i], true)) continue recipe;
 			}
-			
+
 			ItemStack adding = RecipeType.getRecipeOutputList(this, input);
 
 			if (Slimefun.hasUnlocked(p, adding, true)) {
@@ -71,14 +63,14 @@ public class Kitchen extends MultiBlockMachine {
 
 				for (int i = 0; i < inv.getContents().length; i++) {
 					ItemStack item = inv.getItem(i);
-					
+
 					if (item != null) {
 						ItemUtils.consumeItem(item, item.getType() == Material.MILK_BUCKET);
 					}
 				}
 
 				Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(furnace.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1F, 1F), 55L);
-				
+
 				for (int i = 1; i < 7; i++) {
 					Bukkit.getScheduler().runTaskLater(plugin, () -> p.getWorld().playSound(furnace.getLocation(), Sound.BLOCK_METAL_PLACE, 7F, 1F), i * 5L);
 				}
@@ -100,13 +92,13 @@ public class Kitchen extends MultiBlockMachine {
 	private static Furnace locateFurnace(Block b) {
 		if (b.getRelative(BlockFace.EAST).getType() == Material.FURNACE) {
 			return (Furnace) b.getRelative(BlockFace.EAST).getState();
-		} 
+		}
 		else if (b.getRelative(BlockFace.WEST).getType() == Material.FURNACE) {
 			return (Furnace) b.getRelative(BlockFace.WEST).getState();
-		} 
+		}
 		else if (b.getRelative(BlockFace.NORTH).getType() == Material.FURNACE) {
 			return (Furnace) b.getRelative(BlockFace.NORTH).getState();
-		} 
+		}
 		else {
 			return (Furnace) b.getRelative(BlockFace.SOUTH).getState();
 		}

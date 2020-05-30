@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.GameMode;
 import org.bukkit.Effect;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
@@ -43,8 +44,6 @@ public class PlantsListener implements Listener {
     private final ExoticGarden plugin;
     private final BlockFace[] faces = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
 
-    private final int worldLimit = 29999983;
-
     public PlantsListener(ExoticGarden plugin) {
         this.plugin = plugin;
         cfg = plugin.cfg;
@@ -69,25 +68,34 @@ public class PlantsListener implements Listener {
 
     @EventHandler
     public void onGenerate(ChunkPopulateEvent e) {
-        if (!SlimefunPlugin.getWorldSettingsService().isWorldEnabled(e.getWorld())) {
+
+        final World world = e.getWorld();
+
+        if (!SlimefunPlugin.getWorldSettingsService().isWorldEnabled(world)) {
             return;
         }
 
-        if (!cfg.getStringList("world-blacklist").contains(e.getWorld().getName())) {
+        if (!cfg.getStringList("world-blacklist").contains(world.getName())) {
             Random random = ThreadLocalRandom.current();
+
+            final int worldLimit = getWorldBorder(world);
+
             if (random.nextInt(100) < cfg.getInt("chances.BUSH")) {
                 Berry berry = ExoticGarden.getBerries().get(random.nextInt(ExoticGarden.getBerries().size()));
                 if (berry.getType().equals(PlantType.ORE_PLANT)) return;
 
-                int x = (e.getChunk().getX() * 16 + random.nextInt(16));
-                int z = e.getChunk().getZ() * 16 + random.nextInt(16);
+                int chunkX = e.getChunk().getX();
+                int chunkZ = e.getChunk().getZ();
+
+                int x = chunkX * 16 + random.nextInt(16);
+                int z = chunkZ * 16 + random.nextInt(16);
 
                 if ((x < worldLimit && x > -worldLimit) && (z < worldLimit && z > -worldLimit)) {
                     if (PaperLib.isPaper()) {
-                        if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
+                        if (PaperLib.isChunkGenerated(world, chunkX, chunkZ)) {
                             growBush(e, x, z, berry, random, true);
                         } else {
-                            PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> growBush(e, x, z, berry, random, true));
+                            PaperLib.getChunkAtAsync(world, chunkX, chunkZ).thenRun(() -> growBush(e, x, z, berry, random, true));
                         }
                     } else {
                         growBush(e, x, z, berry, random, false);
@@ -96,15 +104,18 @@ public class PlantsListener implements Listener {
             } else if (random.nextInt(100) < cfg.getInt("chances.TREE")) {
                 Tree tree = ExoticGarden.getTrees().get(random.nextInt(ExoticGarden.getTrees().size()));
 
-                int x = e.getChunk().getX() * 16 + random.nextInt(16);
-                int z = e.getChunk().getZ() * 16 + random.nextInt(16);
+                int chunkX = e.getChunk().getX();
+                int chunkZ = e.getChunk().getZ();
+
+                int x = chunkX * 16 + random.nextInt(16);
+                int z = chunkZ * 16 + random.nextInt(16);
 
                 if ((x < worldLimit && x > -worldLimit) && (z < worldLimit && z > -worldLimit)) {
                     if (PaperLib.isPaper()) {
-                        if (PaperLib.isChunkGenerated(e.getWorld(), x, z)) {
+                        if (PaperLib.isChunkGenerated(world, chunkX, chunkZ)) {
                             pasteTree(e, x, z, tree);
                         } else {
-                            PaperLib.getChunkAtAsync(e.getWorld(), x, z).thenRun(() -> pasteTree(e, x, z, tree));
+                            PaperLib.getChunkAtAsync(world, chunkX, chunkZ).thenRun(() -> pasteTree(e, x, z, tree));
                         }
                     } else {
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> pasteTree(e, x, z, tree));
@@ -112,6 +123,10 @@ public class PlantsListener implements Listener {
                 }
             }
         }
+    }
+
+    private int getWorldBorder(World world) {
+        return (int) world.getWorldBorder().getSize();
     }
 
     private void growStructure(StructureGrowEvent e) {
