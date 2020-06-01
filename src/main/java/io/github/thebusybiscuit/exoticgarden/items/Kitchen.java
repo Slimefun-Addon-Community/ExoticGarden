@@ -103,5 +103,4 @@ public class Kitchen extends MultiBlockMachine {
             return (Furnace) b.getRelative(BlockFace.SOUTH).getState();
         }
     }
-
 }

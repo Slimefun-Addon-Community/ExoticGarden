@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 
+import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.papermc.lib.PaperLib;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -102,10 +103,10 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 
         kitchen = new Kitchen(this, miscCategory);
         kitchen.register(this);
-        
-        Research kitchenResearch = new Research(new NamespacedKey(this, "kitchen"), 600, "Kitchen", 30);
-        kitchenResearch.addItems(kitchen);
-        kitchenResearch.register();
+
+		Research kitchenResearch = new Research(new NamespacedKey(this, "kitchen"), 600, "Kitchen", 30);
+		kitchenResearch.addItems(kitchen);
+		kitchenResearch.register();
         
 		SlimefunItemStack iceCube = new SlimefunItemStack("ICE_CUBE", "9340bef2c2c33d113bac4e6a1a84d5ffcecbbfab6b32fa7a7f76195442bd1a2", "&bIce Cube");
 		new SlimefunItem(miscCategory, iceCube, RecipeType.GRIND_STONE,
@@ -777,7 +778,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		}
 	}
 
-	private void registerBerry(String name, ChatColor color, Color potionColor, PlantType type, String texture) {
+	public void registerBerry(String name, ChatColor color, Color potionColor, PlantType type, String texture) {
 		String upperCase = name.toUpperCase(Locale.ROOT);
 		Berry berry = new Berry(upperCase, type, texture);
 		berries.add(berry);
@@ -813,12 +814,12 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		.register(this);
 	}
 
-	private static ItemStack getItem(String id) {
+	public static ItemStack getItem(String id) {
 		SlimefunItem item = SlimefunItem.getByID(id);
 		return item != null ? item.getItem() : null;
 	}
 
-	private void registerPlant(String name, ChatColor color, PlantType type, String texture) {
+	public void registerPlant(String name, ChatColor color, PlantType type, String texture) {
 		String upperCase = name.toUpperCase(Locale.ROOT);
 		String enumStyle = upperCase.replace(' ', '_');
 
