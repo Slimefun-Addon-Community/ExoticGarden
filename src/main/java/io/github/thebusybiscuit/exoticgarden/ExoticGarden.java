@@ -13,8 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
-import io.papermc.lib.PaperLib;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Effect;
@@ -36,6 +34,7 @@ import io.github.thebusybiscuit.exoticgarden.items.Kitchen;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.items.food.Juice;
+import io.papermc.lib.PaperLib;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomPotion;
 import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -733,11 +732,11 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		Tree tree = new Tree(id, texture, soil);
 		trees.add(tree);
 
-		SlimefunItemStack sfi = new SlimefunItemStack(id + "_SAPLING", Material.OAK_SAPLING, color + name + " Sapling");
+		SlimefunItemStack sapling = new SlimefunItemStack(id + "_SAPLING", Material.OAK_SAPLING, color + name + " Sapling");
 
-		items.put(id + "_SAPLING", sfi);
+		items.put(id + "_SAPLING", sapling);
 
-		new SlimefunItem(mainCategory, sfi, ExoticGardenRecipeTypes.BREAKING_GRASS,
+		new SlimefunItem(mainCategory, sapling, ExoticGardenRecipeTypes.BREAKING_GRASS,
 		new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
 		.register(this);
 
