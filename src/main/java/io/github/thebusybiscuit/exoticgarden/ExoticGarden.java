@@ -31,16 +31,16 @@ import io.github.thebusybiscuit.exoticgarden.items.CustomFood;
 import io.github.thebusybiscuit.exoticgarden.items.ExoticGardenFruit;
 import io.github.thebusybiscuit.exoticgarden.items.GrassSeeds;
 import io.github.thebusybiscuit.exoticgarden.items.Kitchen;
+import io.github.thebusybiscuit.exoticgarden.items.MagicalEssence;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.food.Juice;
 import io.papermc.lib.PaperLib;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomPotion;
 import me.mrCookieSlime.Slimefun.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.HandledBlock;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
@@ -850,11 +850,10 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		recipe)
 		.register(this);
 
-		HandledBlock plant = new HandledBlock(magicalCategory, essence, RecipeType.ENHANCED_CRAFTING_TABLE,
-		new ItemStack[] {essence, essence, essence, essence, null, essence, essence, essence, essence});
+		MagicalEssence magicalEssence = new MagicalEssence(magicalCategory, essence);
 
-		plant.setRecipeOutput(item.clone());
-		plant.register(this);
+		magicalEssence.setRecipeOutput(item.clone());
+		magicalEssence.register(this);
 	}
 
 	public static ItemStack harvestPlant(Block block) {

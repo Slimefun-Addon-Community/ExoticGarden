@@ -10,12 +10,12 @@ import org.bukkit.inventory.ItemStack;
 
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.HandledBlock;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.ItemUseHandler;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
-public class ExoticGardenFruit extends HandledBlock {
+public class ExoticGardenFruit extends SlimefunItem {
 
     private final boolean edible;
 
@@ -28,6 +28,11 @@ public class ExoticGardenFruit extends HandledBlock {
     public void preRegister() {
         addItemHandler(onRightClick());
         super.preRegister();
+    }
+
+    @Override
+    public boolean useVanillaBlockBreaking() {
+        return true;
     }
 
     public ItemUseHandler onRightClick() {
