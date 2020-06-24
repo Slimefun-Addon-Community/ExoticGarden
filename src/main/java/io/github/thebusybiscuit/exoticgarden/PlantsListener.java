@@ -373,18 +373,21 @@ public class PlantsListener implements Listener {
             for (int y = -1; y < 2; y++) {
                 for (int z = -1; z < 2; z++) {
                     // inspect a cube at the reference
-                    Block drop = block.getRelative(x, y, z);
-                    SlimefunItem check = BlockStorage.check(drop);
 
-                    if (check != null) {
-                        for (Tree tree : ExoticGarden.getTrees()) {
-                            if (check.getID().equalsIgnoreCase(tree.getFruitID())) {
-                                BlockStorage.clearBlockInfo(drop);
-                                ItemStack fruits = check.getItem();
-                                drop.getWorld().playEffect(drop.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
-                                drop.getWorld().dropItemNaturally(drop.getLocation(), fruits);
-                                drop.setType(Material.AIR);
-                            }
+                    Block fruit = block.getRelative(x, y, z);
+                    if (fruit.isEmpty()) continue;
+
+                    Location loc = fruit.getLocation();
+                    SlimefunItem check = BlockStorage.check(loc);
+                    if (check == null) continue;
+
+                    for (Tree tree : ExoticGarden.getTrees()) {
+                        if (check.getID().equalsIgnoreCase(tree.getFruitID())) {
+                            BlockStorage.clearBlockInfo(loc);
+                            ItemStack fruits = check.getItem();
+                            fruit.getWorld().playEffect(loc, Effect.STEP_SOUND, Material.OAK_LEAVES);
+                            fruit.getWorld().dropItemNaturally(loc, fruits);
+                            fruit.setType(Material.AIR);
                         }
                     }
                 }
