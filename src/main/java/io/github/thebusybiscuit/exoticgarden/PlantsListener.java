@@ -373,7 +373,6 @@ public class PlantsListener implements Listener {
             for (int y = -1; y < 2; y++) {
                 for (int z = -1; z < 2; z++) {
                     // inspect a cube at the reference
-
                     Block fruit = block.getRelative(x, y, z);
                     if (fruit.isEmpty()) continue;
 
@@ -388,6 +387,7 @@ public class PlantsListener implements Listener {
                             fruit.getWorld().playEffect(loc, Effect.STEP_SOUND, Material.OAK_LEAVES);
                             fruit.getWorld().dropItemNaturally(loc, fruits);
                             fruit.setType(Material.AIR);
+                            break;
                         }
                     }
                 }
