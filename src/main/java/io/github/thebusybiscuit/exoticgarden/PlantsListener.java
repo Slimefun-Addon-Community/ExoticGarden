@@ -71,6 +71,10 @@ public class PlantsListener implements Listener {
 
         final World world = e.getWorld();
 
+        if (!BlockStorage.isWorldRegistered(world.getName())) {
+            return;
+        }
+
         if (!SlimefunPlugin.getWorldSettingsService().isWorldEnabled(world)) {
             return;
         }
