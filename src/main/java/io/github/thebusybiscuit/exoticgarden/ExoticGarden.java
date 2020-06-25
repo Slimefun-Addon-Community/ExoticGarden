@@ -872,7 +872,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 						else
 							plant = block.getRelative(BlockFace.DOWN);
 
-						BlockStorage.clearBlockInfo(block);
+						BlockStorage._integrated_removeBlockInfo(block.getLocation(), false);
 						block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
 						block.setType(Material.AIR);
 
