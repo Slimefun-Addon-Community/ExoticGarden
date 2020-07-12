@@ -10,10 +10,10 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.slimefun4.core.attributes.DamageableItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SimpleSlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.handlers.BlockBreakHandler;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 public class Crook extends SimpleSlimefunItem<BlockBreakHandler> implements NotPlaceable, DamageableItem {
