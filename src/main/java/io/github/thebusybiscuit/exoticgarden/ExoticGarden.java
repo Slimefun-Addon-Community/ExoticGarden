@@ -37,7 +37,7 @@ import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.food.Juice;
-import io.papermc.lib.PaperLib;
+import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomPotion;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -872,17 +872,17 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 						else
 							plant = block.getRelative(BlockFace.DOWN);
 
-						BlockStorage._integrated_removeBlockInfo(block.getLocation(), false);
+						BlockStorage.deleteLocationInfoUnsafely(block.getLocation(), false);
 						block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
 						block.setType(Material.AIR);
 
 						plant.setType(Material.OAK_SAPLING);
-						BlockStorage._integrated_removeBlockInfo(plant.getLocation(), false);
+						BlockStorage.deleteLocationInfoUnsafely(plant.getLocation(), false);
 						BlockStorage.store(plant, getItem(berry.toBush()));
 						return berry.getItem();
 					default:
 						block.setType(Material.OAK_SAPLING);
-						BlockStorage._integrated_removeBlockInfo(block.getLocation(), false);
+						BlockStorage.deleteLocationInfoUnsafely(block.getLocation(), false);
 						BlockStorage.store(block, getItem(berry.toBush()));
 						return berry.getItem();
 				}

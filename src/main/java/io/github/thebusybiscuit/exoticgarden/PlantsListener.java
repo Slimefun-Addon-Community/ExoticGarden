@@ -32,7 +32,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.exoticgarden.schematics.Schematic;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import io.papermc.lib.PaperLib;
+import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
@@ -195,7 +195,7 @@ public class PlantsListener implements Listener {
                         break;
                     }
 
-                    BlockStorage._integrated_removeBlockInfo(e.getLocation(), false);
+                    BlockStorage.deleteLocationInfoUnsafely(e.getLocation(), false);
                     BlockStorage.store(e.getLocation().getBlock(), berry.getItem());
                     e.getWorld().playEffect(e.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
                     break;
