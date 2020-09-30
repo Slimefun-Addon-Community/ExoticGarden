@@ -24,11 +24,12 @@ public class Crook extends SimpleSlimefunItem<BlockBreakHandler> implements NotP
 
     public Crook(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
+        addItemHandler(onRightClick());
     }
 
-    @Override
-    public void preRegister() {
-        addItemHandler((ItemUseHandler) PlayerRightClickEvent::cancel);
+
+    private ItemUseHandler onRightClick() {
+        return PlayerRightClickEvent::cancel;
     }
 
     @Override
