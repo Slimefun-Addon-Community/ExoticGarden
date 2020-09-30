@@ -3,6 +3,8 @@ package io.github.thebusybiscuit.exoticgarden.items;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
+import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -22,6 +24,12 @@ public class Crook extends SimpleSlimefunItem<BlockBreakHandler> implements NotP
 
     public Crook(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
+        addItemHandler(onRightClick());
+    }
+
+
+    private ItemUseHandler onRightClick() {
+        return PlayerRightClickEvent::cancel;
     }
 
     @Override
