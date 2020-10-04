@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
@@ -890,6 +891,23 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		}
 
 		return null;
+	}
+
+	public static void harvestFruit(Block fruit) {
+		Location loc = fruit.getLocation();
+		SlimefunItem check = BlockStorage.check(loc);
+		if (check == null) return;
+
+		for (Tree tree : ExoticGarden.getTrees()) {
+			if (check.getID().equalsIgnoreCase(tree.getFruitID())) {
+				BlockStorage.clearBlockInfo(loc);
+				ItemStack fruits = check.getItem();
+				fruit.getWorld().playEffect(loc, Effect.STEP_SOUND, Material.OAK_LEAVES);
+				fruit.getWorld().dropItemNaturally(loc, fruits);
+				fruit.setType(Material.AIR);
+				break;
+			}
+		}
 	}
 
 	public static ExoticGarden getInstance() {
