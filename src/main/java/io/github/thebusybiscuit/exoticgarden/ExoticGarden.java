@@ -421,6 +421,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		.register(this);
 
 		new CustomFood(foodCategory, new SlimefunItemStack("BACON", "e7ba22d5df21e821a6de4b8c9d373a3aa187d8ae74f288a82d2b61f272e5", "&rBacon", "", "&7&oRestores &b&o" + "1.5" + " &7&oHunger"),
+		3,
 		new ItemStack[] {new ItemStack(Material.COOKED_PORKCHOP), null, null, null, null, null, null, null, null},
 		3)
 		.register(this);
