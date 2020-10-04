@@ -15,6 +15,11 @@ public class CustomFood extends ExoticGardenFruit {
         this.food = food;
     }
 
+    public CustomFood(Category category, SlimefunItemStack item, int amount, ItemStack[] recipe, int food) {
+        super(category, item, ExoticGardenRecipeTypes.KITCHEN, true, recipe, new SlimefunItemStack(item, amount));
+        this.food = food;
+    }
+
     @Override
     protected int getFoodValue() {
         return food;
