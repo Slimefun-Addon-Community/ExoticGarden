@@ -437,12 +437,12 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 
 		new CustomFood(foodCategory, new SlimefunItemStack("LEAFY_CHICKEN_SANDWICH", "a14216d10714082bbe3f412423e6b19232352f4d64f9aca3913cb46318d3ed", "&rLeafy Chicken Sandwich", "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"),
 		new ItemStack[] {getItem("CHICKEN_SANDWICH"), getItem("LETTUCE"), null, null, null, null, null, null, null},
-		1)
+		13)
 		.register(this);
 
 		new CustomFood(foodCategory, new SlimefunItemStack("LEAFY_FISH_SANDWICH", "a14216d10714082bbe3f412423e6b19232352f4d64f9aca3913cb46318d3ed", "&rLeafy Fish Sandwich", "", "&7&oRestores &b&o" + "6.5" + " &7&oHunger"),
 		new ItemStack[] {getItem("FISH_SANDWICH"), getItem("LETTUCE"), null, null, null, null, null, null, null},
-		11)
+		13)
 		.register(this);
 
 		new CustomFood(foodCategory, new SlimefunItemStack("HAMBURGER", "cdadf1744433e1c79d1d59d2777d939de159a24cf57e8a61c82bc4fe3777553c", "&rHamburger", "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"),
@@ -517,7 +517,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 
 		new CustomFood(foodCategory, new SlimefunItemStack("JAMMY_DODGER", "1d00dfb3a57c068a0cc7b624d8d8852070435d2634c0e5da9cbbab46174af0df", "&cJammy Dodger", "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger"),
 		new ItemStack[] {null, getItem("BISCUIT"), null, null, getItem("RASPBERRY_JUICE"), null, null, getItem("BISCUIT"), null},
-		8)
+		10)
 		.register(this);
 
 		new CustomFood(foodCategory, new SlimefunItemStack("PANCAKES", "347f4f5a74c6691280cd80e7148b49b2ce17dcf64fd55368627f5d92a976a6a8", "&rPancakes", "", "&7&oRestores &b&o" + "6.0" + " &7&oHunger"),
