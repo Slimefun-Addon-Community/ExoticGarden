@@ -1,6 +1,12 @@
 package io.github.thebusybiscuit.exoticgarden;
 
-import io.github.thebusybiscuit.exoticgarden.items.*;
+import io.github.thebusybiscuit.exoticgarden.items.Crook;
+import io.github.thebusybiscuit.exoticgarden.items.CustomFood;
+import io.github.thebusybiscuit.exoticgarden.items.ExoticGardenFruit;
+import io.github.thebusybiscuit.exoticgarden.items.FoodRegistry;
+import io.github.thebusybiscuit.exoticgarden.items.GrassSeeds;
+import io.github.thebusybiscuit.exoticgarden.items.Kitchen;
+import io.github.thebusybiscuit.exoticgarden.items.MagicalEssence;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
@@ -20,7 +26,12 @@ import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.Updater;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Effect;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
@@ -34,7 +45,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 
 public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
