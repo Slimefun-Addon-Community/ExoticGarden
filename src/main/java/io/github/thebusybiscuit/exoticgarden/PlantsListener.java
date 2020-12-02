@@ -73,7 +73,7 @@ public class PlantsListener implements Listener {
     public void onGenerate(ChunkPopulateEvent e) {
         final World world = e.getWorld();
 
-        if (!BlockStorage.isWorldRegistered(world.getName())) {
+        if (BlockStorage.getStorage(world) == null) {
             return;
         }
 
