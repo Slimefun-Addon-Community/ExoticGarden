@@ -906,7 +906,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		    return;
         }
 
-        if (treeFruits.containsValue(check.getID())) {
+        if (treeFruits.contains(check.getID())) {
             BlockStorage.clearBlockInfo(loc);
             ItemStack fruits = check.getItem().clone();
             fruit.getWorld().playEffect(loc, Effect.STEP_SOUND, Material.OAK_LEAVES);
