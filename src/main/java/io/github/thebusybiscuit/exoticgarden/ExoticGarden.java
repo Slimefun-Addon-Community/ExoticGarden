@@ -1,32 +1,5 @@
 package io.github.thebusybiscuit.exoticgarden;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.logging.Level;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Tag;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import io.github.thebusybiscuit.exoticgarden.items.Crook;
 import io.github.thebusybiscuit.exoticgarden.items.CustomFood;
 import io.github.thebusybiscuit.exoticgarden.items.ExoticGardenFruit;
@@ -52,6 +25,34 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.Updater;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Tag;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.logging.Level;
 
 public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 
@@ -62,7 +63,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 	private final List<Berry> berries = new ArrayList<>();
 	private final List<Tree> trees = new ArrayList<>();
 	private final Map<String, ItemStack> items = new HashMap<>();
-	private static final Map<Tree, String> treeFruits = new HashMap<>();
+	private static final Set<String> treeFruits = new HashSet<>();
 
 	protected Config cfg;
 
@@ -234,7 +235,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		cfg.save();
 
 		for (Tree tree : ExoticGarden.getTrees()) {
-			treeFruits.put(tree, tree.getFruitID());
+			treeFruits.add(tree.getFruitID());
 		}
 	}
 
