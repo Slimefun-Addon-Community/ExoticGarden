@@ -73,7 +73,7 @@ public class PlantsListener implements Listener {
     public void onGenerate(ChunkPopulateEvent e) {
         final World world = e.getWorld();
 
-        if (!BlockStorage.isWorldRegistered(world.getName())) {
+        if (BlockStorage.getStorage(world) == null) {
             return;
         }
 
@@ -297,11 +297,11 @@ public class PlantsListener implements Listener {
             }
 
             if (e.getBlock().getType() == Material.GRASS) {
-                if (!ExoticGarden.getItems().keySet().isEmpty() && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                if (!ExoticGarden.getGrassDrops().keySet().isEmpty() && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
                     Random random = ThreadLocalRandom.current();
 
                     if (random.nextInt(100) < 6) {
-                        ItemStack[] items = ExoticGarden.getItems().values().toArray(new ItemStack[0]);
+                        ItemStack[] items = ExoticGarden.getGrassDrops().values().toArray(new ItemStack[0]);
                         e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), items[random.nextInt(items.length)]);
                     }
                 }
