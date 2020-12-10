@@ -21,7 +21,7 @@ public class CustomFood extends ExoticGardenFruit {
     }
 
     @Override
-    protected int getFoodValue() {
+    public int getFoodValue() {
         return food;
     }
 
