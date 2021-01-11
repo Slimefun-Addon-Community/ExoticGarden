@@ -290,7 +290,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
         13).register(this);
     }
 
-    @Nonnull
+    @Nullable
     private static ItemStack getItem(@Nonnull String id) {
         SlimefunItem item = SlimefunItem.getByID(id);
         return item != null ? item.getItem() : null;
