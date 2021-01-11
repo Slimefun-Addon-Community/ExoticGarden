@@ -7,6 +7,7 @@ import io.github.thebusybiscuit.exoticgarden.items.FoodRegistry;
 import io.github.thebusybiscuit.exoticgarden.items.GrassSeeds;
 import io.github.thebusybiscuit.exoticgarden.items.Kitchen;
 import io.github.thebusybiscuit.exoticgarden.items.MagicalEssence;
+import io.github.thebusybiscuit.exoticgarden.listeners.PlantsListener;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
@@ -18,14 +19,12 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.Updater;
-
 import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -54,62 +53,58 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 
 public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 
-	public static ExoticGarden instance;
+    public static ExoticGarden instance;
 
-	private final File schematicsFolder = new File(getDataFolder(), "schematics");
+    private final File schematicsFolder = new File(getDataFolder(), "schematics");
 
 	private final List<Berry> berries = new ArrayList<>();
 	private final List<Tree> trees = new ArrayList<>();
 	private final Map<String, ItemStack> items = new HashMap<>();
 	private final Set<String> treeFruits = new HashSet<>();
 
-	protected Config cfg;
+    protected Config cfg;
 
-	private Category mainCategory;
+    private Category mainCategory;
     private Category miscCategory;
-	private Category foodCategory;
-	private Category drinksCategory;
-	private Category magicalCategory;
-	private Kitchen kitchen;
+    private Category foodCategory;
+    private Category drinksCategory;
+    private Category magicalCategory;
+    private Kitchen kitchen;
 
-	@Override
-	public void onEnable() {
+    @Override
+    public void onEnable() {
 
-		PaperLib.suggestPaper(this);
+        PaperLib.suggestPaper(this);
 
-		if (!schematicsFolder.exists()) {
-			schematicsFolder.mkdirs();
-		}
+        if (!schematicsFolder.exists()) {
+            schematicsFolder.mkdirs();
+        }
 
-    	instance = this;
-    	cfg = new Config(this);
+        instance = this;
+        cfg = new Config(this);
 
-		// Setting up bStats
-		new Metrics(this, 4575);
+        // Setting up bStats
+        new Metrics(this, 4575);
 
-		// Auto Updater
-		if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
-		    Updater updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ExoticGarden/master");
-		    updater.start();
-		}
+        // Auto Updater
+        if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
+            Updater updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ExoticGarden/master");
+            updater.start();
+        }
 
-		SlimefunPlugin.getThirdPartySupportService().loadExoticGarden(this, b -> Optional.ofNullable(harvestPlant(b)));
-
-		mainCategory = new Category(new NamespacedKey(this, "plants_and_fruits"), new CustomItem(SkullItem.fromHash("a5a5c4a0a16dabc9b1ec72fc83e23ac15d0197de61b138babca7c8a29c820"), "&aExotic Garden - Plants and Fruits"));
-	    miscCategory = new Category(new NamespacedKey(this, "misc"), new CustomItem(SkullItem.fromHash("606be2df2122344bda479feece365ee0e9d5da276afa0e8ce8d848f373dd131"), "&aExotic Garden - Ingredients and Tools"));
+        mainCategory = new Category(new NamespacedKey(this, "plants_and_fruits"), new CustomItem(SkullItem.fromHash("a5a5c4a0a16dabc9b1ec72fc83e23ac15d0197de61b138babca7c8a29c820"), "&aExotic Garden - Plants and Fruits"));
+        miscCategory = new Category(new NamespacedKey(this, "misc"), new CustomItem(SkullItem.fromHash("606be2df2122344bda479feece365ee0e9d5da276afa0e8ce8d848f373dd131"), "&aExotic Garden - Ingredients and Tools"));
         foodCategory = new Category(new NamespacedKey(this, "food"), new CustomItem(SkullItem.fromHash("a14216d10714082bbe3f412423e6b19232352f4d64f9aca3913cb46318d3ed"), "&aExotic Garden - Food"));
-		drinksCategory = new Category(new NamespacedKey(this, "drinks"), new CustomItem(SkullItem.fromHash("2a8f1f70e85825607d28edce1a2ad4506e732b4a5345a5ea6e807c4b313e88"), "&aExotic Garden - Drinks"));
-		magicalCategory = new Category(new NamespacedKey(this, "magical_crops"), new CustomItem(Material.BLAZE_POWDER, "&5Exotic Garden - Magical Plants"));
+        drinksCategory = new Category(new NamespacedKey(this, "drinks"), new CustomItem(SkullItem.fromHash("2a8f1f70e85825607d28edce1a2ad4506e732b4a5345a5ea6e807c4b313e88"), "&aExotic Garden - Drinks"));
+        magicalCategory = new Category(new NamespacedKey(this, "magical_crops"), new CustomItem(Material.BLAZE_POWDER, "&5Exotic Garden - Magical Plants"));
 
         kitchen = new Kitchen(this, miscCategory);
         kitchen.register(this);
-
 		Research kitchenResearch = new Research(new NamespacedKey(this, "kitchen"), 600, "Kitchen", 30);
 		kitchenResearch.addItems(kitchen);
 		kitchenResearch.register();
@@ -293,11 +288,11 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
                 int len;
 
                 while ((len = input.read(buffer)) > 0) {
-                	output.write(buffer, 0, len);
+                    output.write(buffer, 0, len);
                 }
 			}
 		} catch (IOException e) {
-			Slimefun.getLogger().log(Level.SEVERE, e, () -> "Failed to load file: \"" + id + ".schematic\"");
+			ExoticGarden.getInstance().getLogger().log(Level.SEVERE, e, () -> "Failed to load file: \"" + id + ".schematic\"");
 		}
 	}
 

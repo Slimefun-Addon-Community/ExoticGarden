@@ -1,4 +1,4 @@
-package io.github.thebusybiscuit.exoticgarden;
+package io.github.thebusybiscuit.exoticgarden.listeners;
 
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +30,10 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.exoticgarden.Berry;
+import io.github.thebusybiscuit.exoticgarden.ExoticGarden;
+import io.github.thebusybiscuit.exoticgarden.PlantType;
+import io.github.thebusybiscuit.exoticgarden.Tree;
 import io.github.thebusybiscuit.exoticgarden.schematics.Schematic;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
@@ -47,7 +51,7 @@ public class PlantsListener implements Listener {
 
     public PlantsListener(ExoticGarden plugin) {
         this.plugin = plugin;
-        cfg = plugin.cfg;
+        cfg = plugin.getCfg();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -146,7 +150,7 @@ public class PlantsListener implements Listener {
         if (item != null) {
             e.setCancelled(true);
             for (Tree tree : ExoticGarden.getTrees()) {
-                if (item.getID().equalsIgnoreCase(tree.getSapling())) {
+                if (item.getId().equalsIgnoreCase(tree.getSapling())) {
                     BlockStorage.clearBlockInfo(e.getLocation());
                     Schematic.pasteSchematic(e.getLocation(), tree);
                     return;
@@ -154,7 +158,7 @@ public class PlantsListener implements Listener {
             }
 
             for (Berry berry : ExoticGarden.getBerries()) {
-                if (item.getID().equalsIgnoreCase(berry.toBush())) {
+                if (item.getId().equalsIgnoreCase(berry.toBush())) {
                     switch (berry.getType()) {
                     case BUSH:
                         e.getLocation().getBlock().setType(Material.OAK_LEAVES);
@@ -396,7 +400,24 @@ public class PlantsListener implements Listener {
                     Block fruit = block.getRelative(x, y, z);
                     if (fruit.isEmpty()) continue;
 
+<<<<<<< HEAD:src/main/java/io/github/thebusybiscuit/exoticgarden/PlantsListener.java
                     ExoticGarden.getInstance().harvestFruit(fruit);
+=======
+                    Location loc = fruit.getLocation();
+                    SlimefunItem check = BlockStorage.check(loc);
+                    if (check == null) continue;
+
+                    for (Tree tree : ExoticGarden.getTrees()) {
+                        if (check.getId().equalsIgnoreCase(tree.getFruitID())) {
+                            BlockStorage.clearBlockInfo(loc);
+                            ItemStack fruits = check.getItem();
+                            fruit.getWorld().playEffect(loc, Effect.STEP_SOUND, Material.OAK_LEAVES);
+                            fruit.getWorld().dropItemNaturally(loc, fruits);
+                            fruit.setType(Material.AIR);
+                            break;
+                        }
+                    }
+>>>>>>> 02b9f1f1b99594c927fed61d64bfface210ec97e:src/main/java/io/github/thebusybiscuit/exoticgarden/listeners/PlantsListener.java
                 }
             }
         }
