@@ -400,13 +400,10 @@ public class PlantsListener implements Listener {
                     Block fruit = block.getRelative(x, y, z);
                     if (fruit.isEmpty()) continue;
 
-<<<<<<< HEAD:src/main/java/io/github/thebusybiscuit/exoticgarden/PlantsListener.java
-                    ExoticGarden.getInstance().harvestFruit(fruit);
-=======
+
                     Location loc = fruit.getLocation();
                     SlimefunItem check = BlockStorage.check(loc);
                     if (check == null) continue;
-
                     for (Tree tree : ExoticGarden.getTrees()) {
                         if (check.getId().equalsIgnoreCase(tree.getFruitID())) {
                             BlockStorage.clearBlockInfo(loc);
@@ -417,7 +414,6 @@ public class PlantsListener implements Listener {
                             break;
                         }
                     }
->>>>>>> 02b9f1f1b99594c927fed61d64bfface210ec97e:src/main/java/io/github/thebusybiscuit/exoticgarden/listeners/PlantsListener.java
                 }
             }
         }
