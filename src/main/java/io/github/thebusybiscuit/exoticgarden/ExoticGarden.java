@@ -209,7 +209,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
             String key = iterator.next();
             cfg.setDefaultValue("grass-drops." + key, true);
             if (!cfg.getBoolean("grass-drops." + key))
-            	iterator.remove();
+                iterator.remove();
         }
 
         cfg.save();
@@ -262,7 +262,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
                 }
             }
         } catch (IOException e) {
-            ExoticGarden.getInstance().getLogger().log(Level.SEVERE, e, () -> "Failed to load file: \"" + id + ".schematic\"");
+            getLogger().log(Level.SEVERE, e, () -> "Failed to load file: \"" + id + ".schematic\"");
         }
     }
 
@@ -320,9 +320,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
         Berry berry = new Berry(essence, upperCase + "_ESSENCE", PlantType.ORE_PLANT, texture);
         berries.add(berry);
 
-        new SlimefunItem(magicalCategory, new SlimefunItemStack(enumStyle + "_PLANT", Material.OAK_SAPLING, "&r" + name + " Plant"), RecipeType.ENHANCED_CRAFTING_TABLE,
-        recipe)
-        .register(this);
+        new SlimefunItem(magicalCategory, new SlimefunItemStack(enumStyle + "_PLANT", Material.OAK_SAPLING, "&r" + name + " Plant"), RecipeType.ENHANCED_CRAFTING_TABLE, recipe).register(this);
 
         MagicalEssence magicalEssence = new MagicalEssence(magicalCategory, essence);
 
@@ -339,7 +337,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
         }
 
         for (Berry berry : getBerries()) {
-            if (item.getID().equalsIgnoreCase(berry.getID())) {
+            if (item.getId().equalsIgnoreCase(berry.getID())) {
                 switch (berry.getType()) {
                     case ORE_PLANT:
                     case DOUBLE_PLANT:
@@ -379,7 +377,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
             return;
         }
 
-        if (treeFruits.contains(check.getID())) {
+        if (treeFruits.contains(check.getId())) {
             BlockStorage.clearBlockInfo(loc);
             ItemStack fruits = check.getItem().clone();
             fruit.getWorld().playEffect(loc, Effect.STEP_SOUND, Material.OAK_LEAVES);
