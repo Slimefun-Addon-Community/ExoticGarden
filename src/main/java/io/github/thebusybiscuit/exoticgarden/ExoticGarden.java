@@ -209,7 +209,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
             String key = iterator.next();
             cfg.setDefaultValue("grass-drops." + key, true);
             if (!cfg.getBoolean("grass-drops." + key))
-            	  iterator.remove();
+                  iterator.remove();
         }
 
         cfg.save();
@@ -412,9 +412,9 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
         return instance.items;
     }
 
-	public Config getCfg() {
-		return cfg;
-	}
+    public Config getCfg() {
+        return cfg;
+    }
 
     @Override
     public JavaPlugin getJavaPlugin() {
