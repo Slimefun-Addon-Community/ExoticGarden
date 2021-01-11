@@ -24,6 +24,11 @@ public class ExoticGardenFruit extends SimpleSlimefunItem<ItemUseHandler> {
         this.edible = edible;
     }
 
+    public ExoticGardenFruit(Category category, SlimefunItemStack item, RecipeType recipeType, boolean edible, ItemStack[] recipe, ItemStack recipeOutput) {
+        super(category, item, recipeType, recipe, recipeOutput);
+        this.edible = edible;
+    }
+
     @Override
     public boolean useVanillaBlockBreaking() {
         return true;
