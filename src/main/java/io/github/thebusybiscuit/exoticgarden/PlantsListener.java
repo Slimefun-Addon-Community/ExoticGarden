@@ -358,7 +358,7 @@ public class PlantsListener implements Listener {
                 e.getClickedBlock().getWorld().dropItemNaturally(e.getClickedBlock().getLocation(), item);
             } else {
                 // The block wasn't a plant, we try harvesting a fruit instead
-                ExoticGarden.harvestFruit(e.getClickedBlock());
+                ExoticGarden.getInstance().harvestFruit(e.getClickedBlock());
             }
         }
     }
@@ -396,7 +396,7 @@ public class PlantsListener implements Listener {
                     Block fruit = block.getRelative(x, y, z);
                     if (fruit.isEmpty()) continue;
 
-                    ExoticGarden.harvestFruit(fruit);
+                    ExoticGarden.getInstance().harvestFruit(fruit);
                 }
             }
         }

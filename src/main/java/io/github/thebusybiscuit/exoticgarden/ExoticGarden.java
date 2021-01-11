@@ -422,7 +422,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 		return null;
 	}
 
-	public static void harvestFruit(Block fruit) {
+	public void harvestFruit(Block fruit) {
 		Location loc = fruit.getLocation();
 		SlimefunItem check = BlockStorage.check(loc);
 
