@@ -187,9 +187,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 
         registerMagicalPlant("Slime", new ItemStack(Material.SLIME_BALL, 8), "90e65e6e5113a5187dad46dfad3d3bf85e8ef807f82aac228a59c4a95d6f6a", new ItemStack[] {null, new ItemStack(Material.SLIME_BALL), null, new ItemStack(Material.SLIME_BALL), getItem("ENDER_PLANT"), new ItemStack(Material.SLIME_BALL), null, new ItemStack(Material.SLIME_BALL), null});
 
-        new Crook(miscCategory, new SlimefunItemStack("CROOK", new CustomItem(Material.WOODEN_HOE, "&rCrook", "", "&7+ &b25% &7Sapling Drop Rate")), RecipeType.ENHANCED_CRAFTING_TABLE,
-        new ItemStack[] {new ItemStack(Material.STICK), new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null})
-        .register(this);
+        new Crook(miscCategory, new SlimefunItemStack("CROOK", new CustomItem(Material.WOODEN_HOE, "&rCrook", "", "&7+ &b25% &7Sapling Drop Rate")), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {new ItemStack(Material.STICK), new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null, null, new ItemStack(Material.STICK), null}).register(this);
 
         SlimefunItemStack grassSeeds = new SlimefunItemStack("GRASS_SEEDS", Material.PUMPKIN_SEEDS, "&rGrass Seeds", "", "&7&oCan be planted on Dirt");
         new GrassSeeds(mainCategory, grassSeeds, ExoticGardenRecipeTypes.BREAKING_GRASS, new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null}).register(this);
@@ -211,7 +209,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
             String key = iterator.next();
             cfg.setDefaultValue("grass-drops." + key, true);
             if (!cfg.getBoolean("grass-drops." + key))
-            	iterator.remove();
+            	  iterator.remove();
         }
 
         cfg.save();
@@ -308,13 +306,9 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
         SlimefunItemStack bush = new SlimefunItemStack(enumStyle + "_BUSH", Material.OAK_SAPLING, color + name + " Plant");
         items.put(upperCase + "_BUSH", bush);
 
-        new SlimefunItem(mainCategory, bush, ExoticGardenRecipeTypes.BREAKING_GRASS,
-        new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null})
-        .register(this);
+        new SlimefunItem(mainCategory, bush, ExoticGardenRecipeTypes.BREAKING_GRASS, new ItemStack[] {null, null, null, null, new ItemStack(Material.GRASS), null, null, null, null}).register(this);
 
-        new ExoticGardenFruit(mainCategory, new SlimefunItemStack(enumStyle, texture, color + name), ExoticGardenRecipeTypes.HARVEST_BUSH, true,
-        new ItemStack[] {null, null, null, null, getItem(enumStyle + "_BUSH"), null, null, null, null})
-        .register(this);
+        new ExoticGardenFruit(mainCategory, new SlimefunItemStack(enumStyle, texture, color + name), ExoticGardenRecipeTypes.HARVEST_BUSH, true, new ItemStack[] {null, null, null, null, getItem(enumStyle + "_BUSH"), null, null, null, null}).register(this);
     }
 
     private void registerMagicalPlant(String name, ItemStack item, String texture, ItemStack[] recipe) {
