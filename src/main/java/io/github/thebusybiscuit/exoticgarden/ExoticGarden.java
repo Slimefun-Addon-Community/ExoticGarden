@@ -63,7 +63,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 	private final List<Berry> berries = new ArrayList<>();
 	private final List<Tree> trees = new ArrayList<>();
 	private final Map<String, ItemStack> items = new HashMap<>();
-	private static final Set<String> treeFruits = new HashSet<>();
+	private final Set<String> treeFruits = new HashSet<>();
 
 	protected Config cfg;
 
