@@ -20,8 +20,8 @@ import io.github.thebusybiscuit.exoticgarden.schematics.org.jnbt.CompoundTag;
 import io.github.thebusybiscuit.exoticgarden.schematics.org.jnbt.NBTInputStream;
 import io.github.thebusybiscuit.exoticgarden.schematics.org.jnbt.ShortTag;
 import io.github.thebusybiscuit.exoticgarden.schematics.org.jnbt.Tag;
+import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialCollections;
 import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullBlock;
 
 /*
@@ -133,8 +133,9 @@ public class Schematic {
                     int blockY = y + loc.getBlockY();
                     int blockZ = z + loc.getBlockZ() - width / 2;
                     Block block = new Location(loc.getWorld(), blockX, blockY, blockZ).getBlock();
+                    Material blockType = block.getType();
 
-                    if ((!block.getType().isSolid() && !block.getType().isInteractable() && !MaterialCollections.getAllUnbreakableBlocks().contains(block.getType())) || block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR || org.bukkit.Tag.SAPLINGS.isTagged(block.getType())) {
+                      if ((!blockType.isSolid() && !blockType.isInteractable() && !SlimefunTag.UNBREAKABLE_MATERIALS.isTagged(blockType)) || blockType == Material.AIR || blockType == Material.CAVE_AIR || org.bukkit.Tag.SAPLINGS.isTagged(blockType)) {
                         Material material = parseId(blocks[index], blockData[index]);
 
                         if (material != null) {
