@@ -360,6 +360,9 @@ public class PlantsListener implements Listener {
             if (item != null) {
                 e.getClickedBlock().getWorld().playEffect(e.getClickedBlock().getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
                 e.getClickedBlock().getWorld().dropItemNaturally(e.getClickedBlock().getLocation(), item);
+            } else {
+                // The block wasn't a plant, we try harvesting a fruit instead
+                ExoticGarden.getInstance().harvestFruit(e.getClickedBlock());
             }
         }
     }
@@ -397,10 +400,10 @@ public class PlantsListener implements Listener {
                     Block fruit = block.getRelative(x, y, z);
                     if (fruit.isEmpty()) continue;
 
+
                     Location loc = fruit.getLocation();
                     SlimefunItem check = BlockStorage.check(loc);
                     if (check == null) continue;
-
                     for (Tree tree : ExoticGarden.getTrees()) {
                         if (check.getId().equalsIgnoreCase(tree.getFruitID())) {
                             BlockStorage.clearBlockInfo(loc);
