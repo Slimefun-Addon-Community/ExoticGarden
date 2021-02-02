@@ -73,7 +73,7 @@
                     <!-- Shade dependencies into the output jar -->
                     <relocations>
                         <relocation>
-                            <pattern>org.bstats.bukkit</pattern>
+                            <pattern>org.bstats</pattern>
                             <shadedPattern>io.github.thebusybiscuit.exoticgarden.bstats</shadedPattern>
                         </relocation>
                     </relocations>
