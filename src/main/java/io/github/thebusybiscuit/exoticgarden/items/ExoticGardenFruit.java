@@ -2,6 +2,9 @@ package io.github.thebusybiscuit.exoticgarden.items;
 
 import java.util.Optional;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -19,11 +22,13 @@ public class ExoticGardenFruit extends SimpleSlimefunItem<ItemUseHandler> {
 
     private final boolean edible;
 
+    @ParametersAreNonnullByDefault
     public ExoticGardenFruit(Category category, SlimefunItemStack item, RecipeType recipeType, boolean edible, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
         this.edible = edible;
     }
 
+    @ParametersAreNonnullByDefault
     public ExoticGardenFruit(Category category, SlimefunItemStack item, RecipeType recipeType, boolean edible, ItemStack[] recipe, ItemStack recipeOutput) {
         super(category, item, recipeType, recipe, recipeOutput);
         this.edible = edible;
@@ -45,8 +50,7 @@ public class ExoticGardenFruit extends SimpleSlimefunItem<ItemUseHandler> {
                 // Cancel the Block placement if the Player sneaks or the Block is not interactable
                 if (e.getPlayer().isSneaking() || !isInteractable(material)) {
                     e.cancel();
-                }
-                else {
+                } else {
                     return;
                 }
             }
@@ -58,22 +62,22 @@ public class ExoticGardenFruit extends SimpleSlimefunItem<ItemUseHandler> {
         };
     }
 
-    private boolean isInteractable(Material material) {
+    private boolean isInteractable(@Nonnull Material material) {
         // We cannot rely on Material#isInteractable() sadly
         // as it would allow the placement of this block on strange items like stairs...
         switch (material) {
-        case ANVIL:
-        case BREWING_STAND:
-        case CAKE:
-        case CHEST:
-        case HOPPER:
-        case TRAPPED_CHEST:
-        case ENDER_CHEST:
-        case CAULDRON:
-        case SHULKER_BOX:
-            return true;
-        default:
-            return material.name().equals("BARREL") || material.name().endsWith("_SHULKER_BOX");
+            case ANVIL:
+            case BREWING_STAND:
+            case CAKE:
+            case CHEST:
+            case HOPPER:
+            case TRAPPED_CHEST:
+            case ENDER_CHEST:
+            case CAULDRON:
+            case SHULKER_BOX:
+                return true;
+            default:
+                return material.name().equals("BARREL") || material.name().endsWith("_SHULKER_BOX");
         }
     }
 
@@ -81,7 +85,7 @@ public class ExoticGardenFruit extends SimpleSlimefunItem<ItemUseHandler> {
         return 2;
     }
 
-    private void restoreHunger(Player p) {
+    private void restoreHunger(@Nonnull Player p) {
         int level = p.getFoodLevel() + getFoodValue();
         p.playSound(p.getEyeLocation(), Sound.ENTITY_GENERIC_EAT, 1, 1);
         p.setFoodLevel(Math.min(level, 20));

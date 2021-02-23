@@ -1,5 +1,7 @@
 package io.github.thebusybiscuit.exoticgarden.items;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.exoticgarden.ExoticGardenRecipeTypes;
@@ -10,11 +12,13 @@ public class CustomFood extends ExoticGardenFruit {
 
     private final int food;
 
+    @ParametersAreNonnullByDefault
     public CustomFood(Category category, SlimefunItemStack item, ItemStack[] recipe, int food) {
         super(category, item, ExoticGardenRecipeTypes.KITCHEN, true, recipe);
         this.food = food;
     }
 
+    @ParametersAreNonnullByDefault
     public CustomFood(Category category, SlimefunItemStack item, int amount, ItemStack[] recipe, int food) {
         super(category, item, ExoticGardenRecipeTypes.KITCHEN, true, recipe, new SlimefunItemStack(item, amount));
         this.food = food;

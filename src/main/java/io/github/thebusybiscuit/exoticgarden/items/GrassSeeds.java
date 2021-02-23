@@ -1,5 +1,7 @@
 package io.github.thebusybiscuit.exoticgarden.items;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -16,31 +18,32 @@ import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
 public class GrassSeeds extends SimpleSlimefunItem<ItemUseHandler> {
 
-	public GrassSeeds(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
-		super(category, item, recipeType, recipe);
-	}
-	
-	@Override
-	public ItemUseHandler getItemHandler() {
-		return e -> {
-			if (e.getClickedBlock().isPresent()) {
-				Block b = e.getClickedBlock().get();
-				
-				if (b.getType() == Material.DIRT) {
-					if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
-						ItemUtils.consumeItem(e.getItem(), false);
-					}
-					
-					b.setType(Material.GRASS_BLOCK);
-					
-					if (b.getRelative(BlockFace.UP).getType() == Material.AIR) {
-						b.getRelative(BlockFace.UP).setType(Material.GRASS);
-					}
-					
-					b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, Material.GRASS);
-				}
-			}
-		};
-	}
+    @ParametersAreNonnullByDefault
+    public GrassSeeds(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+        super(category, item, recipeType, recipe);
+    }
+
+    @Override
+    public ItemUseHandler getItemHandler() {
+        return e -> {
+            if (e.getClickedBlock().isPresent()) {
+                Block b = e.getClickedBlock().get();
+
+                if (b.getType() == Material.DIRT) {
+                    if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                        ItemUtils.consumeItem(e.getItem(), false);
+                    }
+
+                    b.setType(Material.GRASS_BLOCK);
+
+                    if (b.getRelative(BlockFace.UP).getType() == Material.AIR) {
+                        b.getRelative(BlockFace.UP).setType(Material.GRASS);
+                    }
+
+                    b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, Material.GRASS);
+                }
+            }
+        };
+    }
 
 }
