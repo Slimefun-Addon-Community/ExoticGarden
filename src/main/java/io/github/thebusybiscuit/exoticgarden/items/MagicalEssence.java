@@ -1,5 +1,7 @@
 package io.github.thebusybiscuit.exoticgarden.items;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.bukkit.inventory.ItemStack;
 
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -9,6 +11,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 public class MagicalEssence extends SlimefunItem {
 
+    @ParametersAreNonnullByDefault
     public MagicalEssence(Category category, SlimefunItemStack item) {
         super(category, item, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] { item, item, item, item, null, item, item, item, item });
     }

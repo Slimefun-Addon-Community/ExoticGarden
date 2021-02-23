@@ -2,6 +2,9 @@ package io.github.thebusybiscuit.exoticgarden.items;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -17,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import io.github.thebusybiscuit.exoticgarden.ExoticGarden;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -29,6 +33,7 @@ public class Kitchen extends MultiBlockMachine {
 
     private final ExoticGarden plugin;
 
+    @ParametersAreNonnullByDefault
     public Kitchen(ExoticGarden plugin, Category category) {
         super(category, new SlimefunItemStack("KITCHEN", Material.CAULDRON, "&eKitchen", "", "&a&oYou can make a bunch of different yummies here!", "&a&oThe result goes in the Furnace output slot"), new ItemStack[] { new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new CustomItem(Material.BRICK_STAIRS, "&oBrick Stairs (upside down)"), new ItemStack(Material.BRICKS), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.BOOKSHELF), new ItemStack(Material.FURNACE), new ItemStack(Material.DISPENSER), new ItemStack(Material.CRAFTING_TABLE) }, new ItemStack[0], BlockFace.SELF);
 
@@ -48,7 +53,8 @@ public class Kitchen extends MultiBlockMachine {
         recipe:
         for (ItemStack[] input : inputs) {
             for (int i = 0; i < inv.getContents().length; i++) {
-                if (!SlimefunUtils.isItemSimilar(inv.getContents()[i], input[i], true)) continue recipe;
+                if (!SlimefunUtils.isItemSimilar(inv.getContents()[i], input[i], true))
+                    continue recipe;
             }
 
             ItemStack adding = RecipeType.getRecipeOutputList(this, input);
@@ -77,8 +83,7 @@ public class Kitchen extends MultiBlockMachine {
 
                 if (furnaceInventory.getResult() == null) {
                     furnaceInventory.setResult(adding);
-                }
-                else {
+                } else {
                     furnaceInventory.getResult().setAmount(furnaceInventory.getResult().getAmount() + adding.getAmount());
                 }
             }
@@ -89,18 +94,16 @@ public class Kitchen extends MultiBlockMachine {
         SlimefunPlugin.getLocalization().sendMessage(p, "machines.pattern-not-found", true);
     }
 
-    private static Furnace locateFurnace(Block b) {
+    @Nonnull
+    private static Furnace locateFurnace(@Nonnull Block b) {
         if (b.getRelative(BlockFace.EAST).getType() == Material.FURNACE) {
-            return (Furnace) b.getRelative(BlockFace.EAST).getState();
-        }
-        else if (b.getRelative(BlockFace.WEST).getType() == Material.FURNACE) {
-            return (Furnace) b.getRelative(BlockFace.WEST).getState();
-        }
-        else if (b.getRelative(BlockFace.NORTH).getType() == Material.FURNACE) {
-            return (Furnace) b.getRelative(BlockFace.NORTH).getState();
-        }
-        else {
-            return (Furnace) b.getRelative(BlockFace.SOUTH).getState();
+            return (Furnace) PaperLib.getBlockState(b.getRelative(BlockFace.EAST), false).getState();
+        } else if (b.getRelative(BlockFace.WEST).getType() == Material.FURNACE) {
+            return (Furnace) PaperLib.getBlockState(b.getRelative(BlockFace.WEST), false).getState();
+        } else if (b.getRelative(BlockFace.NORTH).getType() == Material.FURNACE) {
+            return (Furnace) PaperLib.getBlockState(b.getRelative(BlockFace.NORTH), false).getState();
+        } else {
+            return (Furnace) PaperLib.getBlockState(b.getRelative(BlockFace.SOUTH), false).getState();
         }
     }
 }
