@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockFertilizeEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -375,6 +376,17 @@ public class PlantsListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent e) {
         e.blockList().removeAll(getAffectedBlocks(e.blockList()));
+    }
+
+    @EventHandler
+    public void onBonemealPlant(BlockFertilizeEvent e) {
+        if (e.getBlock().getType() == Material.OAK_SAPLING) {
+            SlimefunItem item = BlockStorage.check(e.getBlock());
+
+            if (item != null && ExoticGarden.getInstance().getConfig().getBoolean("disable-bonemeal", false)) {
+                e.setCancelled(true);
+            }
+        }
     }
 
     private Set<Block> getAffectedBlocks(List<Block> blockList) {
