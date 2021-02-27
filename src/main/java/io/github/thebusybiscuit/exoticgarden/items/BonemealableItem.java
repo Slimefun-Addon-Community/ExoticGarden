@@ -10,7 +10,9 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * This class has a {@link ItemSetting} to disable bonemeal usage on this {@link SlimefunItem}.
+ * This class has an {@link ItemSetting} to disable bonemeal usage on this {@link SlimefunItem}.
+ *
+ * @author Walshy
  */
 public class BonemealableItem extends SlimefunItem {
 
