@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import io.github.thebusybiscuit.exoticgarden.items.BonemealableItem;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -383,7 +384,7 @@ public class PlantsListener implements Listener {
         if (e.getBlock().getType() == Material.OAK_SAPLING) {
             SlimefunItem item = BlockStorage.check(e.getBlock());
 
-            if (item != null && ExoticGarden.getInstance().getConfig().getBoolean("disable-bonemeal", false)) {
+            if (item instanceof BonemealableItem && ((BonemealableItem) item).isBonemealDisabled()) {
                 e.setCancelled(true);
             }
         }
