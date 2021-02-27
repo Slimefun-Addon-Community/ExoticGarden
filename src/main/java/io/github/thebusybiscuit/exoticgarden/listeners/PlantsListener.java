@@ -6,10 +6,13 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import io.github.thebusybiscuit.exoticgarden.items.BonemealableItem;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -22,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockFertilizeEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -375,6 +379,20 @@ public class PlantsListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent e) {
         e.blockList().removeAll(getAffectedBlocks(e.blockList()));
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBonemealPlant(BlockFertilizeEvent e) {
+        Block b = e.getBlock();
+        if (b.getType() == Material.OAK_SAPLING) {
+            SlimefunItem item = BlockStorage.check(b);
+
+            if (item instanceof BonemealableItem && ((BonemealableItem) item).isBonemealDisabled()) {
+                e.setCancelled(true);
+                b.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, b.getLocation().clone().add(0.5, 0, 0.5), 4);
+                b.getWorld().playSound(b.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+            }
+        }
     }
 
     private Set<Block> getAffectedBlocks(List<Block> blockList) {
