@@ -11,6 +11,8 @@ import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -379,13 +381,15 @@ public class PlantsListener implements Listener {
         e.blockList().removeAll(getAffectedBlocks(e.blockList()));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBonemealPlant(BlockFertilizeEvent e) {
         if (e.getBlock().getType() == Material.OAK_SAPLING) {
             SlimefunItem item = BlockStorage.check(e.getBlock());
 
             if (item instanceof BonemealableItem && ((BonemealableItem) item).isBonemealDisabled()) {
                 e.setCancelled(true);
+                e.getBlock().getWorld().spawnParticle(Particle.VILLAGER_ANGRY, e.getBlock().getLocation().clone().add(0.5, 0, 0.5), 4);
+                e.getBlock().getWorld().playSound(e.getBlock().getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
             }
         }
     }

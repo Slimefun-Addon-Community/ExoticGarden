@@ -1,5 +1,4 @@
 grass-drops: []
-disable-bonemeal: false
 world-blacklist:
 - world_nether
 - world_the_end
