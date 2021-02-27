@@ -383,13 +383,14 @@ public class PlantsListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBonemealPlant(BlockFertilizeEvent e) {
-        if (e.getBlock().getType() == Material.OAK_SAPLING) {
-            SlimefunItem item = BlockStorage.check(e.getBlock());
+        Block b = e.getBlock();
+        if (b.getType() == Material.OAK_SAPLING) {
+            SlimefunItem item = BlockStorage.check(b);
 
             if (item instanceof BonemealableItem && ((BonemealableItem) item).isBonemealDisabled()) {
                 e.setCancelled(true);
-                e.getBlock().getWorld().spawnParticle(Particle.VILLAGER_ANGRY, e.getBlock().getLocation().clone().add(0.5, 0, 0.5), 4);
-                e.getBlock().getWorld().playSound(e.getBlock().getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                b.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, b.getLocation().clone().add(0.5, 0, 0.5), 4);
+                b.getWorld().playSound(b.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
             }
         }
     }
