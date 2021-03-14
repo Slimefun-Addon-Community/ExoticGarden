@@ -24,7 +24,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.Slimefun;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
@@ -57,10 +57,11 @@ public class Kitchen extends MultiBlockMachine {
                     continue recipe;
             }
 
-            ItemStack adding = RecipeType.getRecipeOutputList(this, input);
+            ItemStack output = RecipeType.getRecipeOutputList(this, input);
+            SlimefunItem outputItem = SlimefunItem.getByItem(output);
 
-            if (Slimefun.hasUnlocked(p, adding, true)) {
-                boolean canFit = furnaceInventory.getResult() == null || (furnaceInventory.getResult().getAmount() + adding.getAmount() <= 64 && SlimefunUtils.isItemSimilar(furnaceInventory.getResult(), adding, true));
+            if (outputItem == null || outputItem.canUse(p, true)) {
+                boolean canFit = furnaceInventory.getResult() == null || (furnaceInventory.getResult().getAmount() + output.getAmount() <= 64 && SlimefunUtils.isItemSimilar(furnaceInventory.getResult(), output, true));
 
                 if (!canFit) {
                     SlimefunPlugin.getLocalization().sendMessage(p, "machines.full-inventory", true);
@@ -82,9 +83,9 @@ public class Kitchen extends MultiBlockMachine {
                 }
 
                 if (furnaceInventory.getResult() == null) {
-                    furnaceInventory.setResult(adding);
+                    furnaceInventory.setResult(output);
                 } else {
-                    furnaceInventory.getResult().setAmount(furnaceInventory.getResult().getAmount() + adding.getAmount());
+                    furnaceInventory.getResult().setAmount(furnaceInventory.getResult().getAmount() + output.getAmount());
                 }
             }
 

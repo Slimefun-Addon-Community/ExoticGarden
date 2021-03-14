@@ -16,7 +16,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 public class BonemealableItem extends SlimefunItem {
 
-    private final ItemSetting<Boolean> disableBoneMeal = new ItemSetting<>("disable-bonemeal", false);
+    private final ItemSetting<Boolean> disableBoneMeal = new ItemSetting<>(this, "disable-bonemeal", false);
 
     @ParametersAreNonnullByDefault
     public BonemealableItem(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
