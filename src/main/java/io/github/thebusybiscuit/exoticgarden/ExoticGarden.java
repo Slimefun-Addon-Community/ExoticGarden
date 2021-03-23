@@ -12,6 +12,8 @@ import io.github.thebusybiscuit.exoticgarden.listeners.AndroidListener;
 import io.github.thebusybiscuit.exoticgarden.listeners.PlantsListener;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.core.categories.MultiCategory;
+import io.github.thebusybiscuit.slimefun4.core.categories.SubCategory;
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
@@ -72,6 +74,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
 
     protected Config cfg;
 
+    private MultiCategory multiCategory;
     private Category mainCategory;
     private Category miscCategory;
     private Category foodCategory;
@@ -106,11 +109,12 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
     }
 
     private void registerItems() {
-        mainCategory = new Category(new NamespacedKey(this, "plants_and_fruits"), new CustomItem(SkullItem.fromHash("a5a5c4a0a16dabc9b1ec72fc83e23ac15d0197de61b138babca7c8a29c820"), "&aExotic Garden - Plants and Fruits"));
-        miscCategory = new Category(new NamespacedKey(this, "misc"), new CustomItem(SkullItem.fromHash("606be2df2122344bda479feece365ee0e9d5da276afa0e8ce8d848f373dd131"), "&aExotic Garden - Ingredients and Tools"));
-        foodCategory = new Category(new NamespacedKey(this, "food"), new CustomItem(SkullItem.fromHash("a14216d10714082bbe3f412423e6b19232352f4d64f9aca3913cb46318d3ed"), "&aExotic Garden - Food"));
-        drinksCategory = new Category(new NamespacedKey(this, "drinks"), new CustomItem(SkullItem.fromHash("2a8f1f70e85825607d28edce1a2ad4506e732b4a5345a5ea6e807c4b313e88"), "&aExotic Garden - Drinks"));
-        magicalCategory = new Category(new NamespacedKey(this, "magical_crops"), new CustomItem(Material.BLAZE_POWDER, "&5Exotic Garden - Magical Plants"));
+        multiCategory = new MultiCategory(new NamespacedKey(this, "multi_category"), new CustomItem(Material.APPLE, "&aExotic Garden"));
+        mainCategory = new SubCategory(new NamespacedKey(this, "plants_and_fruits"), multiCategory, new CustomItem(SkullItem.fromHash("a5a5c4a0a16dabc9b1ec72fc83e23ac15d0197de61b138babca7c8a29c820"), "&aExotic Garden - Plants and Fruits"));
+        miscCategory = new SubCategory(new NamespacedKey(this, "misc"), multiCategory, new CustomItem(SkullItem.fromHash("606be2df2122344bda479feece365ee0e9d5da276afa0e8ce8d848f373dd131"), "&aExotic Garden - Ingredients and Tools"));
+        foodCategory = new SubCategory(new NamespacedKey(this, "food"), multiCategory, new CustomItem(SkullItem.fromHash("a14216d10714082bbe3f412423e6b19232352f4d64f9aca3913cb46318d3ed"), "&aExotic Garden - Food"));
+        drinksCategory = new SubCategory(new NamespacedKey(this, "drinks"), multiCategory, new CustomItem(SkullItem.fromHash("2a8f1f70e85825607d28edce1a2ad4506e732b4a5345a5ea6e807c4b313e88"), "&aExotic Garden - Drinks"));
+        magicalCategory = new SubCategory(new NamespacedKey(this, "magical_crops"), multiCategory, new CustomItem(Material.BLAZE_POWDER, "&5Exotic Garden - Magical Plants"));
 
         kitchen = new Kitchen(this, miscCategory);
         kitchen.register(this);
