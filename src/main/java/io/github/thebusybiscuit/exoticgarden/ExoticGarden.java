@@ -109,7 +109,7 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
     }
 
     private void registerItems() {
-        multiCategory = new MultiCategory(new NamespacedKey(this, "multi_category"), new CustomItem(Material.APPLE, "&aExotic Garden"));
+        multiCategory = new MultiCategory(new NamespacedKey(this, "parent_category"), new CustomItem(SkullItem.fromHash("847d73a91b52393f2c27e453fb89ab3d784054d414e390d58abd22512edd2b"), "&aExotic Garden"));
         mainCategory = new SubCategory(new NamespacedKey(this, "plants_and_fruits"), multiCategory, new CustomItem(SkullItem.fromHash("a5a5c4a0a16dabc9b1ec72fc83e23ac15d0197de61b138babca7c8a29c820"), "&aExotic Garden - Plants and Fruits"));
         miscCategory = new SubCategory(new NamespacedKey(this, "misc"), multiCategory, new CustomItem(SkullItem.fromHash("606be2df2122344bda479feece365ee0e9d5da276afa0e8ce8d848f373dd131"), "&aExotic Garden - Ingredients and Tools"));
         foodCategory = new SubCategory(new NamespacedKey(this, "food"), multiCategory, new CustomItem(SkullItem.fromHash("a14216d10714082bbe3f412423e6b19232352f4d64f9aca3913cb46318d3ed"), "&aExotic Garden - Food"));
