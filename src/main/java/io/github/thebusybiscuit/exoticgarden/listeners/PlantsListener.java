@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import io.github.thebusybiscuit.exoticgarden.items.BonemealableItem;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -17,13 +18,16 @@ import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.Dispenser;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockFertilizeEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
@@ -384,6 +388,28 @@ public class PlantsListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBonemealPlant(BlockFertilizeEvent e) {
         Block b = e.getBlock();
+        if (b.getType() == Material.OAK_SAPLING) {
+            SlimefunItem item = BlockStorage.check(b);
+
+            if (item instanceof BonemealableItem && ((BonemealableItem) item).isBonemealDisabled()) {
+                e.setCancelled(true);
+                b.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, b.getLocation().clone().add(0.5, 0, 0.5), 4);
+                b.getWorld().playSound(b.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onDispenserBonemealPlant(BlockDispenseEvent e) {
+        ItemStack bonemeal = e.getItem();
+
+        if (bonemeal.getType() != Material.BONE_MEAL) {
+            return;
+        }
+
+        Block disp = e.getBlock();
+        Block b = disp.getRelative(((Directional) disp.getBlockData()).getFacing());
+
         if (b.getType() == Material.OAK_SAPLING) {
             SlimefunItem item = BlockStorage.check(b);
 
