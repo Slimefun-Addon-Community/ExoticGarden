@@ -13,10 +13,10 @@ import io.github.thebusybiscuit.exoticgarden.CustomPotion;
 import io.github.thebusybiscuit.exoticgarden.ExoticGarden;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.food.Juice;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 
 /**
  * In plugin class we register all our items and recipes for the dishes.
@@ -32,7 +32,7 @@ public final class FoodRegistry {
 
     private FoodRegistry() {}
 
-    public static void register(@Nonnull ExoticGarden plugin, @Nonnull Category misc, @Nonnull Category drinks, @Nonnull Category food) {
+    public static void register(@Nonnull ExoticGarden plugin, @Nonnull ItemGroup misc, @Nonnull ItemGroup drinks, @Nonnull ItemGroup food) {
         new Juice(drinks, new SlimefunItemStack("LIME_SMOOTHIE", new CustomPotion("&aLime Smoothie", Color.LIME, new PotionEffect(PotionEffectType.SATURATION, 10, 0), "", "&7&oRestores &b&o" + "5.0" + " &7&oHunger")), RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {getItem("LIME_JUICE"), getItem("ICE_CUBE"), null, null, null, null, null, null, null})
         .register(plugin);
@@ -526,7 +526,7 @@ public final class FoodRegistry {
     
     @Nullable
     private static ItemStack getItem(@Nonnull String id) {
-        SlimefunItem item = SlimefunItem.getByID(id);
+        SlimefunItem item = SlimefunItem.getById(id);
         return item != null ? item.getItem() : null;
     }
 }
