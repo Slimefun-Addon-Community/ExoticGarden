@@ -522,6 +522,12 @@ public final class FoodRegistry {
         new ItemStack[] {getItem("APPLE"), new ItemStack(Material.SUGAR), SlimefunItems.WHEAT_FLOUR, SlimefunItems.BUTTER, getItem("PEAR"), new ItemStack(Material.EGG), null, null, null},
         18)
         .register(plugin);
+
+        new CustomFood(food, new SlimefunItemStack("STUFFED_RED_BELL_PEPPER", "b6c98b410123b0944422303798fc2db8cea0feeb09d0da40f5361b59498f3e8b", "&cStuffed Red Bell Pepper", "", "&7&oRestores &b&o" + "7.0" + " &7&oHunger"),
+        new ItemStack[] {getItem("RED_BELL_PEPPER"), getItem("ONION"), getItem("GARLIC"), getItem("TOMATO"), null, null, null, null, null},
+        14)
+        .register(plugin);
+
     }
     
     @Nullable
