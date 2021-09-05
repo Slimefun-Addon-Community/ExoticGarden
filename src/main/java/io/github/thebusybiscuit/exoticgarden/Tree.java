@@ -9,7 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.thebusybiscuit.exoticgarden.schematics.Schematic;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 
 public class Tree {
 
@@ -36,7 +36,7 @@ public class Tree {
     }
 
     public ItemStack getItem() {
-        return SlimefunItem.getByID(sapling).getItem();
+        return SlimefunItem.getById(sapling).getItem();
     }
 
     public String getTexture() {
@@ -44,7 +44,7 @@ public class Tree {
     }
 
     public ItemStack getFruit() {
-        return SlimefunItem.getByID(fruit).getItem();
+        return SlimefunItem.getById(fruit).getItem();
     }
 
     public String getFruitID() {

@@ -6,7 +6,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import io.github.thebusybiscuit.exoticgarden.items.BonemealableItem;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -39,13 +38,15 @@ import io.github.thebusybiscuit.exoticgarden.ExoticGarden;
 import io.github.thebusybiscuit.exoticgarden.PlantType;
 import io.github.thebusybiscuit.exoticgarden.Tree;
 import io.github.thebusybiscuit.exoticgarden.schematics.Schematic;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.exoticgarden.items.BonemealableItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.skins.PlayerHead;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.skins.PlayerSkin;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
-import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullBlock;
 
 public class PlantsListener implements Listener {
 
@@ -85,7 +86,7 @@ public class PlantsListener implements Listener {
             return;
         }
 
-        if (!SlimefunPlugin.getWorldSettingsService().isWorldEnabled(world)) {
+        if (!Slimefun.getWorldSettingsService().isWorldEnabled(world)) {
             return;
         }
 
@@ -191,7 +192,7 @@ public class PlantsListener implements Listener {
                         rotatable.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
                         blockAbove.setBlockData(rotatable);
 
-                        SkullBlock.setFromHash(blockAbove, berry.getTexture());
+                        PlayerHead.setSkin(blockAbove, PlayerSkin.fromHashCode(berry.getTexture()), true);
                         break;
                     default:
                         e.getLocation().getBlock().setType(Material.PLAYER_HEAD);
@@ -199,7 +200,7 @@ public class PlantsListener implements Listener {
                         s.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
                         e.getLocation().getBlock().setBlockData(s);
 
-                        SkullBlock.setFromHash(e.getLocation().getBlock(), berry.getTexture());
+                        PlayerHead.setSkin(e.getLocation().getBlock(), PlayerSkin.fromHashCode(berry.getTexture()), true);
                         break;
                     }
 
@@ -242,7 +243,7 @@ public class PlantsListener implements Listener {
                         Rotatable s = (Rotatable) current.getBlockData();
                         s.setRotation(faces[random.nextInt(faces.length)]);
                         current.setBlockData(s);
-                        SkullBlock.setFromHash(current, berry.getTexture());
+                        PlayerHead.setSkin(current, PlayerSkin.fromHashCode(berry.getTexture()), true);
                     }
                     else {
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
@@ -250,7 +251,7 @@ public class PlantsListener implements Listener {
                             Rotatable s = (Rotatable) current.getBlockData();
                             s.setRotation(faces[random.nextInt(faces.length)]);
                             current.setBlockData(s);
-                            SkullBlock.setFromHash(current, berry.getTexture());
+                            PlayerHead.setSkin(current, PlayerSkin.fromHashCode(berry.getTexture()), true);
                         });
                     }
                     break;
@@ -261,7 +262,7 @@ public class PlantsListener implements Listener {
                         Rotatable s = (Rotatable) current.getBlockData();
                         s.setRotation(faces[random.nextInt(faces.length)]);
                         current.setBlockData(s);
-                        SkullBlock.setFromHash(current, berry.getTexture());
+                        PlayerHead.setSkin(current, PlayerSkin.fromHashCode(berry.getTexture()), true);
                     }
                     else {
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
@@ -271,7 +272,7 @@ public class PlantsListener implements Listener {
                             Rotatable ss = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
                             ss.setRotation(faces[random.nextInt(faces.length)]);
                             current.getRelative(BlockFace.UP).setBlockData(ss);
-                            SkullBlock.setFromHash(current.getRelative(BlockFace.UP), berry.getTexture());
+                            PlayerHead.setSkin(current.getRelative(BlockFace.UP), PlayerSkin.fromHashCode(berry.getTexture()), true);
                         });
                     }
                     break;
@@ -299,7 +300,7 @@ public class PlantsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHarvest(BlockBreakEvent e) {
-        if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), e.getBlock().getLocation(), ProtectableAction.BREAK_BLOCK)) {
+        if (Slimefun.getProtectionManager().hasPermission(e.getPlayer(), e.getBlock().getLocation(), Interaction.BREAK_BLOCK)) {
             if (e.getBlock().getType().equals(Material.PLAYER_HEAD) || Tag.LEAVES.isTagged(e.getBlock().getType())) {
                 dropFruitFromTree(e.getBlock());
             }
@@ -327,7 +328,7 @@ public class PlantsListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDecay(LeavesDecayEvent e) {
-        if (!SlimefunPlugin.getWorldSettingsService().isWorldEnabled(e.getBlock().getWorld())) {
+        if (!Slimefun.getWorldSettingsService().isWorldEnabled(e.getBlock().getWorld())) {
             return;
         }
 
@@ -358,7 +359,7 @@ public class PlantsListener implements Listener {
         if (e.getHand() != EquipmentSlot.HAND) return;
         if (e.getPlayer().isSneaking()) return;
 
-        if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), e.getClickedBlock().getLocation(), ProtectableAction.BREAK_BLOCK)) {
+        if (Slimefun.getProtectionManager().hasPermission(e.getPlayer(), e.getClickedBlock().getLocation(), Interaction.BREAK_BLOCK)) {
             ItemStack item = ExoticGarden.harvestPlant(e.getClickedBlock());
 
             if (item != null) {

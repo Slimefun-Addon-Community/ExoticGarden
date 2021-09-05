@@ -112,12 +112,12 @@
         <dependency>
             <groupId>com.github.slimefun</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-21</version>
+            <version>RC-27</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>io.github.thebusybiscuit</groupId>
-                    <artifactId>cscorelib2</artifactId>
+                    <groupId>io.github.baked-libs</groupId>
+                    <artifactId>dough-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
