@@ -110,6 +110,10 @@ public class Schematic {
     }
 
     public static void pasteSchematic(Location loc, Tree tree) {
+        pasteSchematic(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), tree);
+    }
+
+    public static void pasteSchematic(World world, int x1, int y1, int z1, Tree tree) {
         Schematic schematic;
 
         try {
@@ -127,22 +131,18 @@ public class Schematic {
         short width = schematic.getWidth();
         short height = schematic.getHeight();
 
-        // Performance - avoid repeatedly running Math.floorDiv in a loop
-        int initialBlockX = loc.getBlockX() - length / 2;
-        int initialBlockY = loc.getBlockY();
-        int initialBlockZ = loc.getBlockZ() - width / 2;
-
-        // Performance - avoid repeatedly checking if the world has been unloaded
-        World world = loc.getWorld();
+        // Performance - avoid repeatedly calculating this value in a loop
+        int processedX = x1 - length / 2;
+        int processedZ = z1 - width / 2;
 
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < height; ++y) {
                 for (int z = 0; z < length; ++z) {
                     int index = y * width * length + z * width + x;
 
-                    int blockX = x + initialBlockX;
-                    int blockY = y + initialBlockY;
-                    int blockZ = z + initialBlockZ;
+                    int blockX = x + processedX;
+                    int blockY = y + y1;
+                    int blockZ = z + processedZ;
                     Block block = world.getBlockAt(blockX, blockY, blockZ);
                     Material blockType = block.getType();
                     
