@@ -109,11 +109,11 @@ public class Schematic {
         return height;
     }
 
-    public static void pasteSchematic(Location loc, Tree tree) {
-        pasteSchematic(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), tree);
+    public static void pasteSchematic(Location loc, Tree tree, boolean doPhysics) {
+        pasteSchematic(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), tree, doPhysics);
     }
 
-    public static void pasteSchematic(World world, int x1, int y1, int z1, Tree tree) {
+    public static void pasteSchematic(World world, int x1, int y1, int z1, Tree tree, boolean doPhysics) {
         Schematic schematic;
 
         try {
@@ -151,7 +151,7 @@ public class Schematic {
 
                         if (material != null) {
                             if (blocks[index] != 0) {
-                                block.setType(material);
+                                block.setType(material, doPhysics);
                             }
 
                             if (org.bukkit.Tag.LEAVES.isTagged(material)) {
@@ -162,7 +162,7 @@ public class Schematic {
                             else if (material == Material.PLAYER_HEAD) {
                                 Rotatable s = (Rotatable) block.getBlockData();
                                 s.setRotation(BLOCK_FACES[ThreadLocalRandom.current().nextInt(BLOCK_FACES.length)]);
-                                block.setBlockData(s);
+                                block.setBlockData(s, doPhysics);
 
                                 PlayerHead.setSkin(block, PlayerSkin.fromHashCode(tree.getTexture()), true);
                                 BlockStorage.store(block, tree.getFruit());
