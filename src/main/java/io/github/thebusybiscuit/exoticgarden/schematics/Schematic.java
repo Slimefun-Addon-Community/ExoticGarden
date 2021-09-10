@@ -52,6 +52,8 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
  */
 public class Schematic {
 
+    private static final BlockFace[] BLOCK_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
+
     private final short[] blocks;
     private final byte[] data;
     private final short width;
@@ -118,7 +120,6 @@ public class Schematic {
             return;
         }
 
-        BlockFace[] faces = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
         short[] blocks = schematic.getBlocks();
         byte[] blockData = schematic.getData();
 
@@ -145,7 +146,7 @@ public class Schematic {
                     Block block = world.getBlockAt(blockX, blockY, blockZ);
                     Material blockType = block.getType();
                     
-                    if ((!blockType.isSolid() && !blockType.isInteractable() && !SlimefunTag.UNBREAKABLE_MATERIALS.isTagged(blockType)) || blockType == Material.AIR || blockType == Material.CAVE_AIR || org.bukkit.Tag.SAPLINGS.isTagged(blockType)) {
+                    if (blockType.isAir() || org.bukkit.Tag.SAPLINGS.isTagged(blockType) || (!blockType.isSolid() && !blockType.isInteractable() && !SlimefunTag.UNBREAKABLE_MATERIALS.isTagged(blockType))) {
                         Material material = parseId(blocks[index], blockData[index]);
 
                         if (material != null) {
@@ -160,7 +161,7 @@ public class Schematic {
                             }
                             else if (material == Material.PLAYER_HEAD) {
                                 Rotatable s = (Rotatable) block.getBlockData();
-                                s.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
+                                s.setRotation(BLOCK_FACES[ThreadLocalRandom.current().nextInt(BLOCK_FACES.length)]);
                                 block.setBlockData(s);
 
                                 PlayerHead.setSkin(block, PlayerSkin.fromHashCode(tree.getTexture()), true);
