@@ -9,6 +9,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
@@ -125,15 +126,23 @@ public class Schematic {
         short width = schematic.getWidth();
         short height = schematic.getHeight();
 
+        // Performance - avoid repeatedly running Math.floorDiv in a loop
+        int initialBlockX = loc.getBlockX() - length / 2;
+        int initialBlockY = loc.getBlockY();
+        int initialBlockZ = loc.getBlockZ() - width / 2;
+
+        // Performance - avoid repeatedly checking if the world has been unloaded
+        World world = loc.getWorld();
+
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < height; ++y) {
                 for (int z = 0; z < length; ++z) {
                     int index = y * width * length + z * width + x;
 
-                    int blockX = x + loc.getBlockX() - length / 2;
-                    int blockY = y + loc.getBlockY();
-                    int blockZ = z + loc.getBlockZ() - width / 2;
-                    Block block = new Location(loc.getWorld(), blockX, blockY, blockZ).getBlock();
+                    int blockX = x + initialBlockX;
+                    int blockY = y + initialBlockY;
+                    int blockZ = z + initialBlockZ;
+                    Block block = world.getBlockAt(blockX, blockY, blockZ);
                     Material blockType = block.getType();
                     
                     if ((!blockType.isSolid() && !blockType.isInteractable() && !SlimefunTag.UNBREAKABLE_MATERIALS.isTagged(blockType)) || blockType == Material.AIR || blockType == Material.CAVE_AIR || org.bukkit.Tag.SAPLINGS.isTagged(blockType)) {
