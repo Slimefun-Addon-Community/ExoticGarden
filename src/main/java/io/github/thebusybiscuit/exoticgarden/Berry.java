@@ -9,7 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 
 public class Berry {
 
@@ -43,7 +43,7 @@ public class Berry {
     }
 
     public ItemStack getItem() {
-        return type == PlantType.ORE_PLANT ? item : SlimefunItem.getByID(id).getItem();
+        return type == PlantType.ORE_PLANT ? item : SlimefunItem.getById(id).getItem();
     }
 
     public String getTexture() {
