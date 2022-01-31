@@ -5,9 +5,12 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.dre.brewery.BCauldron;
+import com.dre.brewery.utility.LegacyUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -42,29 +45,30 @@ public class ExoticGardenFruit extends SimpleSlimefunItem<ItemUseHandler> {
     @Override
     public ItemUseHandler getItemHandler() {
         return e -> {
-            Optional<Block> block = e.getClickedBlock();
+            Optional<Block> optionalBlock = e.getClickedBlock();
 
-            if (block.isPresent()) {
-                Material material = block.get().getType();
+            if (optionalBlock.isPresent()) {
+                Block block = optionalBlock.get();
 
                 // Cancel the Block placement if the Player sneaks or the Block is not interactable
-                if (e.getPlayer().isSneaking() || !isInteractable(material)) {
+                if (e.getPlayer().isSneaking() || !isInteractable(block)) {
                     e.cancel();
                 } else {
                     return;
                 }
-            }
-
-            if (edible && e.getPlayer().getFoodLevel() < 20) {
-                restoreHunger(e.getPlayer());
-                ItemUtils.consumeItem(e.getItem(), false);
+            } else {
+                if (edible && e.getPlayer().getFoodLevel() < 20) {
+                    restoreHunger(e.getPlayer());
+                    ItemUtils.consumeItem(e.getItem(), false);
+                }
             }
         };
     }
 
-    private boolean isInteractable(@Nonnull Material material) {
+    private boolean isInteractable(@Nonnull Block block) {
         // We cannot rely on Material#isInteractable() sadly
         // as it would allow the placement of this block on strange items like stairs...
+        Material material = block.getType();
         switch (material) {
             case ANVIL:
             case BREWING_STAND:
@@ -73,11 +77,21 @@ public class ExoticGardenFruit extends SimpleSlimefunItem<ItemUseHandler> {
             case HOPPER:
             case TRAPPED_CHEST:
             case ENDER_CHEST:
-            case CAULDRON:
             case SHULKER_BOX:
                 return true;
             default:
-                return material.name().equals("BARREL") || material.name().endsWith("_SHULKER_BOX");
+                return material.name().equals("BARREL") ||
+                        material.name().endsWith("_SHULKER_BOX") ||
+                        isBreweryCauldron(block);
+        }
+    }
+
+    private boolean isBreweryCauldron(@Nonnull Block block) {
+        try {
+            return LegacyUtil.isWaterCauldron(block.getType()) &&
+                    LegacyUtil.isCauldronHeatsource(block.getRelative(BlockFace.DOWN));
+        } catch (NoClassDefFoundError e) {
+            return false;
         }
     }
 
