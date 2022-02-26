@@ -9,6 +9,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
@@ -50,6 +51,8 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
  * @author TheBusyBiscuit
  */
 public class Schematic {
+
+    private static final BlockFace[] BLOCK_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
 
     private final short[] blocks;
     private final byte[] data;
@@ -106,7 +109,11 @@ public class Schematic {
         return height;
     }
 
-    public static void pasteSchematic(Location loc, Tree tree) {
+    public static void pasteSchematic(Location loc, Tree tree, boolean doPhysics) {
+        pasteSchematic(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), tree, doPhysics);
+    }
+
+    public static void pasteSchematic(World world, int x1, int y1, int z1, Tree tree, boolean doPhysics) {
         Schematic schematic;
 
         try {
@@ -117,7 +124,6 @@ public class Schematic {
             return;
         }
 
-        BlockFace[] faces = { BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST };
         short[] blocks = schematic.getBlocks();
         byte[] blockData = schematic.getData();
 
@@ -125,23 +131,27 @@ public class Schematic {
         short width = schematic.getWidth();
         short height = schematic.getHeight();
 
+        // Performance - avoid repeatedly calculating this value in a loop
+        int processedX = x1 - length / 2;
+        int processedZ = z1 - width / 2;
+
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < height; ++y) {
                 for (int z = 0; z < length; ++z) {
                     int index = y * width * length + z * width + x;
 
-                    int blockX = x + loc.getBlockX() - length / 2;
-                    int blockY = y + loc.getBlockY();
-                    int blockZ = z + loc.getBlockZ() - width / 2;
-                    Block block = new Location(loc.getWorld(), blockX, blockY, blockZ).getBlock();
+                    int blockX = x + processedX;
+                    int blockY = y + y1;
+                    int blockZ = z + processedZ;
+                    Block block = world.getBlockAt(blockX, blockY, blockZ);
                     Material blockType = block.getType();
                     
-                    if ((!blockType.isSolid() && !blockType.isInteractable() && !SlimefunTag.UNBREAKABLE_MATERIALS.isTagged(blockType)) || blockType == Material.AIR || blockType == Material.CAVE_AIR || org.bukkit.Tag.SAPLINGS.isTagged(blockType)) {
+                    if (blockType.isAir() || org.bukkit.Tag.SAPLINGS.isTagged(blockType) || (!blockType.isSolid() && !blockType.isInteractable() && !SlimefunTag.UNBREAKABLE_MATERIALS.isTagged(blockType))) {
                         Material material = parseId(blocks[index], blockData[index]);
 
                         if (material != null) {
                             if (blocks[index] != 0) {
-                                block.setType(material);
+                                block.setType(material, doPhysics);
                             }
 
                             if (org.bukkit.Tag.LEAVES.isTagged(material)) {
@@ -151,8 +161,8 @@ public class Schematic {
                             }
                             else if (material == Material.PLAYER_HEAD) {
                                 Rotatable s = (Rotatable) block.getBlockData();
-                                s.setRotation(faces[ThreadLocalRandom.current().nextInt(faces.length)]);
-                                block.setBlockData(s);
+                                s.setRotation(BLOCK_FACES[ThreadLocalRandom.current().nextInt(BLOCK_FACES.length)]);
+                                block.setBlockData(s, doPhysics);
 
                                 PlayerHead.setSkin(block, PlayerSkin.fromHashCode(tree.getTexture()), true);
                                 BlockStorage.store(block, tree.getFruit());

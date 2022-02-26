@@ -1,7 +1,7 @@
 package io.github.thebusybiscuit.exoticgarden;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.EnumSet;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 
 public class Berry {
+
+    private static final Set<Material> SOILS = EnumSet.of(Material.GRASS_BLOCK, Material.DIRT);
 
     private final ItemStack item;
     private final String id;
@@ -59,8 +61,7 @@ public class Berry {
     }
 
     public boolean isSoil(Material type) {
-        List<Material> soils = Arrays.asList(Material.GRASS_BLOCK, Material.DIRT);
-        return soils.contains(type);
+        return SOILS.contains(type);
     }
 
 }
