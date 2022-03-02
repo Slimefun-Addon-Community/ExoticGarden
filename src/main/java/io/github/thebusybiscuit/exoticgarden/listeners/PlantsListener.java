@@ -32,6 +32,7 @@ import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.block.BlockBurnEvent;
 
 import io.github.thebusybiscuit.exoticgarden.Berry;
 import io.github.thebusybiscuit.exoticgarden.ExoticGarden;
@@ -328,6 +329,33 @@ public class PlantsListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDecay(LeavesDecayEvent e) {
+        if (!Slimefun.getWorldSettingsService().isWorldEnabled(e.getBlock().getWorld())) {
+            return;
+        }
+
+        String id = BlockStorage.checkID(e.getBlock());
+
+        if (id != null) {
+            for (Berry berry : ExoticGarden.getBerries()) {
+                if (id.equalsIgnoreCase(berry.getID())) {
+                    e.setCancelled(true);
+                    return;
+                }
+            }
+        }
+
+        dropFruitFromTree(e.getBlock());
+        ItemStack item = BlockStorage.retrieve(e.getBlock());
+
+        if (item != null) {
+            e.setCancelled(true);
+            e.getBlock().setType(Material.AIR);
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockBurn(BlockBurnEvent e) {
         if (!Slimefun.getWorldSettingsService().isWorldEnabled(e.getBlock().getWorld())) {
             return;
         }
