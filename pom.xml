@@ -112,7 +112,7 @@
         <dependency>
             <groupId>com.github.slimefun</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-27</version>
+            <version>RC-31</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
