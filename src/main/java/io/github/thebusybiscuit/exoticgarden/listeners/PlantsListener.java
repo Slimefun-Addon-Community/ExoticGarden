@@ -15,9 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.Waterlogged;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import org.bukkit.event.*;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
@@ -351,11 +349,11 @@ public class PlantsListener implements Listener {
     }
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent e) {
-        if (!ExoticGarden.isHarvestablePlant(e.getClickedBlock())) return;
+    public void onInteract(PlayerInteractEvent e) throws EventException, NullPointerException {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (e.getHand() != EquipmentSlot.HAND) return;
         if (e.getPlayer().isSneaking()) return;
+        if (!ExoticGarden.isHarvestablePlant(e.getClickedBlock())) return;
 
         if (Slimefun.getProtectionManager().hasPermission(e.getPlayer(), e.getClickedBlock().getLocation(), Interaction.BREAK_BLOCK)) {
                 ItemStack item = ExoticGarden.harvestPlant(e.getClickedBlock());
