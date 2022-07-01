@@ -1,9 +1,6 @@
 package io.github.thebusybiscuit.exoticgarden.listeners;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.bukkit.Effect;
@@ -355,20 +352,21 @@ public class PlantsListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
+        if (!ExoticGarden.isHarvestablePlant(Objects.requireNonNull(e.getClickedBlock()))) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (e.getHand() != EquipmentSlot.HAND) return;
         if (e.getPlayer().isSneaking()) return;
 
         if (Slimefun.getProtectionManager().hasPermission(e.getPlayer(), e.getClickedBlock().getLocation(), Interaction.BREAK_BLOCK)) {
-            ItemStack item = ExoticGarden.harvestPlant(e.getClickedBlock());
+                ItemStack item = ExoticGarden.harvestPlant(e.getClickedBlock());
 
-            if (item != null) {
-                e.getClickedBlock().getWorld().playEffect(e.getClickedBlock().getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
-                e.getClickedBlock().getWorld().dropItemNaturally(e.getClickedBlock().getLocation(), item);
-            } else {
-                // The block wasn't a plant, we try harvesting a fruit instead
-                ExoticGarden.getInstance().harvestFruit(e.getClickedBlock());
-            }
+                if (item != null) {
+                    e.getClickedBlock().getWorld().playEffect(e.getClickedBlock().getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
+                    e.getClickedBlock().getWorld().dropItemNaturally(e.getClickedBlock().getLocation(), item);
+                } else {
+                    // The block wasn't a plant, we try harvesting a fruit instead
+                    ExoticGarden.getInstance().harvestFruit(e.getClickedBlock());
+                }
         }
     }
 
