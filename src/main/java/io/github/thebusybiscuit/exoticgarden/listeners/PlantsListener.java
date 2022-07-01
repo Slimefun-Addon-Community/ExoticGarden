@@ -352,7 +352,7 @@ public class PlantsListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if (!ExoticGarden.isHarvestablePlant(Objects.requireNonNull(e.getClickedBlock()))) return;
+        if (!ExoticGarden.isHarvestablePlant(e.getClickedBlock())) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (e.getHand() != EquipmentSlot.HAND) return;
         if (e.getPlayer().isSneaking()) return;
