@@ -369,6 +369,23 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
         magicalEssence.register(this);
     }
 
+    public static boolean isHarvestablePlant(@Nonnull Block block) {
+        //Taken from the harvestPlan method, checks if the block is a berry.
+        //Made to fix the onInteract event spam in residence
+        SlimefunItem item = BlockStorage.check(block);
+
+        if (item == null) {
+            return false;
+        }
+
+        for (Berry berry : getBerries()) {
+            if (item.getId().equalsIgnoreCase(berry.getID())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Nullable
     public static ItemStack harvestPlant(@Nonnull Block block) {
         SlimefunItem item = BlockStorage.check(block);
