@@ -66,18 +66,33 @@ public class ExoticGardenFruit extends SimpleSlimefunItem<ItemUseHandler> {
         // We cannot rely on Material#isInteractable() sadly
         // as it would allow the placement of this block on strange items like stairs...
         switch (material) {
+            case CRAFTING_TABLE:
+            case FURNACE:
+            case SMOKER:
+            case BLAST_FURNACE:
+            case JIGSAW:
+            case JUKEBOX:
+            case ENCHANTING_TABLE:
+            case ITEM_FRAME:
+            case LOOM:
+            case CARTOGRAPHY_TABLE:
+            case GRINDSTONE:
+            case SMITHING_TABLE:
+            case BELL:
+            case BEACON:
             case ANVIL:
             case BREWING_STAND:
             case CAKE:
             case CHEST:
-            case HOPPER:
             case TRAPPED_CHEST:
+            case HOPPER:
             case ENDER_CHEST:
-            case CAULDRON:
-            case SHULKER_BOX:
                 return true;
             default:
-                return material.name().equals("BARREL") || material.name().endsWith("_SHULKER_BOX");
+                return material.name().equals("BARREL") ||
+                        material.name().endsWith("_SHULKER_BOX") ||
+                        material.name().endsWith("DOOR") ||
+                        material.name().endsWith("BED");
         }
     }
 
