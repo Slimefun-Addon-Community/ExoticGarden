@@ -82,6 +82,8 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
+
+                    <!-- Shade dependencies into the output jar -->
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
@@ -89,6 +91,7 @@
                         </relocation>
                     </relocations>
 
+                    <!-- Exclude unneeded metadata files from shaded dependencies -->
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
