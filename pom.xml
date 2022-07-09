@@ -16,10 +16,6 @@
         <!-- Target Java 16 -->
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
-
-        <!-- Spigot properties -->
-        <spigot.version>1.19</spigot.version>
-        <spigot.javadocs>https://hub.spigotmc.org/javadocs/spigot/</spigot.javadocs>
     </properties>
 
     <repositories>
