@@ -392,7 +392,6 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
                         block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
                         block.setType(Material.AIR);
                         plant.setType(Material.OAK_SAPLING);
-//                        BlockStorage.clearBlockInfo(block.getRelative(BlockFace.UP));
                         BlockStorage.deleteLocationInfoUnsafely(block.getRelative(BlockFace.UP).getLocation(), false);
                         BlockStorage.deleteLocationInfoUnsafely(plant.getLocation(), false);
                         BlockStorage.store(plant, getItem(berry.toBush()));
