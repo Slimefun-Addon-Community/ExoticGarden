@@ -65,20 +65,10 @@ public class ExoticGardenFruit extends SimpleSlimefunItem<ItemUseHandler> {
     private boolean isInteractable(@Nonnull Material material) {
         // We cannot rely on Material#isInteractable() sadly
         // as it would allow the placement of this block on strange items like stairs...
-        switch (material) {
-            case ANVIL:
-            case BREWING_STAND:
-            case CAKE:
-            case CHEST:
-            case HOPPER:
-            case TRAPPED_CHEST:
-            case ENDER_CHEST:
-            case CAULDRON:
-            case SHULKER_BOX:
-                return true;
-            default:
-                return material.name().equals("BARREL") || material.name().endsWith("_SHULKER_BOX");
-        }
+        return switch (material) {
+            case ANVIL, BREWING_STAND, CAKE, CHEST, HOPPER, TRAPPED_CHEST, ENDER_CHEST, CAULDRON, SHULKER_BOX -> true;
+            default -> material.name().equals("BARREL") || material.name().endsWith("_SHULKER_BOX");
+        };
     }
 
     protected int getFoodValue() {
