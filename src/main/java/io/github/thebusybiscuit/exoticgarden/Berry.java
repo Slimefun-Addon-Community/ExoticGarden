@@ -35,8 +35,6 @@ public class Berry {
      * Returns the identifier of this Berry.
      *
      * @return the identifier of this Berry
-     *
-     * @since 1.7.0, rename of {@link #getName()}.
      */
     public String getID() {
         return this.id;
