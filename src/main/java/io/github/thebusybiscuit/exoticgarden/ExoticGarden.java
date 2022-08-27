@@ -31,6 +31,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Effect;
@@ -385,12 +386,14 @@ public class ExoticGarden extends JavaPlugin implements SlimefunAddon {
                         if (Tag.LEAVES.isTagged(block.getType())) {
                             block = block.getRelative(BlockFace.UP);
                         } else {
-                            plant = block.getRelative(BlockFace.DOWN);
+                            plant = block.getRelative(BlockFace.SELF);
                         }
-                        BlockStorage.deleteLocationInfoUnsafely(block.getLocation(), false);
+
                         block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.OAK_LEAVES);
                         block.setType(Material.AIR);
                         plant.setType(Material.OAK_SAPLING);
+//                        BlockStorage.clearBlockInfo(block.getRelative(BlockFace.UP));
+                        BlockStorage.deleteLocationInfoUnsafely(block.getRelative(BlockFace.UP).getLocation(), false);
                         BlockStorage.deleteLocationInfoUnsafely(plant.getLocation(), false);
                         BlockStorage.store(plant, getItem(berry.toBush()));
                         return berry.getItem().clone();

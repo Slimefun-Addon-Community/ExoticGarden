@@ -171,8 +171,12 @@ public class PlantsListener implements Listener {
                             item = BlockStorage.check(blockAbove);
                             if (item != null) return;
                             if (!Tag.SAPLINGS.isTagged(blockAbove.getType()) && !Tag.LEAVES.isTagged(blockAbove.getType())) {
-                                Material type = blockAbove.getType();
-                                if (!type.isAir() || type != Material.SNOW) return;
+                                switch (blockAbove.getType()) {
+                                    case AIR, CAVE_AIR, SNOW:
+                                        break;
+                                    default:
+                                        return;
+                                }
                             }
                             BlockStorage.store(blockAbove, berry.getItem());
                             e.getLocation().getBlock().setType(Material.OAK_LEAVES);
@@ -224,7 +228,7 @@ public class PlantsListener implements Listener {
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> current.setType(Material.OAK_LEAVES));
                     }
                     break;
-                case FRUIT:
+                case FRUIT, ORE_PLANT, DOUBLE_PLANT:
                     if (isPaper) {
                         current.setType(Material.PLAYER_HEAD);
                         Rotatable s = (Rotatable) current.getBlockData();
@@ -239,26 +243,6 @@ public class PlantsListener implements Listener {
                             s.setRotation(faces[random.nextInt(faces.length)]);
                             current.setBlockData(s);
                             PlayerHead.setSkin(current, PlayerSkin.fromHashCode(berry.getTexture()), true);
-                        });
-                    }
-                    break;
-                    case ORE_PLANT, DOUBLE_PLANT:
-                    if (isPaper) {
-                        current.setType(Material.PLAYER_HEAD);
-                        Rotatable s = (Rotatable) current.getBlockData();
-                        s.setRotation(faces[random.nextInt(faces.length)]);
-                        current.setBlockData(s);
-                        PlayerHead.setSkin(current, PlayerSkin.fromHashCode(berry.getTexture()), true);
-                    }
-                    else {
-                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                            BlockStorage.store(current.getRelative(BlockFace.UP), berry.getItem());
-                            current.setType(Material.OAK_LEAVES);
-                            current.getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
-                            Rotatable ss = (Rotatable) current.getRelative(BlockFace.UP).getBlockData();
-                            ss.setRotation(faces[random.nextInt(faces.length)]);
-                            current.getRelative(BlockFace.UP).setBlockData(ss);
-                            PlayerHead.setSkin(current.getRelative(BlockFace.UP), PlayerSkin.fromHashCode(berry.getTexture()), true);
                         });
                     }
                     break;
@@ -374,7 +358,7 @@ public class PlantsListener implements Listener {
         if (b.getType() == Material.OAK_SAPLING) {
             SlimefunItem item = BlockStorage.check(b);
 
-            if (item instanceof BonemealableItem bonemealableItem && bonemealableItem.isBonemealDisabled()) {
+            if (item instanceof BonemealableItem && ((BonemealableItem) item).isBonemealDisabled()) {
                 e.setCancelled(true);
                 b.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, b.getLocation().clone().add(0.5, 0, 0.5), 4);
                 b.getWorld().playSound(b.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
