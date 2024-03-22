@@ -37,10 +37,10 @@ public class GrassSeeds extends SimpleSlimefunItem<ItemUseHandler> {
                     b.setType(Material.GRASS_BLOCK);
 
                     if (b.getRelative(BlockFace.UP).getType() == Material.AIR) {
-                        b.getRelative(BlockFace.UP).setType(Material.GRASS);
+                        b.getRelative(BlockFace.UP).setType(Material.SHORT_GRASS);
                     }
 
-                    b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, Material.GRASS);
+                    b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, Material.SHORT_GRASS);
                 }
             }
         };
